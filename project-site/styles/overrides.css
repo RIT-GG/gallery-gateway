@@ -1,0 +1,25 @@
+:root{
+    --bs-primary: #F76902;
+    --bs-primary-rgb: 247,105,2;
+
+    --bs-secondary: #7C878E;
+    --bs-secondary-rgb: 123,135,142;
+
+    --bs-light: #D0D3D4;
+    --bs-light-rgb: 208,211,212;
+}
+
+.btn-primary{
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    transition: 0.3s ease all;
+}
+.btn-primary:hover{
+    background-color: #FFF;
+    border-color: #FFF;
+    color: var(--bs-primary);
+}
+
+.bg-primary {
+    background-color: #F76902;
+}
