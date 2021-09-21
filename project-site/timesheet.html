@@ -9,6 +9,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="styles/overrides.css" />
 </head>
 
 <body>
@@ -41,8 +43,10 @@
     <!-- END NAV-->
     <div class="container pt-5">
         <h1>Member timesheet</h1>
-        <p>Our team is tracking our hours in a Google Sheets Document. Our hours, broken down by week can be found at the following link: <a href="https://docs.google.com/spreadsheets/d/1h7VjDaht8bJmZLJ-MoB9e-AHNLvJQa45uS214VYZoX4/edit?usp=sharing">https://docs.google.com/spreadsheets/d/1h7VjDaht8bJmZLJ-MoB9e-AHNLvJQa45uS214VYZoX4/edit?usp=sharing</a></p>
-        <p class="text-small text-muted">You must be logged into an RIT account to access this document.</p>
+        <div class="w-100">
+            <iframe class="w-100" style="min-height: 300px;" 
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRgWZroCLoJ5KgCmS_2N87YY_-USCkq8v692EyaX649webAgycqqbtciHhmzRcLr891uoVS1Wy4JWZr/pubhtml?widget=true&amp;headers=false"></iframe>
+        </div>
     </div>
 </body>
 
