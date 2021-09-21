@@ -3,7 +3,7 @@
  * @param {object} artifact 
  */
 function generateArtifact (artifact_id, artifact_name, artifact_content) {
-    const artifact_container = createElementWithAttrributes("div", { classes: ["artifact-container"] });
+    const artifact_container = createElementWithAttrributes("div", { classes: ["artifact-container", "mb-3"] });
 
     const artifact_header_wrapper = createElementWithAttrributes("div", { classes: ["d-flex", "flex-column", "flex-md-row", "justify-content-between", "align-items-md-center", "p-3", "rounded", "bg-secondary"] });
     // Create the artifact header and append it to the header wrapper
@@ -38,4 +38,7 @@ function generateArtifact (artifact_id, artifact_name, artifact_content) {
     artifact_container.appendChild(artifact_content_collapse);
 
     document.getElementById("artifacts").appendChild(artifact_container);
+}
+
+function artifactNavStickyTop(){
 }

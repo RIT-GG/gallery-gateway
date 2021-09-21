@@ -9,6 +9,10 @@
     --bs-light-rgb: 208,211,212;
 }
 
+body{
+    position: relative;
+}
+
 .btn-primary{
     background-color: var(--bs-primary);
     border-color: var(--bs-primary);
@@ -22,4 +26,21 @@
 
 .bg-primary {
     background-color: #F76902;
+}
+
+nav.navbar.navbar-expand-lg .nav-link:hover{
+    color: var(--bs-primary);
+}
+nav.navbar.navbar-expand-lg .navbar-brand{
+    color: var(--bs-primary);
+}
+
+/* Artifacts scroll spy */
+#artifacts_nav .nav .nav-link{
+    color: var(--bs-primary);
+}
+
+#artifacts_nav .nav .nav-link.active {
+    background-color: var(--bs-primary);
+    color: #FFF;
 }

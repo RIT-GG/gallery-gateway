@@ -16,15 +16,17 @@
     <script src="scripts/Utilities.js"></script>
 </head>
 
-<body>
+<body data-bs-spy="scroll" data-bs-target="#artifacts_nav">
     <!-- START NAV -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-light border-bottom">
         <div class="container">
-            <a class="navbar-brand" href="https://rit-gg.github.io/gallery-gateway/index.html">GG RIT</a>
+            <a class="navbar-brand fw-bold" href="https://rit-gg.github.io/gallery-gateway/index.html">GG RIT</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
                 aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -45,25 +47,60 @@
     </nav>
     <!-- END NAV-->
     <div class="container py-5">
-        <h1>Artifacts</h1>
-        <div id="artifacts" class="d-flex flex-column gap-3">
-            <script>
-                generateArtifact("project_plan", "Project Plan", {
-                    type: "embedded_page", 
-                    content: "https://docs.google.com/document/d/e/2PACX-1vRC8eT-vU0qSLYRf6iA5sKNGdfkdEgWOonILE-OyPSkjYjhtAEZg5ecpmdlbrcUMaRDt-evPZ-Yxaao/pub?embedded=true"
-                });
-                generateArtifact("four_up_week_2", "Four Up - Week 2", {
-                    type: "embedded_page",
-                    content: "https://docs.google.com/document/d/e/2PACX-1vS7BLO3uZil1TYyrDYtMtYGgSjfm4MGqbXspo7TW-10EQTSoG2aGILDfS2Waa2pkmBCF1sSV0gwErDh/pub?embedded=true"
-                });
-            </script>
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-5">Artifacts</h1>
+            </div>
+            <div class="col-3 ">
+                <nav id="artifacts_nav" class="navbar navbar-light px-3 d-none d-lg-flex" style="top: 0px;">
+                    <nav class="nav nav-pills flex-column">
+                            <a class="nav-link" href="#project_plan_spy">Project Plan</a>
+                            <a class="nav-link" href="#four_up_spy">4 Ups</a>
+                    </nav>
+                </nav>
+            </div>
+            <div class="col-12 col-lg-9">
+                <div id="artifacts" class="d-flex flex-column">
+                    <h4 id="project_plan_spy">Project Plan</h4>
+                    <script>
+                        generateArtifact("project_plan", "Project Plan", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/document/d/e/2PACX-1vRC8eT-vU0qSLYRf6iA5sKNGdfkdEgWOonILE-OyPSkjYjhtAEZg5ecpmdlbrcUMaRDt-evPZ-Yxaao/pub?embedded=true"
+                        });
+                    </script>
+
+                    <h4 id="four_up_spy" class="mt-5">4 Ups</h4>
+                    <script>
+                        generateArtifact("four_up_week_3", "Four Up - Week 3", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/document/d/e/2PACX-1vS7BLO3uZil1TYyrDYtMtYGgSjfm4MGqbXspo7TW-10EQTSoG2aGILDfS2Waa2pkmBCF1sSV0gwErDh/pub?embedded=true"
+                        });
+                        generateArtifact("four_up_week_4", "Four Up - Week 4", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/document/d/e/2PACX-1vQ0_VVJhlMttRBUzg_bgw-ty44yf6IIjNqv2HhaviFUDHdjIL1h6AF9c_6LyGP7XmaIwZ1NCxIjyrlf/pub?embedded=true"
+                        });
+                    </script>
+
+                </div>
+            </div>
         </div>
     </div>
-
+    <script>
+        window.addEventListener("scroll", (e) => {
+            const artifacs_nav = document.getElementById("artifacts_nav");
+            if( window.scrollY >= 190){
+                artifacs_nav.style.position = "fixed";
+            }else{
+                artifacs_nav.style.position = "relative";
+            }
+        })
+    </script>
     <!-- Bootstrap JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
         crossorigin="anonymous"></script>
+
+
 </body>
 
 </html>
