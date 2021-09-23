@@ -54,21 +54,16 @@
             <div class="col-3 ">
                 <nav id="artifacts_nav" class="navbar navbar-light px-3 d-none d-lg-flex" style="top: 0px;">
                     <nav class="nav nav-pills flex-column">
-                            <a class="nav-link" href="#project_plan_spy">Project Plan</a>
-                            <a class="nav-link" href="#four_up_spy">4 Ups</a>
+                        <a class="nav-link" href="#four_up_spy">4 Ups</a>
+                        <a class="nav-link" href="#agenda_spy">Agendas</a>
+                        <a class="nav-link" href="#project_plan_spy">Project Plan</a>
+                        <a class="nav-link" href="#risk_management_spy">Risk Management</a>
+                        <a class="nav-link" href="#defects_by_module_spy">Defects by Module</a>
                     </nav>
                 </nav>
             </div>
             <div class="col-12 col-lg-9">
                 <div id="artifacts" class="d-flex flex-column">
-                    <h4 id="project_plan_spy">Project Plan</h4>
-                    <script>
-                        generateArtifact("project_plan", "Project Plan", {
-                            type: "embedded_page",
-                            content: "https://docs.google.com/document/d/e/2PACX-1vRC8eT-vU0qSLYRf6iA5sKNGdfkdEgWOonILE-OyPSkjYjhtAEZg5ecpmdlbrcUMaRDt-evPZ-Yxaao/pub?embedded=true"
-                        });
-                    </script>
-
                     <h4 id="four_up_spy" class="mt-5">4 Ups</h4>
                     <script>
                         generateArtifact("four_up_week_3", "Four Up - Week 3", {
@@ -79,6 +74,50 @@
                             type: "embedded_page",
                             content: "https://docs.google.com/document/d/e/2PACX-1vQ0_VVJhlMttRBUzg_bgw-ty44yf6IIjNqv2HhaviFUDHdjIL1h6AF9c_6LyGP7XmaIwZ1NCxIjyrlf/pub?embedded=true"
                         });
+                        generateArtifact("four_up_week_5", "Four Up - Week 5", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/document/d/e/2PACX-1vR6TdngsWGHErmJY6mcj-TfitAOM5uxLsiJH6v5NHiry6CppSLCIiDciIvykrBIYIGqdmfVXy1TeACl/pub?embedded=true"
+                        })
+                    </script>
+
+                    <h4 id="agenda_spy" class="mt-5">Team Agendas</h4>
+                    <script>
+                        generateArtifact("agenda_week_4", "Agenda - Week 4", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/document/d/e/2PACX-1vQ0OhX2C0nsEYNPEd1lyOQmR_IEsfOjE0xsop_4ZT7cLOZtjR4xhWMTn6d4Jm58U4DICVceIJGuOrXm/pub?embedded=true"
+                        });
+                        generateArtifact("agenda_week_5", "Agenda - Week 5", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/document/d/e/2PACX-1vT6oeJZjJUDnWILAhbRg3sKR-dU8sr8Om5wvHzjuRTF_X5YJVp3HsUF_F7YAluMf6XVqqopJPYZ_c7V/pub?embedded=true"
+                        });
+                        generateArtifact("agenda_week_6", "Agenda - Week 6", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/document/d/e/2PACX-1vTBcyV3GmcIgM_C0ZW1v0pGBDZ62gaJA7m2XMHO6HyJ55J60yhXc7WbS8ymMGkkXfxlvUtd3ukk6Znf/pub?embedded=true"
+                        });
+                    </script>
+
+                    <h4 id="project_plan_spy" class="mt-5">Project Plan</h4>
+                    <script>
+                        generateArtifact("project_plan", "Project Plan", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/document/d/e/2PACX-1vRC8eT-vU0qSLYRf6iA5sKNGdfkdEgWOonILE-OyPSkjYjhtAEZg5ecpmdlbrcUMaRDt-evPZ-Yxaao/pub?embedded=true"
+                        });
+                    </script>
+                    
+                    <h4 id="risk_mangement_spy" class="mt-5">Risk Management</h4>
+                    <script>
+                        generateArtifact("risk_management", "Risk Management Spreadsheet", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQY7sPbg3mGh6_Pztps251xLoW4_UKi1BSuHvSAjVrPgp5L-zV2obEsTi-q3TAJMKmdO-QhvGmzJ-e7/pubhtml?widget=true&amp;headers=false"
+                        });
+                    </script>
+
+                    <h4 id="defects_by_module_spy" class="mt-5">Defects by Module</h4>
+                    <script>
+                        generateArtifact("defects_by_module", "Defects by Module Spreadsheet", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/spreadsheets/d/e/2PACX-1vS37BDzdN_rbWBRwECTMDnvEwn5inOFP2UtOEpcXSu8oE3TLRH1dKplofpj6FoubFd6RH6Cr3x_al9E/pubhtml?widget=true&amp;headers=false"
+                        });
                     </script>
 
                 </div>
@@ -88,9 +127,9 @@
     <script>
         window.addEventListener("scroll", (e) => {
             const artifacs_nav = document.getElementById("artifacts_nav");
-            if( window.scrollY >= 190){
+            if (window.scrollY >= 190) {
                 artifacs_nav.style.position = "fixed";
-            }else{
+            } else {
                 artifacs_nav.style.position = "relative";
             }
         })
