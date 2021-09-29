@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize'
 
 import config from './index'
-import database from './database'
+import {database} from './database'
 
 const env = config.get('NODE_ENV')
 const dbConfig = database[env]

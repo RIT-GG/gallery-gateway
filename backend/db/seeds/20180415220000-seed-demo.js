@@ -675,6 +675,8 @@ export function up (queryInterface, Sequelize) {
           updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         }
       ]).then(() => ids)
+    }).catch((error) => {
+      console.log(error)
     })
 }
 

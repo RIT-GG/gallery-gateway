@@ -1,5 +1,5 @@
 import passport from 'passport'
-import saml from 'passport-saml'
+import {Strategy} from 'passport-saml'
 
 import config from './index'
 import User from '../models/user'
@@ -7,7 +7,7 @@ import { STUDENT } from '../constants'
 
 const samlConfig = config.get('auth:saml')
 
-export const samlStrategy = new saml.Strategy({
+export const samlStrategy = new Strategy({
   // URL that goes from the Identity Provider -> Service Provider
   callbackUrl: samlConfig.callbackUrl,
   // URL that goes from the Service Provider -> Identity Provider

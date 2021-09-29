@@ -1,13 +1,9 @@
 /* eslint-disable no-unused-vars */
-
-import {
-  makeExecutableSchema,
-  addMockFunctionsToSchema
-} from 'graphql-tools'
+import { ApolloServer, gql } from 'apollo-server-express'
 
 import resolvers from './resolvers'
 
-const typeDefs = `
+const typeDefs = gql`
 scalar Date
 
 type User {
@@ -276,9 +272,18 @@ input OrderByItem {
 }
 `
 
-const schema = makeExecutableSchema({typeDefs, resolvers})
+const SERVER = new ApolloServer({
+  typeDefs,
+  resolvers,
+  playground: {
+    endpoint: `http://localhost:3000/graphiql`,
+    settings: {
+      'editor.theme': 'dark'
+    }
+  }
+})
 
 // NOTE: Uncomment in development to have schema endpoints mocked
 // addMockFunctionsToSchema({schema})
 
-export default schema
+export default SERVER
