@@ -2,6 +2,8 @@ import path from 'path'
 import cors from 'cors'
 import express from 'express'
 // import { maskErrors } from 'graphql-errors'
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 
 import config from './config'
 import { passport } from './config/passport'

@@ -23,7 +23,7 @@ export const samlStrategy = new Strategy({
   cert: samlConfig.cert,
   validateInResponseTo: false,
   disableRequestedAuthnContext: true
-}, function (profile, done) {
+}, async function (profile, done) {
   // We've received login success, we need to look up the user
   if (config.get('NODE_ENV') !== 'production') {
     profile.uid = profile.email.replace('@example.com', '')
@@ -35,7 +35,7 @@ export const samlStrategy = new Strategy({
     return done('Profile is missing a property', null)
   }
 
-  User
+  const [user, created] = await User
     .findOrCreate({
       where: { username: profile.uid },
       defaults: {
@@ -44,10 +44,8 @@ export const samlStrategy = new Strategy({
         type: STUDENT
       }
     })
-    .spread((user, created) => {
-      return Promise.all([user.save(), created])
-    })
-    .then((thing) => done(null, thing[0]))
+  const thing = await Promise.all([user.save(), created])
+  done(null, thing[0])
 })
 
 passport.serializeUser((user, done) => {
