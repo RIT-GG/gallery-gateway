@@ -58,7 +58,7 @@ const download = (url, destGuid, extn) => {
   const dst = `${dstDir}/${destGuid}.${extn}`
   return new Promise((resolve, reject) => {
     mkdirp(
-      dstDir,
+      dstDir).then(
       (err) => {
         if (err) {
           reject(err)
