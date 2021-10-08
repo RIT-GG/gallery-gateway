@@ -9,7 +9,6 @@ import config from './config'
 import { passport } from './config/passport'
 import models from './models'
 import router from './routes'
-import SERVER from './schema'
 import parseJwtUser from './middleware/parseJwtUser'
 
 const app = express()
@@ -52,8 +51,5 @@ app.use('/static/uploads', express.static(path.join(__dirname, 'uploads', 'image
 app.use('/static/uploads', express.static(path.join(__dirname, 'uploads', 'pdfs')))
 
 // Setup GraphQL endpoint
-SERVER.start().then(() => {
-  SERVER.applyMiddleware({ app: app })
-})
 
 export default app

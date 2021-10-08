@@ -3,8 +3,8 @@ import { UserError } from 'graphql-errors'
 import User from '../../models/user'
 import { ADMIN, JUDGE, STUDENT } from '../../constants'
 
-const createUser = (_, args, req, type) => {
-  if (req.auth.type !== ADMIN) {
+const createUser = (_, args, context, type) => {
+  if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
 
@@ -43,8 +43,8 @@ const createUser = (_, args, req, type) => {
     })
 }
 
-export const updateUser = (_, args, req) => {
-  if (req.auth.type !== ADMIN) {
+export const updateUser = (_, args, context) => {
+  if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
   return User.findOne({where: {username: args.input.username}})
@@ -73,5 +73,5 @@ export const updateUser = (_, args, req) => {
 
 }
 
-export const createAdmin = (_, args, req) => createUser(_, args, req, ADMIN)
-export const createJudge = (_, args, req) => createUser(_, args, req, JUDGE)
+export const createAdmin = (_, args, context) => createUser(_, args, context, ADMIN)
+export const createJudge = (_, args, context) => createUser(_, args, context, JUDGE)

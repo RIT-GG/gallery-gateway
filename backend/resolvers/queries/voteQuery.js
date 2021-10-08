@@ -4,10 +4,10 @@ import Entry from '../../models/entry'
 import { UserError } from 'graphql-errors'
 import { ADMIN, JUDGE } from '../../constants'
 
-export function votes (_, args, req) {
-  const isRequestingOwnJudgeUser = req.auth.username !== undefined &&
-    req.auth.type === JUDGE && req.auth.username === args.judgeUsername
-  if (req.auth.type !== ADMIN && !isRequestingOwnJudgeUser) {
+export function votes (_, args, context) {
+  const isRequestingOwnJudgeUser = context.username !== undefined &&
+    context.authType === JUDGE && context.username === args.judgeUsername
+  if (context.authType !== ADMIN && !isRequestingOwnJudgeUser) {
     throw new UserError('Permission Denied')
   }
   // Get all entries on a show
@@ -16,14 +16,14 @@ export function votes (_, args, req) {
   }).then((showEntries) => {
     // search for the entires that match the permission constraints
     const entryIds = showEntries.map(entry => entry.id)
-    return getVotes(args.judgeUsername, req.auth.type, entryIds)
+    return getVotes(args.judgeUsername, context.authType, entryIds)
   })
 }
 
-export function vote (_, args, req) {
-  const isRequestingOwnJudgeUser = req.auth.username !== undefined &&
-    req.auth.type === JUDGE && req.auth.username === args.judgeUsername
-  if (req.auth.type !== ADMIN && !isRequestingOwnJudgeUser) {
+export function vote (_, args, context) {
+  const isRequestingOwnJudgeUser = context.username !== undefined &&
+    context.authType === JUDGE && context.username === args.judgeUsername
+  if (context.authType !== ADMIN && !isRequestingOwnJudgeUser) {
     throw new UserError('Permission Denied')
   }
   return Vote.find({

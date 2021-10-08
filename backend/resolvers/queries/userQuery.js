@@ -2,23 +2,23 @@ import User from '../../models/user'
 import { UserError } from 'graphql-errors'
 import { STUDENT, ADMIN, JUDGE } from '../../constants'
 
-export function user (_, args, req) {
-  const isRequestingOwnUser = req.auth.username !== undefined && req.auth.username === args.id
-  if (req.auth.type !== ADMIN && !isRequestingOwnUser) {
+export function user (_, args, context) {
+  const isRequestingOwnUser = context.username !== undefined && context.username === args.id
+  if (context.authType !== ADMIN && !isRequestingOwnUser) {
     throw new UserError('Permission Denied')
   }
-  return User.findById(args.id)
+  return User.findByPk(args.id)
 }
 
-export function self (_, __, req) {
-  if (!req.auth.username) {
+export function self (_, __, context) {
+  if (!context.username) {
     throw new UserError('Permission Denied')
   }
-  return User.findById(req.auth.username)
+  return User.findByPk(context.username)
 }
 
-export function users (_, args, req) {
-  if (req.auth.type !== ADMIN) {
+export function users (_, args, context) {
+  if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
   if (args.type === STUDENT) {

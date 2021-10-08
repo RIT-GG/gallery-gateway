@@ -17,8 +17,8 @@ const imageDir = config.get('upload:imageDir')
 const pdfDir = config.get('upload:pdfDir')
 const unlink = promisify(fs.unlink)
 
-export function createShow (_, args, req) {
-  if (req.auth.type !== ADMIN) {
+export function createShow (_, args, context) {
+  if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
   // Handle timezones, start times to midnight and end times to 11:59:59
@@ -38,12 +38,12 @@ export function createShow (_, args, req) {
   return Show.create(newShow)
 }
 
-export function updateShow (_, args, req) {
+export function updateShow (_, args, context) {
   // Only admins can update entries
-  if (req.auth.type !== ADMIN) {
+  if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
-  return Show.findById(args.id)
+  return Show.findByPk(args.id)
     .then((show) => {
       return show.update(args.input, {
         fields: ['name', 'description',
@@ -54,13 +54,13 @@ export function updateShow (_, args, req) {
     })
 }
 
-export function deleteShow (_, args, req) {
+export function deleteShow (_, args, context) {
   // Only admins can delete shows
-  if (req.auth.type !== ADMIN) {
+  if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
   return db.transaction(transaction =>
-    Show.findById(args.id, {transaction})
+    Show.findByPk(args.id, {transaction})
       .then(show => {
         if (!show) {
           // If the show doesn't exist, then no need to delete anything
@@ -133,8 +133,8 @@ export function deleteShow (_, args, req) {
   )
 }
 
-export function assignToShow (_, args, req) {
-  if (req.auth.type !== ADMIN) {
+export function assignToShow (_, args, context) {
+  if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
   return Show.findOne({ where: { id: args.showId } }).then((show) => {
@@ -152,8 +152,8 @@ export function assignToShow (_, args, req) {
   }).then(() => { return true })
 }
 
-export function removeFromShow (_, args, req) {
-  if (req.auth.type !== ADMIN) {
+export function removeFromShow (_, args, context) {
+  if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
   if (args.usernames.length < 1) {

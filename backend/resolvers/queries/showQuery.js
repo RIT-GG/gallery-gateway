@@ -5,11 +5,11 @@ import { ADMIN } from '../../constants'
 
 const isRequestingOwnUser = (req, args) => {
   return req.auth.username !== undefined &&
-    req.auth.username === args.studentUsername
+        req.auth.username === args.studentUsername
 }
 
 export function show (_, args, req) {
-  return Show.findById(args.id)
+  return Show.findByPk(args.id)
 }
 
 export function shows (_, args, req) {
@@ -19,35 +19,35 @@ export function shows (_, args, req) {
   }
 
   // Apply ordering, if desired
-  const order = args.orderBy ? {order: [[args.orderBy.sort, args.orderBy.direction]]} : {}
+  const order = args.orderBy ? { order: [[args.orderBy.sort, args.orderBy.direction]] } : {}
 
   // If username given, show all shows the student has submitted to
   if (args.studentUsername) {
     // Get all the shows the student has been on
     // (including as group creator), through entries
     return User
-      .findById(args.studentUsername)
+      .findByPk(args.studentUsername)
       .then((student) => {
         return student
           .getOwnAndGroupEntries()
-          // Find all connected shows
+        // Find all connected shows
           .then((entries) => {
             const showIds = entries.map(entry => entry.showId)
             // Predicate that matches shows open for submissions
             const isOpen = req.auth.type !== ADMIN
               ? {
-                $and: [
-                  {entryStart: {$lt: new Date()}},
-                  {entryEnd: {$gt: new Date()}}
-                ]
-              }
+                  $and: [
+                    { entryStart: { $lt: new Date() } },
+                    { entryEnd: { $gt: new Date() } }
+                  ]
+                }
               : {}
             // Where-clause that matches shows to which this student has
             // submitted as well as (if non-admin) any shows that are open.
             const whereClause = {
               where: {
                 $or: [
-                  {id: showIds},
+                  { id: showIds },
                   isOpen
                 ]
               }

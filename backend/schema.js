@@ -272,18 +272,16 @@ input OrderByItem {
 }
 `
 
-const SERVER = new ApolloServer({
+const SCHEMA = new ApolloServer({
   typeDefs,
   resolvers,
-  playground: {
-    endpoint: `http://localhost:3000/graphiql`,
-    settings: {
-      'editor.theme': 'dark'
-    }
-  }
+  context: ({ req }) => ({
+    authType: req.auth.type,
+    username: req.auth.username
+  })
 })
 
 // NOTE: Uncomment in development to have schema endpoints mocked
 // addMockFunctionsToSchema({schema})
 
-export default SERVER
+export default SCHEMA

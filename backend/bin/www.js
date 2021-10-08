@@ -2,6 +2,15 @@
 import app from '../server'
 import nconf from '../config'
 
-const server = app.listen(nconf.get('PORT') || 3000, () => {
-  console.log(`Express server listening on port ${server.address().port}`)
-})
+import SCHEMA from '../schema';
+
+const server = async () => {
+  await SCHEMA.start()
+  SCHEMA.applyMiddleware({ app })
+  const port = nconf.get('PORT') || 3000
+  app.listen(port, () => {
+    console.log(`Express server listening on port ${port}`)
+  })
+}
+
+server()

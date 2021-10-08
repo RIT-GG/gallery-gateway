@@ -16,8 +16,8 @@ function judgeIsAllowedToVote (judgeUsername, entryId, userType) {
   }
 
   // Judges may only vote on entries submited to shows they've been assigned to.
-  return User.findById(judgeUsername).then(judge => {
-    return Entry.findById(entryId).then(entry => {
+  return User.findByPk(judgeUsername).then(judge => {
+    return Entry.findByPk(entryId).then(entry => {
       if (!entry) {
         return Promise.reject(new UserError('Cannot find entry'))
       }
@@ -33,17 +33,17 @@ function judgeIsAllowedToVote (judgeUsername, entryId, userType) {
   })
 }
 
-export function vote (_, args, req) {
+export function vote (_, args, context) {
   // Make sure judge is voting as themself
-  const isRequestingOwnJudgeUser = req.auth.username !== undefined &&
-    (req.auth.type === JUDGE || req.auth.type === ADMIN) &&
-    req.auth.username === args.input.judgeUsername
+  const isRequestingOwnJudgeUser = context.username !== undefined &&
+    (context.authType === JUDGE || context.authType === ADMIN) &&
+    context.username === args.input.judgeUsername
   if (!isRequestingOwnJudgeUser) {
     throw new UserError('Permission Denied')
   }
   // Make sure judge is allowed to vote on this entry
   const input = args.input
-  return judgeIsAllowedToVote(input.judgeUsername, input.entryId, req.auth.type)
+  return judgeIsAllowedToVote(input.judgeUsername, input.entryId, context.authType)
     .then(() => {
       return Vote
         .findOrCreate({
