@@ -35,7 +35,7 @@ Group.prototype.getCreator = function getCreator () {
   if (!this.creatorUsername) {
     return Promise.resolve(null)
   }
-  return User.findById(this.creatorUsername)
+  return User.findByPk(this.creatorUsername)
 }
 
 export default Group

@@ -151,14 +151,14 @@ Entry.prototype.getGroup = function getGroup () {
   if (!this.isGroupSubmission()) {
     return Promise.resolve(null)
   }
-  return Group.findById(this.groupId)
+  return Group.findByPk(this.groupId)
 }
 
 Entry.prototype.getStudent = function getUser () {
   if (!this.isStudentSubmission()) {
     return Promise.resolve(null)
   }
-  return User.findById(this.studentUsername)
+  return User.findByPk(this.studentUsername)
 }
 
 Entry.prototype.isGroupSubmission = function () {
