@@ -55,7 +55,9 @@ export function vote (_, args, context) {
             value: input.value
           }
         })
-        .spread((vote, created) => {
+        .then((res) => {
+          const vote = res[0]
+          const created = res[1]
           if (created) {
             return vote
           } else {
