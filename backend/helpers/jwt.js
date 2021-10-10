@@ -3,7 +3,7 @@ import config from '../config'
 
 const jwtConfig = config.get('auth:jwt')
 
-export function parseToken (token, callback) {
+export function parseToken (token) {
   return jwt.verify(
     token,
     jwtConfig.pub,
