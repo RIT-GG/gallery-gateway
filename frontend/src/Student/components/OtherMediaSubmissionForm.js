@@ -168,7 +168,7 @@ class OtherSubmissionForm extends Component {
   renderShow = () => {
     const { create, done, user, handleError, handleHometown, handleDisplayName } = this.props
     const forShow = {
-      id: this.props.data.show.id,
+      id: parseInt(this.props.data.show.id),
       name: this.props.data.show.name
     }
 

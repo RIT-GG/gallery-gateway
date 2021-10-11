@@ -160,7 +160,7 @@ class PhotoSubmissionForm extends Component {
   renderShow = () => {
     const { create, done, user, handleError, handleHometown, handleDisplayName } = this.props
     const forShow = {
-      id: this.props.data.show.id,
+      id: parseInt(this.props.data.show.id),
       name: this.props.data.show.name
     }
     const defaultHometown = user.hometown || '';
@@ -241,7 +241,7 @@ class PhotoSubmissionForm extends Component {
                     }
                     : null,
                 displayName: values.displayName,
-                hometown: values.submittingAsGroup === 'no'?  
+                hometown: values.submittingAsGroup === 'no' ?
                   values.hometown
                   : null,
                 studentUsername: values.submittingAsGroup === 'no' ? user.username: null,

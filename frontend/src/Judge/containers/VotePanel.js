@@ -25,7 +25,7 @@ export default compose(
           variables: {
             input: {
               judgeUsername: ownProps.user.username,
-              entryId: ownProps.submission.id,
+              entryId: parseInt(ownProps.submission.id),
               value
             }
           }
