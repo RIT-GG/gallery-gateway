@@ -26,7 +26,7 @@ export function vote (_, args, context) {
   if (context.authType !== ADMIN && !isRequestingOwnJudgeUser) {
     throw new UserError('Permission Denied')
   }
-  return Vote.find({
+  return Vote.findOne({
     where: {
       judgeUsername: args.judgeUsername,
       entryId: args.entryId
