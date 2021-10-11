@@ -56,6 +56,7 @@
                     <nav class="nav nav-pills flex-column">
                         <a class="nav-link" href="#four_up_spy">4 Ups</a>
                         <a class="nav-link" href="#agenda_spy">Agendas</a>
+                        <a class="nav-link" href="#retrospectives_spy">Retrospectives</a>
                         <a class="nav-link" href="#project_plan_spy">Project Plan</a>
                         <a class="nav-link" href="#risk_management_spy">Risk Management</a>
                         <a class="nav-link" href="#defects_by_module_spy">Defects by Module</a>
@@ -108,6 +109,14 @@
                         });
                     </script>
 
+                    <h4 id="retrospectives_spy" class="mt-5">Team Retrospectives</h4>
+                    <script>
+                        generateArtifact("retrospective_1", "Retrospective 1", {
+                            type: "embedded_page",
+                            content: "https://docs.google.com/document/d/e/2PACX-1vTswkgMO_Me0du57KUmL87NNl0dWzq3x5wdnm6uKm3H4OwkrxpPA6Sf_cpCJ659WcEKpZbo3umlDKts/pub?embedded=true"
+                        });
+                    </script>
+
                     <h4 id="project_plan_spy" class="mt-5">Project Plan</h4>
                     <script>
                         generateArtifact("project_plan", "Project Plan", {
@@ -116,7 +125,7 @@
                         });
                     </script>
 
-                    <h4 id="risk_mangement_spy" class="mt-5">Risk Management</h4>
+                    <h4 id="risk_management_spy" class="mt-5">Risk Management</h4>
                     <script>
                         generateArtifact("risk_management", "Risk Management Spreadsheet", {
                             type: "embedded_page",
