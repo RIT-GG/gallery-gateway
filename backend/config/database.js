@@ -44,7 +44,7 @@ const operatorsAliases = {
   $col: Op.col
 }
 
-const development = {
+export const development = {
   dialect: 'mysql',
   host: HOST,
   database: DB,
@@ -57,7 +57,7 @@ const development = {
   charset: 'utf8mb4'
 }
 
-const test = {
+export const test = {
   dialect: 'mysql',
   host: HOST,
   database: 'test',
@@ -69,7 +69,7 @@ const test = {
   charset: 'utf8mb4'
 }
 
-const production = {
+export const production = {
   dialect: 'mysql',
   host: HOST,
   database: DB,
@@ -82,13 +82,7 @@ const production = {
   charset: 'utf8mb4'
 }
 
-// Additonal exports so that sequelize-cli can read this config properly
-module.exports = {
+export const database = {
   development,
-  test,
-  production,
-  default: {
-    development,
-    test
-  }
+  test
 }

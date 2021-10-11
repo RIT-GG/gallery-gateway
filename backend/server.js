@@ -1,15 +1,14 @@
 import path from 'path'
-import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
-import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
-import { maskErrors } from 'graphql-errors'
+// import { maskErrors } from 'graphql-errors'
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 
 import config from './config'
 import { passport } from './config/passport'
 import models from './models'
 import router from './routes'
-import schema from './schema'
 import parseJwtUser from './middleware/parseJwtUser'
 
 const app = express()
@@ -27,8 +26,8 @@ if (config.get('NODE_ENV') !== 'production') {
   app.use(cors())
 }
 
-app.use(bodyParser.json()) // Parse application/json
-app.use(bodyParser.urlencoded({ extended: false })) // Parse application/x-www-form-urlencoded
+app.use(express.json({ limit: '10gb' })) // Parse application/json
+app.use(express.urlencoded({ extended: false })) // Parse application/x-www-form-urlencoded
 
 // Initialize Passport - for SAML Auth
 app.use(passport.initialize())
@@ -40,20 +39,17 @@ app.use(parseJwtUser)
 app.use(router)
 
 // Don't expose GraphQL Internal Errors to the Client
-maskErrors(schema)
-// Setup GraphQL endpoint
-app.use('/graphql', graphqlExpress(req => ({
-  schema,
-  context: req
-})))
+// maskErrors(schema)
 
 // Setup GraphiQL web interface in development
-if (config.get('NODE_ENV') !== 'production') {
-  app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
-}
+// if (config.get('NODE_ENV') !== 'production') {
+//   app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
+// }
 
 // Setup static asset serving
 app.use('/static/uploads', express.static(path.join(__dirname, 'uploads', 'images')))
 app.use('/static/uploads', express.static(path.join(__dirname, 'uploads', 'pdfs')))
+
+// Setup GraphQL endpoint
 
 export default app

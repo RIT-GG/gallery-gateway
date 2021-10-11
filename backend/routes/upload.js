@@ -1,6 +1,6 @@
 import multer from 'multer'
 import mkdirp from 'mkdirp'
-import uuidv4 from 'uuid/v4'
+import {v4 as uuidv4} from 'uuid'
 import sharp from 'sharp'
 import path from 'path'
 import nconf from '../config'

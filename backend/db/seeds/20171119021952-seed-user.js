@@ -48,7 +48,9 @@ export function up (queryInterface, Sequelize) {
       lastName: 'Jenkins',
       type: 'STUDENT'
     }
-  ])
+  ]).catch((error) => {
+    console.log(error)
+  })
 }
 
 export function down (queryInterface) {

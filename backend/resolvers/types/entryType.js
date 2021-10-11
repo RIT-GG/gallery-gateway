@@ -20,16 +20,16 @@ export const EntryBase = {
     return entry.getScore()
   },
   show (entry) {
-    return Show.findById(entry.showId)
+    return Show.findByPk(entry.showId)
   },
-  votes (entry, _, req) {
-    switch (req.auth.type) {
+  votes (entry, _, context) {
+    switch (context.authType) {
       case ADMIN:
         // Admins see all votes
         return Vote.findAll({where: {entryId: entry.id}})
       case JUDGE:
         // Judges see only their own votes
-        return Vote.findAll({where: {entryId: entry.id, judgeUsername: req.auth.username}})
+        return Vote.findAll({where: {entryId: entry.id, judgeUsername: context.username}})
       default:
         // Students cannot access this
         throw new UserError('Students cannot access entry votes')

@@ -23,7 +23,7 @@ const User = sequelize.define('user', {
   },
   hometown: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: true
   },
   displayName: {
     type: DataTypes.STRING,

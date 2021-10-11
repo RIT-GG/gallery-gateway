@@ -31,11 +31,11 @@ const createEntry = (entry, entryType, entryId, t) => {
 
       let userFindPromise = Promise.resolve(null)
       if (entry.studentUsername){
-        userFindPromise = User.findById(entry.studentUsername);
+        userFindPromise = User.findByPk(entry.studentUsername);
       }
 
       // clone the object
-      let newEntry = Object.assign({}, entry)
+      const newEntry = Object.assign({}, entry)
       // remove the 'group' property
       delete newEntry['group']
       // create the new Entry with select properties filled-in
@@ -43,7 +43,7 @@ const createEntry = (entry, entryType, entryId, t) => {
 
         let userUpdatePromise = Promise.resolve(null)
 
-        if (!group && user.hometown != entry.hometown && user.displayName != entry.displayName){
+        if (!group && user.hometown !== entry.hometown && user.displayName !== entry.displayName){
           userUpdatePromise = User.update(
             {
               hometown: entry.hometown,
@@ -80,7 +80,7 @@ const createEntry = (entry, entryType, entryId, t) => {
         );
       })
     })
-    .then(() => Show.findById(entry.showId))
+    .then(() => Show.findByPk(entry.showId))
 }
 
 // Rejects the promise if the supplied args indicate the student is doing a
@@ -105,7 +105,7 @@ const canMakeMoreSingleEntries = (
     return Promise.resolve()
   }
   // find the entry cap for this show
-  return Show.findById(showId, { transaction: t, rejectOnEmpty: true })
+  return Show.findByPk(showId, { transaction: t, rejectOnEmpty: true })
     .then(show =>
       Entry.count({ where: { showId, studentUsername } })
         .then(entries => {
@@ -128,7 +128,7 @@ const isSubmissionEntryOpen = (
   },
   t
 ) => {
-  return Show.findById(showId, { transaction: t, rejectOnEmpty: true })
+  return Show.findByPk(showId, { transaction: t, rejectOnEmpty: true })
     .then(show => {
       if (moment().isBefore(moment(show.entryEnd))) {
         return Promise.resolve()
@@ -138,20 +138,20 @@ const isSubmissionEntryOpen = (
     })
 }
 
-export function updateEntry (_, args, req) {
+export function updateEntry (_, args, context) {
   // Only admins can update entries
-  if (req.auth.type !== ADMIN) {
+  if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
-  return Entry.findById(args.id)
+  return Entry.findByPk(args.id)
     .then(entry => entry.update(args.input, {
       fields: ['title', 'comment', 'forSale', 'invited', 'yearLevel',
         'academicProgram', 'moreCopies', 'excludeFromJudging']
     }))
 }
 
-export function createPhoto (_, args, req) {
-  if (req.auth.type !== ADMIN && !allowedToSubmit(args, req)) {
+export function createPhoto (_, args, context) {
+  if (context.authType !== ADMIN && !allowedToSubmit(args, context)) {
     // don't allow non-admins to submit work claiming to be from someone else
     throw new UserError('Permission Denied')
   }
@@ -174,8 +174,8 @@ export function createPhoto (_, args, req) {
   )
 }
 
-export function createVideo (_, args, req) {
-  if (req.auth.type !== ADMIN && !allowedToSubmit(args, req)) {
+export function createVideo (_, args, context) {
+  if (context.authType !== ADMIN && !allowedToSubmit(args, context)) {
     // don't allow non-admins to submit work claiming to be from someone else
     throw new UserError('Permission Denied')
   }
@@ -200,8 +200,8 @@ export function createVideo (_, args, req) {
   )
 }
 
-export function createOtherMedia (_, args, req) {
-  if (req.auth.type !== ADMIN && !allowedToSubmit(args, req)) {
+export function createOtherMedia (_, args, context) {
+  if (context.authType !== ADMIN && !allowedToSubmit(args, context)) {
     // don't allow non-admins to submit work claiming to be from someone else
     throw new UserError('Permission Denied')
   }

@@ -4,7 +4,7 @@ export function up (queryInterface, Sequelize) {
     'hometown', // attribute
     {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: true
     }
   )
 }

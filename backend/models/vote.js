@@ -47,7 +47,7 @@ Vote.prototype.getJudge = function getJudge () {
   if (!this.judgeUsername) {
     return Promise.resolve(null)
   }
-  return User.findById(this.judgeUsername)
+  return User.findByPk(this.judgeUsername)
 }
 
 /**
@@ -57,7 +57,7 @@ Vote.prototype.getEntry = function getEntry () {
   if (!this.entryId) {
     return Promise.resolve(null)
   }
-  return Entry.findById(this.entryId)
+  return Entry.findByPk(this.entryId)
 }
 
 export default Vote
