@@ -2,13 +2,9 @@ query Portfolio($id: ID!) {
   portfolio(id: $id) {
     id
     title
-    student_id
-    student_name
+    studentUsername
     entries {
       id
-      group{
-        id
-      }
       student {
         username
       }
