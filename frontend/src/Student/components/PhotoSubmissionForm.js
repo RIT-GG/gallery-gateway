@@ -11,7 +11,6 @@ import {
   Col
 } from 'reactstrap'
 import styled from 'styled-components'
-import Dropzone from 'react-dropzone'
 import { Formik, Field } from 'formik'
 import yup from 'yup'
 
@@ -21,6 +20,7 @@ import SubmitAsGroupRadio from './SubmitAsGroupRadio'
 import HomeTownInput from './HometownInput'
 import DisplayNameInput from './DisplayNameInput'
 import Loading from '../../shared/components/Loading'
+import FileUploadInput from './FileUploadInput'
 
 const Header = styled.h1`
   margin-bottom: 10px;
@@ -93,55 +93,25 @@ class PhotoSubmissionForm extends Component {
     }
   }
 
-  renderFileUpload = (field, form) => {
-    const { name } = field
-    const { setFieldValue } = form
-    const { handleUpload, previewImage } = this.props
+  // renderFileUpload = (field, form) => {
+  //   const { name } = field
+  //   const { setFieldValue } = form
+  //   const { handleUpload, previewImage } = this.props
 
-    return (
-      <Dropzone
-        name={name}
-        accept='image/jpeg'
-        multiple={false}
-        style={{
-          alignItems: 'center',
-          cursor: 'pointer',
-          display: 'flex',
-          height: '250px',
-          justifyContent: 'center',
-          textAlign: 'center'
-        }}
-        activeStyle={{
-          borderColor: '#6c6',
-          backgroundColor: '#eee'
-        }}
-        rejectStyle={{
-          borderColor: '#c66',
-          backgroundColor: '#eee'
-        }}
-        className='form-control'
-        onDrop={acceptedFiles => {
-          const image = acceptedFiles[0] // Only 1 image per submission
-          handleUpload(image).then(() => {
-            // Need to use 'this.props' here to get the most up-to-date value – 'previewImage' above will be out-of-date
-            setFieldValue(name, this.props.previewImage.path)
-          })
-
-          // TODO: If there was previously an image, and someone uploads a new image, send a delete request to the old image before uploading the new image
-        }}
-      >
-        {previewImage.preview ? (
-          <PreviewImage src={previewImage.preview} />
-        ) : (
-          <span>
-            <p>Click or drop to upload your file.</p>
-            <p>Only *.jpg and *.jpeg images will be accepted.</p>
-            <p>(50MB Maximum File Size)</p>
-          </span>
-        )}
-      </Dropzone>
-    )
-  }
+  //   return (
+  //     <FileUploadInput
+  //       name={name}
+  //       type="photo"
+  //       setFieldValue={setFieldValue}
+  //       handleImageUpload={handleUpload}
+  //       previewFile={previewImage}
+  //       values={values}
+  //       touched={touched}
+  //       errors={errors}
+  //       renderErrors={this.renderErrors}
+  //     />
+  //   )
+  // }
 
   renderErrors = (touched, errors, field) => {
     // Render feedback if this field's been touched and has errors
@@ -499,17 +469,20 @@ class PhotoSubmissionForm extends Component {
                       {this.renderErrors(touched, errors, 'moreCopies')}
                     </FormGroup>
                   ) : null}
-                  <FormGroup>
-                    <Label for='path'>Photo</Label>
-                    <Field
-                      id='path'
-                      name='path'
-                      render={({ field, form }) =>
-                        this.renderFileUpload(field, form)
-                      }
-                    />
-                    {this.renderErrors(touched, errors, 'path')}
-                  </FormGroup>
+                  <FileUploadInput
+                    // const { name } = field
+                    // const { setFieldValue } = form
+                    // const { handleUpload, previewImage } = this.props
+                    //name={field}
+                    type="photo"
+                    //setFieldValue={setFieldValue}
+                    handleImageUpload={this.props.handleUpload}
+                    previewFile={this.props.previewImage}
+                    values={values}
+                    touched={touched}
+                    errors={errors}
+                    renderErrors={this.renderErrors}
+                  />
                   <ButtonContainer>
                     <Link to={`/submit?to=${forShow.id}`}>
                       <Button
