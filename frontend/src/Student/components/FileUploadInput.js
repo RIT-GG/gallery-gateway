@@ -8,17 +8,27 @@ const PreviewImage = styled.img`
   height: 100%;
 `
 
-export default function FileUploadInput(props) {
+export default function FileUploadInput({
+  name,
+  type,
+  touched,
+  errors,
+  renderErrors,
+  previewFile,
+  handleImageUpload,
+  handlePDFUpload
+}) {
   return (
     <React.Fragment>
       <FormGroup>
-        <Label for='path'>{props.type == "photo" ? "Photo" : "File"}</Label>
+        <Label for='path'>{type == "photo" ? "Photo" : "File"}</Label>
         <Field
           id='path'
           name='path'
+          value='path'
           render={({ field, form }) =>
             <Dropzone
-              //name={props.name}
+              name='path'
               accept='application/pdf,image/jpeg'
               style={{
                 alignItems: 'center',
@@ -39,18 +49,17 @@ export default function FileUploadInput(props) {
               className='form-control'
               onDrop={acceptedFiles => {
                 const file = acceptedFiles[0]
-
                 switch (file.type) {
-                  case 'application/pdf':
-                    props.handlePDFUpload(file).then(() => {
+                  case 'application/pdf' && type == "other":
+                    handlePDFUpload(file).then(() => {
                       // Need to use 'this.props' here to get the most up-to-date value – 'previewFile' above will be out-of-date
-                      form.setFieldValue(props.name, props.previewFile.path)
+                      form.setFieldValue(name, previewFile.path)
                     })
                     break
                   case 'image/jpeg':
-                    props.handleImageUpload(file).then(() => {
+                    handleImageUpload(file).then(() => {
                       // Need to use 'this.props' here to get the most up-to-date value – 'previewFile' above will be out-of-date
-                      form.setFieldValue(props.name, props.previewFile.path)
+                      form.setFieldValue(name, previewFile.path)
                     })
                     break
                   default:
@@ -58,19 +67,19 @@ export default function FileUploadInput(props) {
                 }
               }}
             >
-              {props.previewFile && props.previewFile.preview ? (
-                <PreviewImage src={props.previewFile.preview} />
+              {previewFile.preview ? (
+                <PreviewImage src={previewFile.preview} />
               ) : (
                 <span>
                   <p>Click or drop to upload your file.</p>
-                  <p>Only {props.type == "other" ? "*.jpg, *jpeg, and *.pdf": "*.jpg and *.jpeg"} files will be accepted.</p>
+                  <p>Only {type == "other" ? "*.jpg, *jpeg, and *.pdf": "*.jpg and *.jpeg"} files will be accepted.</p>
                   <p>(50MB Maximum File Size)</p>
                 </span>
               )}
             </Dropzone>
           }
         />
-        {props.renderErrors(touched, errors, 'path')}
+        {renderErrors(touched, errors, 'path')}
       </FormGroup>
     </React.Fragment>
   );

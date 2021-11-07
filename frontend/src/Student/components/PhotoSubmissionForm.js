@@ -93,26 +93,6 @@ class PhotoSubmissionForm extends Component {
     }
   }
 
-  // renderFileUpload = (field, form) => {
-  //   const { name } = field
-  //   const { setFieldValue } = form
-  //   const { handleUpload, previewImage } = this.props
-
-  //   return (
-  //     <FileUploadInput
-  //       name={name}
-  //       type="photo"
-  //       setFieldValue={setFieldValue}
-  //       handleImageUpload={handleUpload}
-  //       previewFile={previewImage}
-  //       values={values}
-  //       touched={touched}
-  //       errors={errors}
-  //       renderErrors={this.renderErrors}
-  //     />
-  //   )
-  // }
-
   renderErrors = (touched, errors, field) => {
     // Render feedback if this field's been touched and has errors
     if (touched[field] && errors[field]) {
@@ -470,18 +450,13 @@ class PhotoSubmissionForm extends Component {
                     </FormGroup>
                   ) : null}
                   <FileUploadInput
-                    // const { name } = field
-                    // const { setFieldValue } = form
-                    // const { handleUpload, previewImage } = this.props
-                    //name={field}
+                    name='path'
                     type="photo"
-                    //setFieldValue={setFieldValue}
-                    handleImageUpload={this.props.handleUpload}
-                    previewFile={this.props.previewImage}
-                    values={values}
                     touched={touched}
                     errors={errors}
                     renderErrors={this.renderErrors}
+                    previewFile={this.props.previewImage}
+                    handleImageUpload={this.props.handleUpload}
                   />
                   <ButtonContainer>
                     <Link to={`/submit?to=${forShow.id}`}>
