@@ -1,80 +1,59 @@
-import React, { Component } from "react";
+import React, { useState } from 'react'
 import Dropzone from 'react-dropzone'
-import styled from 'styled-components'
-import { Field } from "formik";
-import { Label, FormGroup } from "reactstrap";
+import { Label, FormGroup } from 'reactstrap'
 
-const PreviewImage = styled.img`
-  height: 100%;
-`
+function FileUploadInput (props) {
+  const [file, setFile] = useState(null)
+  const dropzoneClasses = 'form-control d-flex align-items-center justify-content-center'
+  const name = props.name || 'path'
 
-class FileUploadInput extends Component{
-  render(){
-    return (
-      <React.Fragment>
-        <FormGroup>
-          <Label for='path'>{this.props.type == "photo" ? "Photo" : "File"}</Label>
-          <Field
-            id='path'
-            name='path'
-            value='path'
-            render={({ field, form }) =>
-              <Dropzone
-                name='path'
-                accept='application/pdf,image/jpeg'
-                style={{
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  height: '250px',
-                  justifyContent: 'center',
-                  textAlign: 'center'
-                }}
-                activeStyle={{
-                  borderColor: '#6c6',
-                  backgroundColor: '#eee'
-                }}
-                rejectStyle={{
-                  borderColor: '#c66',
-                  backgroundColor: '#eee'
-                }}
-                className='form-control'
-                onDrop={acceptedFiles => {
-                  const file = acceptedFiles[0]
-                  switch (file.type) {
-                    //application/pdf only for Other Media submission
-                    case 'application/pdf' && this.props.type == "other":
-                      this.props.handlePDFUpload(file).then(() => {
-                        form.setFieldValue(this.props.name, this.props.previewFile.preview)
-                      })
-                      break
-                    //image/jpeg is valid for all submission types
-                    case 'image/jpeg':
-                      this.props.handleImageUpload(file).then(() => {
-                        form.setFieldValue(this.props.name, this.props.previewFile.preview)
-                      })
-                      break
-                    default:
-                      console.error(`Unknown File Type: ${file.type}`)
-                  }
-                }}
-              >
-                {this.props.previewFile.preview ? (
-                  <PreviewImage src={this.props.previewFile.preview} />
-                ) : (
-                  <span>
-                    <p>Click or drop to upload your file.</p>
-                    <p>Only {this.props.type == "other" ? "*.jpg, *jpeg, and *.pdf": "*.jpg and *.jpeg"} files will be accepted.</p>
-                    <p>(50MB Maximum File Size)</p>
-                  </span>
-                )}
-              </Dropzone>
-            }
-          />
-          {this.props.renderErrors(this.props.touched, this.props.errors, 'path')}
-        </FormGroup>
-      </React.Fragment>
-    );
+  function onDrop (acceptedFiles) {
+    // Only 1 submission at a time. Grab the first file
+    const file = acceptedFiles[0]
+    switch (file.type) {
+      // application/pdf only for Other Media submission
+      case 'application/pdf' && props.type === 'other':
+        props.handlePDFUpload(file).then(() => {
+          setFile(file)
+          props.setFieldValue(name, props.previewFile.path)
+        })
+        break
+      case 'image/jpeg':
+        props.handleImageUpload(file).then(() => {
+          setFile(file)
+          props.setFieldValue(name, props.previewFile.path)
+        })
+        break
+      default:
+        console.error(`Unknown File Type: ${file.type}`)
+    }
   }
+
+  return (
+    <FormGroup>
+      <Label for={name}>{props.type === 'photo' ? 'Photo' : 'File'}</Label>
+      <Dropzone name={name} accept={props.accept || 'application/pdf,image/jpeg'} className={dropzoneClasses} onDrop={onDrop}>
+        {({ getRootProps, getInputProps }) => {
+          return (
+            <section>
+              <div {...getRootProps()} style={{ cursor: 'pointer', height: '250px' }} className="border p-3">
+                <input {...getInputProps()} />
+
+                {
+                  file ? <img className="h-100" src={URL.createObjectURL(file)} alt="Uploaded file preview" />
+                    : <div>
+                      <p>Click or drop to upload your file.</p>
+                      <p>Only {props.type === 'other' ? '*.jpg, *jpeg, and *.pdf' : '*.jpg and *.jpeg'} files will be accepted.</p>
+                      <p>(50MB Maximum File Size)</p>
+                    </div>
+                }
+              </div>
+            </section>
+          )
+        }}
+      </Dropzone>
+      {props.renderErrors(props.touched, props.errors, 'path')}
+    </FormGroup>
+  )
 }
 export default FileUploadInput

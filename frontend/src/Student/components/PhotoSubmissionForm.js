@@ -30,10 +30,6 @@ const SubHeader = styled.h3`
   margin-bottom: 25px;
 `
 
-const PreviewImage = styled.img`
-  height: 100%;
-`
-
 const ButtonContainer = styled.div`
   margin-top: 50px;
 `
@@ -450,6 +446,7 @@ class PhotoSubmissionForm extends Component {
                     </FormGroup>
                   ) : null}
                   <FileUploadInput
+                    accept='image/jpeg'
                     name='path'
                     type="photo"
                     touched={touched}
@@ -457,6 +454,7 @@ class PhotoSubmissionForm extends Component {
                     renderErrors={this.renderErrors}
                     previewFile={this.props.previewImage}
                     handleImageUpload={this.props.handleUpload}
+                    setFieldValue={setFieldValue}
                   />
                   <ButtonContainer>
                     <Link to={`/submit?to=${forShow.id}`}>
