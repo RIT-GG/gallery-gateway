@@ -23,7 +23,7 @@ export const uploadImage = file => (dispatch, getState, client) => {
         payload: {
           path: data.path,
           name: file.name,
-          preview: file.preview
+          preview: URL.createObjectURL(file)
         }
       })
     )
