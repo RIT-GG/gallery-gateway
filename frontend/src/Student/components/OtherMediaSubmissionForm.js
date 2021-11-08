@@ -87,23 +87,6 @@ class OtherSubmissionForm extends Component {
     }
   }
 
-  renderFileUpload = (field, form) => {
-    const { name } = field
-    const { setFieldValue } = form
-    const { handleImageUpload, handlePDFUpload, previewFile } = this.props
-
-    return (
-      <FileUploadInput
-        name={name}
-        type="other"
-        setFieldValue={setFieldValue}
-        handleImageUpload={handleImageUpload}
-        previewFile={previewFile}
-        handlePDFUpload={handlePDFUpload}
-      />
-    )
-  }
-
   renderErrors = (touched, errors, field) => {
     // Render feedback if this field's been touched and has errors
     if (touched[field] && errors[field]) {
@@ -377,17 +360,16 @@ class OtherSubmissionForm extends Component {
                       {this.renderErrors(touched, errors, "moreCopies")}
                     </FormGroup>
                   ) : null}
-                  <FormGroup>
-                    <Label for="path">File</Label>
-                    <Field
-                      id="path"
-                      name="path"
-                      render={({ field, form }) =>
-                        this.renderFileUpload(field, form)
-                      }
-                    />
-                    {this.renderErrors(touched, errors, "path")}
-                  </FormGroup>
+                  <FileUploadInput
+                    name='path'
+                    type="other"
+                    touched={touched}
+                    errors={errors}
+                    renderErrors={this.renderErrors}
+                    previewFile={this.props.previewFile}
+                    handleImageUpload={this.props.handleImageUpload}
+                    handlePDFUpload={this.props.handlePDFUpload}
+                  />
                   <ButtonContainer>
                     <Link to={`/submit?to=${forShow.id}`}>
                       <Button
