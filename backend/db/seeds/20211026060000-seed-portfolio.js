@@ -17,6 +17,18 @@ export function up (queryInterface, Sequelize) {
       download(BOOK_COVER_JPG, '2f8e972e-1bae-41a2-b90b-fd4532f2268a', 'jpg'),
       download(SAMPLE_PDF, '1a5a1357-44bb-4d6e-9d5b-9c727be776fa', 'pdf')
     ])
+    .then (() => {
+      // Create a portfolio for student with username = "user7"
+      const portfolioId = genId()
+      return queryInterface.bulkInsert('portfolios', [
+        {
+          id: portfolioId,
+          title: 'User6 Portfolio',
+          studentUsername: 'user7',
+          numberOfEntries: 10
+        }
+      ]).then(() => ({portfolioId}))
+    })
     .then (ids => {
       // add all the images
       const now = moment()
@@ -26,6 +38,7 @@ export function up (queryInterface, Sequelize) {
       const applesImageId = genId()
       const runningImageId = genId()
       const purpleThingImageId = genId()
+
       return queryInterface.bulkInsert('images', [
         {
           id: fishImageId,
@@ -91,74 +104,51 @@ export function up (queryInterface, Sequelize) {
         purpleThingImageId
       }))
     })
-    .then (() => {
-      queryInterface.bulkInsert('portfolios', [
+    .then(ids => {
+      const {portfolioId, fishImageId, treeImageId} = ids
+      // make user 7 adds the fish and the tree and the hanging book to their portfolio
+      const fishEntryId = genId()
+      const treeEntryId = genId()
+      const now = moment()
+      return queryInterface.bulkInsert('entries', [
         {
-          title: 'User6 Portfolio',
-          studentUsername: 'user6',
-          numberOfEntries: 10
+          id: fishEntryId,
+          portfolioId: portfolioId ,
+          studentUsername: 'user7',
+          entryType: 1,
+          entryId: fishImageId,
+          title: 'Betta In Bloom',
+          comment: '',
+          moreCopies: 1,
+          forSale: 1,
+          yearLevel: 'five',
+          academicProgram: 'Ceramics',
+          createdAt: now.format('YYYY-MM-DD HH:mm:ss'),
+          updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         },
         {
-          title: 'User7 Portfolio',
+          id: treeEntryId,
+          portfolioId: portfolioId ,
           studentUsername: 'user7',
-          numberOfEntries: 7
+          entryType: 1,
+          entryId: treeImageId,
+          title: 'Tree in the Field',
+          comment: '',
+          moreCopies: 1,
+          forSale: 0,
+          yearLevel: 'five',
+          academicProgram: 'Ceramics',
+          createdAt: now.format('YYYY-MM-DD HH:mm:ss'),
+          updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         }
-      ])
+      ]).then(() => ({
+        ...ids,
+        fishEntryId,
+        treeEntryId
+      }))
     })
   }
   
   export function down (queryInterface) {
     return queryInterface.bulkDelete('portfolios', null)
   }
-
-  /*return queryInterface.bulkInsert('portfolios', [
-      {
-        title: 'My Portfolio',
-        studentUsername: 'user6',
-        entries: 'Kent'
-      },
-      {
-        username: 'user2',
-        firstName: 'Jane',
-        lastName: 'Doe',
-        type: 'JUDGE'
-      },
-      {
-        username: 'user3',
-        firstName: 'Mark',
-        lastName: 'Brown',
-        type: 'JUDGE'
-      },
-      {
-        username: 'user4',
-        firstName: 'Sally',
-        lastName: 'Smith',
-        type: 'JUDGE'
-      },
-      {
-        username: 'user5',
-        firstName: 'Bob',
-        lastName: 'Ross',
-        type: 'JUDGE'
-      },
-      {
-        username: 'user6',
-        firstName: 'Uma',
-        lastName: 'Thurman',
-        type: 'STUDENT'
-      },
-      {
-        username: 'user7',
-        firstName: 'Fred',
-        lastName: 'Rogers',
-        type: 'STUDENT'
-      },
-      {
-        username: 'user8',
-        firstName: 'Roberta',
-        lastName: 'Jenkins',
-        type: 'STUDENT'
-      }
-    ]).catch((error) => {
-      console.log(error)
-    })*/

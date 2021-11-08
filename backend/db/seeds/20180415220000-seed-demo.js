@@ -260,7 +260,7 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('entries', [
         {
           id: fishEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user7',
           entryType: 1,
           entryId: fishImageId,
@@ -275,7 +275,7 @@ export function up (queryInterface, Sequelize) {
         },
         {
           id: treeEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user7',
           entryType: 1,
           entryId: treeImageId,
@@ -303,7 +303,7 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('entries', [
         {
           id: vimeoVideoEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user6',
           entryType: 2,
           entryId: vimeoVideoId,
@@ -318,7 +318,7 @@ export function up (queryInterface, Sequelize) {
         },
         {
           id: hangingBookEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user6',
           entryType: 1,
           entryId: bookImageId,
@@ -346,7 +346,7 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('entries', [
         {
           id: purpleThingEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user8',
           entryType: 1,
           entryId: purpleThingImageId,
@@ -361,7 +361,7 @@ export function up (queryInterface, Sequelize) {
         },
         {
           id: pdfEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user8',
           entryType: 3,
           entryId: pdfOtherId,
@@ -415,7 +415,7 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('entries', [
         {
           id: youtubeEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user8',
           groupId: group1Id,
           entryType: 2,
@@ -431,7 +431,7 @@ export function up (queryInterface, Sequelize) {
         },
         {
           id: otherImageEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user6',
           groupId: group2Id,
           entryType: 3,
@@ -458,25 +458,25 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('user_shows', [
         {
           username: 'user2',
-          showId,
+          showId: showId,
           createdAt: now.format('YYYY-MM-DD HH:mm:ss'),
           updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         },
         {
           username: 'user3',
-          showId,
+          showId: showId,
           createdAt: now.format('YYYY-MM-DD HH:mm:ss'),
           updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         },
         {
           username: 'user4',
-          showId,
+          showId: showId,
           createdAt: now.format('YYYY-MM-DD HH:mm:ss'),
           updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         },
         {
           username: 'user5',
-          showId,
+          showId: showId,
           createdAt: now.format('YYYY-MM-DD HH:mm:ss'),
           updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         }
