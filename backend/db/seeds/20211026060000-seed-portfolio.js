@@ -24,7 +24,8 @@ export function up (queryInterface, Sequelize) {
         {
           id: portfolioId,
           title: 'User7 Portfolio',
-          studentUsername: 'user7'
+          studentUsername: 'user7',
+          name: 'Nature Portfolio'
         }
       ]).then(() => ({portfolioId}))
     })

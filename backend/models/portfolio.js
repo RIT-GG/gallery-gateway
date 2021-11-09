@@ -1,7 +1,6 @@
 import DataTypes from 'sequelize'
 import sequelize from '../config/sequelize'
-
-var maxEntriesLength = 10;
+import Entry from './entry'
 
 // Defines a portfolio object and all of its fields
 const Portfolio = sequelize.define('portfolio', {
@@ -21,7 +20,15 @@ const Portfolio = sequelize.define('portfolio', {
     },
     onDelete: 'cascade',
     onUpdate: 'cascade'
+  },
+  name: {
+    type:DataTypes.STRING,
+    allowNull: true
   }
-});
+})
+
+Portfolio.prototype.getEntries = function getEntries () {
+  return Entry.findAll({ where: { portfolioId: this.id } })
+}
 
 export default Portfolio

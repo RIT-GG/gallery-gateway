@@ -1,0 +1,21 @@
+query Portfolios($studentUsername: String!) {
+  portfolios(studentUsername: $studentUsername) {
+    id
+    name
+    entries{
+      id
+      title
+      entryType
+      ... on Video {
+        provider
+        videoId
+      }
+      ... on Photo {
+        path
+      }
+      ... on OtherMedia {
+        path
+      }
+    }
+  }
+}
