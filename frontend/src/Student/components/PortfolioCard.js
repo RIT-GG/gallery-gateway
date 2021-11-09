@@ -17,8 +17,8 @@ function renderEntryCard (entry) {
 
 function PortfolioCard (props) {
   return (
-    <div>
-      <h2>{props.portfolio.id}</h2>
+    <div className="bg-light p-3 rounded">
+      <h2 className="mb-3">{props.portfolio.name}</h2>
       <div className="w-100 d-flex flex-wrap mb-3">
         {props.portfolio.entries.map((entry) => { return renderEntryCard(entry) })}
       </div>
