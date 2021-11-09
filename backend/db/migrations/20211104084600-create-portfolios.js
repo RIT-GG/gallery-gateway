@@ -1,3 +1,9 @@
+/**
+ * Creates the 'portfolios' table
+ * @param {*} queryInterface 
+ * @param {*} Sequelize 
+ * @returns 'portfolios' table
+ */
 export function up (queryInterface, Sequelize) {
     return queryInterface.createTable('portfolios', {
       id: {
@@ -16,12 +22,6 @@ export function up (queryInterface, Sequelize) {
         allowNull: false,
         references: { model: 'users', key: 'username' },
         primaryKey: true
-      },
-      numberOfEntries: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        min: 1,
-        max: 10
       },
       createdAt: {
         allowNull: false,

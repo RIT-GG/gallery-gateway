@@ -23,9 +23,8 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('portfolios', [
         {
           id: portfolioId,
-          title: 'User6 Portfolio',
-          studentUsername: 'user7',
-          numberOfEntries: 10
+          title: 'User7 Portfolio',
+          studentUsername: 'user7'
         }
       ]).then(() => ({portfolioId}))
     })

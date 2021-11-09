@@ -19,6 +19,7 @@ const Entry = sequelize.define('entry', {
     onDelete: 'cascade',
     onUpdate: 'cascade'
   },
+  // The id of the portfolio the entry is associated with (only if showId is null)
   portfolioId: {
     allowNull: true,
     type: DataTypes.INTEGER,
