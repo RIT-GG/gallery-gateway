@@ -3,6 +3,7 @@ import DataTypes from 'sequelize'
 import sequelize from '../config/sequelize'
 import { STUDENT, ADMIN, JUDGE } from '../constants'
 import Entry from './entry'
+import Portfolio from './portfolio'
 
 const User = sequelize.define('user', {
   username: {
@@ -58,6 +59,10 @@ User.prototype.getOwnAndGroupEntries = function getOwnAndGroupEntries (showIds =
         return Entry.findAll({ where: { $or: [{ groupId: groupIds }, { studentUsername: this.username }] } })
       }
     })
+}
+
+Portfolio.prototype.getPortfolio = function getPortfolio () {
+  return Portfolio.findOne({where: {studentUsername: this.username}})
 }
 
 export default User

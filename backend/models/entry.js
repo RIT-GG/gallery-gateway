@@ -10,10 +10,21 @@ import { IMAGE_ENTRY, VIDEO_ENTRY, OTHER_ENTRY } from '../constants'
 
 const Entry = sequelize.define('entry', {
   showId: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
       model: 'shows',
+      key: 'id'
+    },
+    onDelete: 'cascade',
+    onUpdate: 'cascade'
+  },
+  // The id of the portfolio the entry is associated with (only if showId is null)
+  portfolioId: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'portfolios',
       key: 'id'
     },
     onDelete: 'cascade',

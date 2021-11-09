@@ -8,8 +8,19 @@ export function up (queryInterface, Sequelize) {
     },
     showId: {
       type: Sequelize.INTEGER,
+      allowNull: true,
       references: {
         model: 'shows',
+        key: 'id'
+      },
+      onUpdate: 'cascade',
+      onDelete: 'cascade'
+    },
+    portfolioId: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'portfolios',
         key: 'id'
       },
       onUpdate: 'cascade',

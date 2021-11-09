@@ -8,16 +8,16 @@ import moment from 'moment'
 const imageUploadDir = 'uploads/images'
 const pdfUploadDir = 'uploads/pdfs'
 
-const FISH_JPG = 'https://farm8.staticflickr.com/7257/7054549621_002ec9afe0_o_d.jpg' // flickr url broke :( 'https://farm8.staticflickr.com/5486/14501540216_73728d8fa9_o_d.jpg'
-const TREE_JPG = 'https://farm8.staticflickr.com/7257/7054549621_002ec9afe0_o_d.jpg'
-const BOOK_JPG = 'https://farm8.staticflickr.com/8722/16184844574_77a3143176_o_d.jpg'
-const APPLES_JPG = 'https://farm8.staticflickr.com/1255/1172163196_aedc6863ef_o_d.jpg'
-const RUNNING_JPG = 'https://farm8.staticflickr.com/2113/32950307196_ebc0a1c660_o_d.jpg'
-const PURPLE_THING_JPG = 'https://farm8.staticflickr.com/3020/2687783841_ff4846cf1f_o_d.jpg'
-const BOOK_COVER_JPG = 'https://farm8.staticflickr.com/2916/14124533308_ce540f0e73_o_d.jpg'
-const SAMPLE_PDF = 'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf'
+export const FISH_JPG = 'https://farm8.staticflickr.com/7257/7054549621_002ec9afe0_o_d.jpg' // flickr url broke :( 'https://farm8.staticflickr.com/5486/14501540216_73728d8fa9_o_d.jpg'
+export const TREE_JPG = 'https://farm8.staticflickr.com/7257/7054549621_002ec9afe0_o_d.jpg'
+export const BOOK_JPG = 'https://farm8.staticflickr.com/8722/16184844574_77a3143176_o_d.jpg'
+export const APPLES_JPG = 'https://farm8.staticflickr.com/1255/1172163196_aedc6863ef_o_d.jpg'
+export const RUNNING_JPG = 'https://farm8.staticflickr.com/2113/32950307196_ebc0a1c660_o_d.jpg'
+export const PURPLE_THING_JPG = 'https://farm8.staticflickr.com/3020/2687783841_ff4846cf1f_o_d.jpg'
+export const BOOK_COVER_JPG = 'https://farm8.staticflickr.com/2916/14124533308_ce540f0e73_o_d.jpg'
+export const SAMPLE_PDF = 'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf'
 
-const genThumbnail = (fpath) => {
+export const genThumbnail = (fpath) => {
   // copy+pasted from routes/upload.js
   //
   const image = sharp(fpath)
@@ -50,9 +50,9 @@ const genThumbnail = (fpath) => {
     })
 }
 
-const genId = () => Math.floor(Math.random() * 9000 + 1000)
+export const genId = () => Math.floor(Math.random() * 9000 + 1000)
 
-const download = (url, destGuid, extn) => {
+export const download = (url, destGuid, extn) => {
   // http downloading adapted from https://stackoverflow.com/q/11944932
   const dstDir = `${extn === 'jpg' ? imageUploadDir : pdfUploadDir}/${destGuid[0]}/${destGuid[1]}`
   const dst = `${dstDir}/${destGuid}.${extn}`
@@ -260,7 +260,7 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('entries', [
         {
           id: fishEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user7',
           entryType: 1,
           entryId: fishImageId,
@@ -275,7 +275,7 @@ export function up (queryInterface, Sequelize) {
         },
         {
           id: treeEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user7',
           entryType: 1,
           entryId: treeImageId,
@@ -303,7 +303,7 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('entries', [
         {
           id: vimeoVideoEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user6',
           entryType: 2,
           entryId: vimeoVideoId,
@@ -318,7 +318,7 @@ export function up (queryInterface, Sequelize) {
         },
         {
           id: hangingBookEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user6',
           entryType: 1,
           entryId: bookImageId,
@@ -346,7 +346,7 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('entries', [
         {
           id: purpleThingEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user8',
           entryType: 1,
           entryId: purpleThingImageId,
@@ -361,7 +361,7 @@ export function up (queryInterface, Sequelize) {
         },
         {
           id: pdfEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user8',
           entryType: 3,
           entryId: pdfOtherId,
@@ -415,7 +415,7 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('entries', [
         {
           id: youtubeEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user8',
           groupId: group1Id,
           entryType: 2,
@@ -431,7 +431,7 @@ export function up (queryInterface, Sequelize) {
         },
         {
           id: otherImageEntryId,
-          showId,
+          showId: showId,
           studentUsername: 'user6',
           groupId: group2Id,
           entryType: 3,
@@ -458,25 +458,25 @@ export function up (queryInterface, Sequelize) {
       return queryInterface.bulkInsert('user_shows', [
         {
           username: 'user2',
-          showId,
+          showId: showId,
           createdAt: now.format('YYYY-MM-DD HH:mm:ss'),
           updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         },
         {
           username: 'user3',
-          showId,
+          showId: showId,
           createdAt: now.format('YYYY-MM-DD HH:mm:ss'),
           updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         },
         {
           username: 'user4',
-          showId,
+          showId: showId,
           createdAt: now.format('YYYY-MM-DD HH:mm:ss'),
           updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         },
         {
           username: 'user5',
-          showId,
+          showId: showId,
           createdAt: now.format('YYYY-MM-DD HH:mm:ss'),
           updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
         }
