@@ -109,10 +109,10 @@ class PhotoSubmissionForm extends Component {
       id: parseInt(this.props.data.show.id),
       name: this.props.data.show.name
     }
-    const defaultHometown = user.hometown || '';
-    const hometownNeeded = !user.hometown;
-    const defaultDisplayName= user.displayName || '';
-    const displayNameNeeded = !user.displayName;
+    const defaultHometown = user.hometown || ''
+    const hometownNeeded = !user.hometown
+    const defaultDisplayName= user.displayName || ''
+    const displayNameNeeded = !user.displayName
 
     // calculate whether the user is beyond their single submissions
     const numSingleEntries = this.props.data.show.entries.filter(e => !e.group).length
@@ -210,12 +210,12 @@ class PhotoSubmissionForm extends Component {
 
             // Create an entry, show the success modal, and then go to the dashboard
             create(input)
-              .then(()=>{
-                if (values.submittingAsGroup == 'no'){
+              .then(() => {
+                if (values.submittingAsGroup === 'no') {
                   handleHometown(values.hometown)
                 }
               })
-              .then(()=>{
+              .then(() => {
                 handleDisplayName(values.displayName)
               })
               .then(() => {
@@ -447,14 +447,14 @@ class PhotoSubmissionForm extends Component {
                   ) : null}
                   <FileUploadInput
                     accept='image/jpeg'
-                    name='path'
-                    type="photo"
-                    touched={touched}
                     errors={errors}
-                    renderErrors={this.renderErrors}
-                    previewFile={this.props.previewImage}
                     handleImageUpload={this.props.handleUpload}
+                    name='path'
+                    previewFile={this.props.previewImage}
+                    renderErrors={this.renderErrors}
                     setFieldValue={setFieldValue}
+                    touched={touched}
+                    type="photo"
                   />
                   <ButtonContainer>
                     <Link to={`/submit?to=${forShow.id}`}>

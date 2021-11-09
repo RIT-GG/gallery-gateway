@@ -206,7 +206,7 @@ class OtherSubmissionForm extends Component {
               })
               .catch(err => handleError(err.message));
           }}
-          render={({ values, errors, touched, handleSubmit, isSubmitting }) => (
+          render={({ values, errors, touched, setFieldValue, handleSubmit, isSubmitting }) => (
             <Form onSubmit={handleSubmit} style={{ marginBottom: "75px" }}>
               <Row>
                 <Col xs="12" md="8" style={{ margin: "0 auto" }}>
@@ -361,14 +361,16 @@ class OtherSubmissionForm extends Component {
                     </FormGroup>
                   ) : null}
                   <FileUploadInput
-                    name='path'
-                    type="other"
-                    touched={touched}
+                    accept={'application/pdf,image/jpeg'}
                     errors={errors}
-                    renderErrors={this.renderErrors}
-                    previewFile={this.props.previewFile}
                     handleImageUpload={this.props.handleImageUpload}
                     handlePDFUpload={this.props.handlePDFUpload}
+                    name='path'
+                    previewFile={this.props.previewFile}
+                    renderErrors={this.renderErrors}
+                    setFieldValue={setFieldValue}
+                    touched={touched}
+                    type="other"
                   />
                   <ButtonContainer>
                     <Link to={`/submit?to=${forShow.id}`}>

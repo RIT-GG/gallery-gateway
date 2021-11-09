@@ -7,22 +7,20 @@ function FileUploadInput (props) {
   const dropzoneClasses = 'form-control d-flex align-items-center justify-content-center'
   const name = props.name || 'path'
 
-  function onDrop (acceptedFiles) {
+  async function onDrop (acceptedFiles) {
     // Only 1 submission at a time. Grab the first file
     const file = acceptedFiles[0]
     switch (file.type) {
       // application/pdf only for Other Media submission
-      case 'application/pdf' && props.type === 'other':
-        props.handlePDFUpload(file).then(() => {
-          setFile(file)
-          props.setFieldValue(name, props.previewFile.path)
-        })
+      case 'application/pdf':
+        const pdfData = await props.handlePDFUpload(file)
+        setFile(file)
+        props.setFieldValue(name, pdfData.path)
         break
       case 'image/jpeg':
-        props.handleImageUpload(file).then(() => {
-          setFile(file)
-          props.setFieldValue(name, props.previewFile.path)
-        })
+        const imageData = await props.handleImageUpload(file)
+        setFile(file)
+        props.setFieldValue(name, imageData.path)
         break
       default:
         console.error(`Unknown File Type: ${file.type}`)
@@ -37,10 +35,10 @@ function FileUploadInput (props) {
           return (
             <section>
               <div {...getRootProps()} style={{ cursor: 'pointer', height: '250px' }} className="border p-3">
-                <input {...getInputProps()} />
+                <input {...getInputProps()} name={name}/>
 
                 {
-                  file ? <img className="h-100" src={URL.createObjectURL(file)} alt="Uploaded file preview" />
+                  file ? <img className="h-100" src={props.previewFile.preview} alt="Uploaded file preview" />
                     : <div>
                       <p>Click or drop to upload your file.</p>
                       <p>Only {props.type === 'other' ? '*.jpg, *jpeg, and *.pdf' : '*.jpg and *.jpeg'} files will be accepted.</p>
