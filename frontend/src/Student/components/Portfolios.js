@@ -23,15 +23,14 @@ function Portfolios (props) {
   if (!Array.isArray(portfolios) || portfolios.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center w-100 h-100">
-        <p className="h3">No portfolios found. You can start by creating potfolios</p>
+        <p className="h3">No portfolios found. You can start by <a href="">creating a potfolio</a>.</p>
       </div>
     )
   }
 
   return (
     <Container md>
-      <h1>Your portfolios</h1>
-      <hr />
+      <h1 class="mb-4">Your portfolios</h1>
       <div className="d-flex flex-column">
         {props.portfolios.map((portfolio) => { return <PortfolioCard portfolio={portfolio} key={portfolio.id}/> })}
       </div>
