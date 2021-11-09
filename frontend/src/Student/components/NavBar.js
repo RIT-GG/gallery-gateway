@@ -38,6 +38,11 @@ export default class NavBar extends Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className='ml-auto' navbar>
               <NavItem>
+                <Link to='/portfolios' className='nav-link'>
+                  Portfolios
+                </Link>
+              </NavItem>
+              <NavItem>
                 <Link to='/' className='nav-link' onClick={this.props.logout}>
                   Logout
                 </Link>

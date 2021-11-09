@@ -2,6 +2,7 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import { ConnectedRouter } from 'connected-react-router'
 import { Provider } from 'react-redux'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 // Initialize Global Imports
 import 'react-dates/initialize' // See: https://github.com/airbnb/react-dates#initialize
