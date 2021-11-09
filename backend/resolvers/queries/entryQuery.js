@@ -30,11 +30,16 @@ export function entries (_, args, context) {
       throw new UserError('Permission Denied')
     }
     // Get all entries if no args given
-    if (!args.showId && !args.studentUsername) {
+    if (!args.showId && !args.portfolioId && !args.studentUsername) {
       return Entry.all()
-    } else if (args.showId) { // Get entries by show
+    }
+    else if (args.showId) { // Get entries by show
       return Entry.findAll({ where: { showId: args.showId } })
-    } else if (args.studentUsername) { // get entries by username
+    }
+    else if (args.portfolioId) { // Get entries by show
+      return Entry.findAll({ where: { portfolioId: args.portfolioId } })
+    }
+    else if (args.studentUsername) { // get entries by username
       return User.findByPk(args.studentUsername).then((student) => {
         return student.getOwnAndGroupEntries()
       })

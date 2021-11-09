@@ -5,10 +5,12 @@ import OtherMedia from './types/otherMediaType'
 import User from './types/userType'
 import DateScalar from './types/dateScalar'
 import Group from './types/groupType'
+import Portfolio from './types/portfolioType'
 import Show from './types/showType'
 import Vote from './types/voteType'
 import * as EntryMutations from './mutations/entry'
 import * as EntryQuery from './queries/entryQuery'
+import * as PortfolioQuery from './queries/portfolioQuery'
 import * as ShowMutations from './mutations/show'
 import * as ShowQuery from './queries/showQuery'
 import * as UserQuery from './queries/userQuery'
@@ -24,11 +26,13 @@ export default {
   ...User,
   ...DateScalar,
   ...Group,
+  ...Portfolio,
   ...Show,
   ...Vote,
   Query: {
     ...EntryQuery,
     ...UserQuery,
+    ...PortfolioQuery,
     ...ShowQuery,
     ...VoteQuery
   },

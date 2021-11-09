@@ -40,6 +40,22 @@ input GroupInput {
     creatorUsername: String!
     participants: String!
 }
+type Portfolio {
+    id: ID!
+    name: String!
+    studentUsername: String!
+    description: String
+    entries: [Entry]
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+input PortfolioInput {
+    name: String!
+    description: String
+    studentUsername: String
+}
+
 
 type Show {
     id: ID!
@@ -228,6 +244,8 @@ type Query {
     user(id: ID!): User
     users(type: UserType): [User]
     group(id: ID!): Group
+    portfolio(id: ID!): Portfolio
+    portfolios(orderBy: OrderByItem, studentUsername: String): [Portfolio]
     show(id: ID!): Show
     groups: [Group]
     shows(orderBy: OrderByItem, studentUsername: String): [Show]

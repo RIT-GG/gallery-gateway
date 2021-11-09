@@ -1,5 +1,4 @@
 import Portfolio from '../../models/portfolio'
-import User from '../../models/user'
 import { UserError } from 'graphql-errors'
 import { ADMIN } from '../../constants'
 import { isRequestingOwnUser } from './queryUtils'
@@ -22,9 +21,9 @@ export function portfolios (_, args, context) {
     // Get all the portfolios the student has been on
     // (including as group creator), through entries
     const whereClause = {
-        where: {
-            studentUsername: args.studentUsername
-        }
+      where: {
+        studentUsername: args.studentUsername
+      }
     }
     return Portfolio.findAll(Object.assign({}, whereClause, order))
   }
