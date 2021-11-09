@@ -2,11 +2,7 @@ import Show from '../../models/show'
 import User from '../../models/user'
 import { UserError } from 'graphql-errors'
 import { ADMIN } from '../../constants'
-
-const isRequestingOwnUser = (context, args) => {
-  return context.username !== undefined &&
-        context.username === args.studentUsername
-}
+import { isRequestingOwnUser } from './queryUtils'
 
 export function show (_, args, context) {
   return Show.findByPk(args.id)
