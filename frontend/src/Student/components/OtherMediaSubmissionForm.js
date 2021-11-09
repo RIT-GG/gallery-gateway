@@ -11,7 +11,6 @@ import {
   Col
 } from 'reactstrap'
 import styled from 'styled-components'
-import Dropzone from 'react-dropzone'
 import { Formik, Field } from 'formik'
 import yup from 'yup'
 
@@ -20,6 +19,7 @@ import SubmitAsGroupRadio from './SubmitAsGroupRadio'
 import Loading from '../../shared/components/Loading'
 import HomeTownInput from './HometownInput'
 import DisplayNameInput from './DisplayNameInput'
+import FileUploadInput from './FileUploadInput'
 
 const Header = styled.h1`
   margin-bottom: 10px;
@@ -27,10 +27,6 @@ const Header = styled.h1`
 
 const SubHeader = styled.h3`
   margin-bottom: 25px;
-`
-
-const PreviewImage = styled.img`
-  height: 100%;
 `
 
 const ButtonContainer = styled.div`
@@ -89,66 +85,6 @@ class OtherSubmissionForm extends Component {
         this.props.handleError(e.message)
       })
     }
-  }
-
-  renderFileUpload = (field, form) => {
-    const { name } = field
-    const { setFieldValue } = form
-    const { handleImageUpload, handlePDFUpload, previewFile } = this.props
-
-    return (
-      <Dropzone
-        name={name}
-        accept='application/pdf,image/jpeg'
-        style={{
-          alignItems: 'center',
-          cursor: 'pointer',
-          display: 'flex',
-          height: '250px',
-          justifyContent: 'center',
-          textAlign: 'center'
-        }}
-        activeStyle={{
-          borderColor: '#6c6',
-          backgroundColor: '#eee'
-        }}
-        rejectStyle={{
-          borderColor: '#c66',
-          backgroundColor: '#eee'
-        }}
-        className='form-control'
-        onDrop={acceptedFiles => {
-          const file = acceptedFiles[0] // Only 1 file per submission
-
-          switch (file.type) {
-            case 'application/pdf':
-              handlePDFUpload(file).then(() => {
-                // Need to use 'this.props' here to get the most up-to-date value – 'previewFile' above will be out-of-date
-                setFieldValue(name, this.props.previewFile.path)
-              })
-              break
-            case 'image/jpeg':
-              handleImageUpload(file).then(() => {
-                // Need to use 'this.props' here to get the most up-to-date value – 'previewFile' above will be out-of-date
-                setFieldValue(name, this.props.previewFile.path)
-              })
-              break
-            default:
-              console.error(`Unknown File Type: ${file.type}`)
-          }
-        }}
-      >
-        {previewFile.preview ? (
-          <PreviewImage src={previewFile.preview} />
-        ) : (
-          <span>
-            <p>Click or drop to upload your file.</p>
-            <p>Only *.jpg, *.jpeg, and *.pdf files will be accepted.</p>
-            <p>(50MB Maximum File Size)</p>
-          </span>
-        )}
-      </Dropzone>
-    )
   }
 
   renderErrors = (touched, errors, field) => {
@@ -270,7 +206,7 @@ class OtherSubmissionForm extends Component {
               })
               .catch(err => handleError(err.message));
           }}
-          render={({ values, errors, touched, handleSubmit, isSubmitting }) => (
+          render={({ values, errors, touched, setFieldValue, handleSubmit, isSubmitting }) => (
             <Form onSubmit={handleSubmit} style={{ marginBottom: "75px" }}>
               <Row>
                 <Col xs="12" md="8" style={{ margin: "0 auto" }}>
@@ -424,17 +360,18 @@ class OtherSubmissionForm extends Component {
                       {this.renderErrors(touched, errors, "moreCopies")}
                     </FormGroup>
                   ) : null}
-                  <FormGroup>
-                    <Label for="path">File</Label>
-                    <Field
-                      id="path"
-                      name="path"
-                      render={({ field, form }) =>
-                        this.renderFileUpload(field, form)
-                      }
-                    />
-                    {this.renderErrors(touched, errors, "path")}
-                  </FormGroup>
+                  <FileUploadInput
+                    accept={'application/pdf,image/jpeg'}
+                    errors={errors}
+                    handleImageUpload={this.props.handleImageUpload}
+                    handlePDFUpload={this.props.handlePDFUpload}
+                    name='path'
+                    previewFile={this.props.previewFile}
+                    renderErrors={this.renderErrors}
+                    setFieldValue={setFieldValue}
+                    touched={touched}
+                    type="other"
+                  />
                   <ButtonContainer>
                     <Link to={`/submit?to=${forShow.id}`}>
                       <Button

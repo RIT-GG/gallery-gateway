@@ -11,7 +11,6 @@ import {
   Col
 } from 'reactstrap'
 import styled from 'styled-components'
-import Dropzone from 'react-dropzone'
 import { Formik, Field } from 'formik'
 import yup from 'yup'
 
@@ -21,6 +20,7 @@ import SubmitAsGroupRadio from './SubmitAsGroupRadio'
 import HomeTownInput from './HometownInput'
 import DisplayNameInput from './DisplayNameInput'
 import Loading from '../../shared/components/Loading'
+import FileUploadInput from './FileUploadInput'
 
 const Header = styled.h1`
   margin-bottom: 10px;
@@ -28,10 +28,6 @@ const Header = styled.h1`
 
 const SubHeader = styled.h3`
   margin-bottom: 25px;
-`
-
-const PreviewImage = styled.img`
-  height: 100%;
 `
 
 const ButtonContainer = styled.div`
@@ -93,56 +89,6 @@ class PhotoSubmissionForm extends Component {
     }
   }
 
-  renderFileUpload = (field, form) => {
-    const { name } = field
-    const { setFieldValue } = form
-    const { handleUpload, previewImage } = this.props
-
-    return (
-      <Dropzone
-        name={name}
-        accept='image/jpeg'
-        multiple={false}
-        style={{
-          alignItems: 'center',
-          cursor: 'pointer',
-          display: 'flex',
-          height: '250px',
-          justifyContent: 'center',
-          textAlign: 'center'
-        }}
-        activeStyle={{
-          borderColor: '#6c6',
-          backgroundColor: '#eee'
-        }}
-        rejectStyle={{
-          borderColor: '#c66',
-          backgroundColor: '#eee'
-        }}
-        className='form-control'
-        onDrop={acceptedFiles => {
-          const image = acceptedFiles[0] // Only 1 image per submission
-          handleUpload(image).then(() => {
-            // Need to use 'this.props' here to get the most up-to-date value – 'previewImage' above will be out-of-date
-            setFieldValue(name, this.props.previewImage.path)
-          })
-
-          // TODO: If there was previously an image, and someone uploads a new image, send a delete request to the old image before uploading the new image
-        }}
-      >
-        {previewImage.preview ? (
-          <PreviewImage src={previewImage.preview} />
-        ) : (
-          <span>
-            <p>Click or drop to upload your file.</p>
-            <p>Only *.jpg and *.jpeg images will be accepted.</p>
-            <p>(50MB Maximum File Size)</p>
-          </span>
-        )}
-      </Dropzone>
-    )
-  }
-
   renderErrors = (touched, errors, field) => {
     // Render feedback if this field's been touched and has errors
     if (touched[field] && errors[field]) {
@@ -163,10 +109,10 @@ class PhotoSubmissionForm extends Component {
       id: parseInt(this.props.data.show.id),
       name: this.props.data.show.name
     }
-    const defaultHometown = user.hometown || '';
-    const hometownNeeded = !user.hometown;
-    const defaultDisplayName= user.displayName || '';
-    const displayNameNeeded = !user.displayName;
+    const defaultHometown = user.hometown || ''
+    const hometownNeeded = !user.hometown
+    const defaultDisplayName= user.displayName || ''
+    const displayNameNeeded = !user.displayName
 
     // calculate whether the user is beyond their single submissions
     const numSingleEntries = this.props.data.show.entries.filter(e => !e.group).length
@@ -264,12 +210,12 @@ class PhotoSubmissionForm extends Component {
 
             // Create an entry, show the success modal, and then go to the dashboard
             create(input)
-              .then(()=>{
-                if (values.submittingAsGroup == 'no'){
+              .then(() => {
+                if (values.submittingAsGroup === 'no') {
                   handleHometown(values.hometown)
                 }
               })
-              .then(()=>{
+              .then(() => {
                 handleDisplayName(values.displayName)
               })
               .then(() => {
@@ -499,17 +445,17 @@ class PhotoSubmissionForm extends Component {
                       {this.renderErrors(touched, errors, 'moreCopies')}
                     </FormGroup>
                   ) : null}
-                  <FormGroup>
-                    <Label for='path'>Photo</Label>
-                    <Field
-                      id='path'
-                      name='path'
-                      render={({ field, form }) =>
-                        this.renderFileUpload(field, form)
-                      }
-                    />
-                    {this.renderErrors(touched, errors, 'path')}
-                  </FormGroup>
+                  <FileUploadInput
+                    accept='image/jpeg'
+                    errors={errors}
+                    handleImageUpload={this.props.handleUpload}
+                    name='path'
+                    previewFile={this.props.previewImage}
+                    renderErrors={this.renderErrors}
+                    setFieldValue={setFieldValue}
+                    touched={touched}
+                    type="photo"
+                  />
                   <ButtonContainer>
                     <Link to={`/submit?to=${forShow.id}`}>
                       <Button

@@ -17,15 +17,17 @@ export const uploadImage = file => (dispatch, getState, client) => {
     .post(IMAGE_UPLOAD_PATH, formData, {
       headers: { Authorization: `Bearer ${getState().shared.auth.token}` }
     })
-    .then(({ data }) =>
+    .then(({ data }) =>{
       dispatch({
         type: UPLOAD_IMAGE,
         payload: {
           path: data.path,
           name: file.name,
-          preview: file.preview
+          preview: URL.createObjectURL(file)
         }
       })
+      return data
+    }
     )
     .catch(err => {
       let message
@@ -48,7 +50,7 @@ export const uploadPDF = file => (dispatch, getState, client) => {
     .post(PDF_UPLOAD_PATH, formData, {
       headers: { Authorization: `Bearer ${getState().shared.auth.token}` }
     })
-    .then(({ data }) =>
+    .then(({ data }) => {
       dispatch({
         type: UPLOAD_PDF,
         payload: {
@@ -57,7 +59,9 @@ export const uploadPDF = file => (dispatch, getState, client) => {
           preview: pdf
         }
       })
-    )
+
+      return data
+    })
     .catch(err => {
       let message
       if (err.response.status === 413) {
