@@ -20,6 +20,10 @@ const Portfolio = sequelize.define('portfolio', {
     },
     onDelete: 'cascade',
     onUpdate: 'cascade'
+  },
+  name: {
+    type:DataTypes.STRING,
+    allowNull: true
   }
 })
 

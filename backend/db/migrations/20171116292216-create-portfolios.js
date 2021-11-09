@@ -23,6 +23,10 @@ export function up (queryInterface, Sequelize) {
         references: { model: 'users', key: 'username' },
         primaryKey: true
       },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

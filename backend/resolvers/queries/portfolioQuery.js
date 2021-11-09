@@ -9,9 +9,9 @@ export function portfolio (_, args, context) {
 
 export function portfolios (_, args, context) {
   // Students can only look at their own portfolios
-  if (args.studentUsername && context.authType !== ADMIN && !isRequestingOwnUser(context, args)) {
-    throw new UserError('Permission Denied')
-  }
+  // if (args.studentUsername && context.authType !== ADMIN && !isRequestingOwnUser(context, args)) {
+  //   throw new UserError('Permission Denied')
+  // }
 
   // Apply ordering, if desired
   const order = args.orderBy ? { order: [[args.orderBy.sort, args.orderBy.direction]] } : {}
