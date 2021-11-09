@@ -19,12 +19,12 @@ export function up (queryInterface, Sequelize) {
     portfolioId: {
       type: Sequelize.INTEGER,
       allowNull: true,
-      // references: {
-      //   model: 'portfolios',
-      //   key: 'id'
-      // },
-      // onUpdate: 'cascade',
-      // onDelete: 'cascade'
+      references: {
+        model: 'portfolios',
+        key: 'id'
+      },
+      onUpdate: 'cascade',
+      onDelete: 'cascade'
     },
     studentUsername: {
       type: Sequelize.STRING,
