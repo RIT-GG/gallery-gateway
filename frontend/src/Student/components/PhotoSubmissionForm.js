@@ -67,21 +67,15 @@ class PhotoSubmissionForm extends Component {
     // calculate whether the user is beyond their single submissions
     const numSingleEntries = this.props.data.show.entries.filter(e => !e.group).length
     const canSubmitAsSingle = numSingleEntries < this.props.data.show.entryCap
-
+    const {handleUpload, ...submissionsFormProps} = this.props
     return (
       <SubmissionForm
         type = 'Photo'
-        create = {this.props.create}
-        done = {this.props.done}
         forShow = {forShow}
-        user = {this.props.user}
-        handleError = {this.props.handleError}
-        handleHometown = {this.props.handleHometown}
-        handleDisplayName = {this.props.handleDisplayName}
         canSubmitAsSingle = {canSubmitAsSingle}
-        handleImageUpload = {this.props.handleUpload}
-        previewImage = {this.props.previewImage}
         showModal = {this.showModal}
+        handleImageUpload = {handleUpload}
+        {...submissionsFormProps}
       />
     )
   }

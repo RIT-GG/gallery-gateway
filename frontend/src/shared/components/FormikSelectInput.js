@@ -30,7 +30,7 @@ class FormikSelectInput extends Component {
   }
 
   handleChange = value => {
-    this.props.input.onChange(this.props.field, value)
+    this.props.input.onChange(this.props.field, value.value)
   }
 
   handleBlur = () => {

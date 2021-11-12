@@ -70,20 +70,12 @@ class OtherSubmissionForm extends Component {
     return (
       <SubmissionForm
         type = 'Other'
-        create = {this.props.create}
-        done = {this.props.done}
         forShow = {forShow}
-        user = {this.props.user}
-        handleError = {this.props.handleError}
-        handleHometown = {this.props.handleHometown}
-        handleDisplayName = {this.props.handleDisplayName}
         canSubmitAsSingle = {canSubmitAsSingle}
-        handleImageUpload = {this.props.handleImageUpload}
-        handlePDFUploaf = {this.props.handlePDFUpload}
-        previewImage = {this.props.previewImage}
         showModal = {this.showModal}
+        {...this.props}
       />
-    );
+    )
   }
 
   render () {

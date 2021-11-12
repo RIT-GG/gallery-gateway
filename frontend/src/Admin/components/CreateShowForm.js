@@ -10,7 +10,7 @@ import {
   Col
 } from 'reactstrap'
 import { Formik, Field } from 'formik'
-import yup from 'yup'
+import * as yup from 'yup'
 import styled from 'styled-components'
 import moment from 'moment'
 
