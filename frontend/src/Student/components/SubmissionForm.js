@@ -6,7 +6,7 @@ import { Formik, Field } from 'formik'
 import * as yup from 'yup'
 import styled from 'styled-components'
 
-import FormikSelectInput from '../../shared/components/FormikSelectInput'
+import SelectInput from '../../shared/components/SelectInput'
 import SuccessModal from './SuccessModal'
 import SubmitAsGroupRadio from './SubmitAsGroupRadio'
 import HomeTownInput from './HomeTownInput'
@@ -32,13 +32,8 @@ class SubmissionForm extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {
-      showModal: false
-    }
-    // We clear any uploaded files.
-    // This resets the field if a user uploads a file, navigates to another page,
-    // and comes back to this form, or a user makes a submission and comes back to
-    // this page to make another submission.
+    this.state = { showModal: false }
+    // Clear any uploaded files for the next time a user views the form.
     if (props.clearPreview) { props.clearPreview() }
     this.submitForm = this.submitForm.bind(this)
     this.buildInput = this.buildInput.bind(this)
@@ -46,7 +41,7 @@ class SubmissionForm extends Component {
     this.buildValidationSchema = this.buildValidationSchema.bind(this)
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     if (this.props.data.error) {
       this.props.data.error.graphQLErrors.forEach(e => {
         this.props.handleError(e.message)
@@ -96,7 +91,7 @@ class SubmissionForm extends Component {
         moreCopies:
           values.forSale === 'yes' && values.moreCopies === 'yes'
       },
-      mediaType: values.mediaType.value,
+      mediaType: values.mediaType,
       horizDimInch: values.horizDimInch,
       vertDimInch: values.vertDimInch,
       path: values.path
@@ -140,11 +135,8 @@ class SubmissionForm extends Component {
     const cleanInput = Object.fromEntries(Object.entries(input).filter(([_, v]) => v != null))
     this.props.create(cleanInput)
       .then(() => {
-        if (values.submittingAsGroup === 'no') {
+        if (values.submittingAsGroup === 'no') 
           this.props.handleHometown(values.hometown)
-        }
-      })
-      .then(() => {
         this.props.handleDisplayName(values.displayName)
       })
       .then(() => {
@@ -290,7 +282,7 @@ class SubmissionForm extends Component {
                       />
                       {this.props.type === 'Photo' ? <FormGroup>
                         <Label>Type of Media</Label>
-                        <FormikSelectInput
+                        <SelectInput
                           id='mediaType'
                           name='mediaType'
                           field='mediaType'

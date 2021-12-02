@@ -14,7 +14,7 @@ import * as yup from 'yup'
 import styled from 'styled-components'
 import moment from 'moment'
 
-import FormikDateRangePicker from '../../shared/components/FormikDateRangePicker'
+import DateRangeInput from '../../shared/components/DateRangeInput'
 
 // Validates another date field is after this date field
 // eg.
@@ -170,7 +170,7 @@ class CreateShowForm extends Component {
                     <FormGroup>
                       <Label>Submission Dates</Label>
                       <CalendarContainer>
-                        <FormikDateRangePicker
+                        <DateRangeInput
                           startDateField={{
                             field: 'entryStart',
                             input: {
@@ -200,7 +200,7 @@ class CreateShowForm extends Component {
                     <FormGroup>
                       <Label>Judging Dates</Label>
                       <CalendarContainer>
-                        <FormikDateRangePicker
+                        <DateRangeInput
                           startDateField={{
                             field: 'judgingStart',
                             input: {

@@ -40,23 +40,19 @@ class PhotoSubmissionForm extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {
-      showModal: false
-    }
-    // We clear any uploaded files.
-    // This resets the field if a user uploads a file, navigates to another page,
-    // and comes back to this form, or a user makes a submission and comes back to
-    // this page to make another submission.
+    this.state = { showModal: false }
+    // Clear any uploaded files for the next time a user views the form.
     props.clearPreview()
+    this.renderForm = this.renderForm.bind(this)
   }
 
-  // componentDidUpdate () {
-  //   if (this.props.data.error) {
-  //     this.props.data.error.graphQLErrors.forEach(e => {
-  //       this.props.handleError(e.message)
-  //     })
-  //   }
-  // }
+  componentDidUpdate () {
+    if (this.props.data.error) {
+      this.props.data.error.graphQLErrors.forEach(e => {
+        this.props.handleError(e.message)
+      })
+    }
+  }
 
   renderForm = () => {
     const forShow = {
@@ -67,15 +63,15 @@ class PhotoSubmissionForm extends Component {
     // calculate whether the user is beyond their single submissions
     const numSingleEntries = this.props.data.show.entries.filter(e => !e.group).length
     const canSubmitAsSingle = numSingleEntries < this.props.data.show.entryCap
-    const {handleUpload, ...submissionsFormProps} = this.props
     return (
       <SubmissionForm
         type = 'Photo'
         forShow = {forShow}
         canSubmitAsSingle = {canSubmitAsSingle}
         showModal = {this.showModal}
-        handleImageUpload = {handleUpload}
-        {...submissionsFormProps}
+        done = {this.done}
+        handleImageUpload = {this.props.handleUpload}
+        {...this.props}
       />
     )
   }

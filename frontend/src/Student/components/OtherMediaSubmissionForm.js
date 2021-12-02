@@ -39,14 +39,10 @@ class OtherSubmissionForm extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {
-      showModal: false
-    }
-    // We clear any uploaded files.
-    // This resets the field if a user uploads a file, navigates to another page,
-    // and comes back to this form, or a user makes a submission and comes back to
-    // this page to make another submission.
+    this.state = { showModal: false }
+    // Clear any uploaded files for the next time a user views the form.
     props.clearPreview()
+    this.renderForm = this.renderForm.bind(this)
   }
 
   componentDidUpdate () {
@@ -73,6 +69,7 @@ class OtherSubmissionForm extends Component {
         forShow = {forShow}
         canSubmitAsSingle = {canSubmitAsSingle}
         showModal = {this.showModal}
+        handleImageUpload = {this.props.handleImageUpload}
         {...this.props}
       />
     )
