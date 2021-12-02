@@ -30,7 +30,7 @@ function Portfolios (props) {
 
   return (
     <Container md>
-      <h1 class="mb-4">Your portfolios</h1>
+      <h1 className="mb-4">Your portfolios</h1>
       <div className="d-flex flex-column">
         {props.portfolios.map((portfolio) => { return <PortfolioCard portfolio={portfolio} key={portfolio.id}/> })}
       </div>
