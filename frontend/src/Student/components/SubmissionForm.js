@@ -41,14 +41,6 @@ class SubmissionForm extends Component {
     this.buildValidationSchema = this.buildValidationSchema.bind(this)
   }
 
-  componentDidUpdate() {
-    if (this.props.data.error) {
-      this.props.data.error.graphQLErrors.forEach(e => {
-        this.props.handleError(e.message)
-      })
-    }
-  }
-
   renderErrors = (touched, errors, field) => {
     // Render feedback if this field's been touched and has errors
     if (touched[field] && errors[field]) {
@@ -94,6 +86,7 @@ class SubmissionForm extends Component {
       mediaType: values.mediaType,
       horizDimInch: values.horizDimInch,
       vertDimInch: values.vertDimInch,
+      url: values.url,
       path: values.path
     }
   }
@@ -140,9 +133,7 @@ class SubmissionForm extends Component {
         this.props.handleDisplayName(values.displayName)
       })
       .then(() => {
-        this.setState({ showModal: true }, () => {
-          setTimeout(this.props.done, 2000)
-        })
+        this.props.done()
       })
       .catch(err => this.props.handleError(err.message))
   }
@@ -236,7 +227,7 @@ class SubmissionForm extends Component {
                           id="url"
                           name="url"
                           className="form-control"
-                          placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                          placeholder=""
                           required
                         />
                         {this.renderErrors(touched, errors, 'url')}
