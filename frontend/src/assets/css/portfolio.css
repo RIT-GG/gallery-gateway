@@ -1,0 +1,33 @@
+.portfolio-card {
+  display: flex;
+}
+
+.portfolio-entries {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.portfolio-entries .portfolio-entry {
+  flex-basis: 100%;
+  padding: 1rem;
+}
+
+.portfolio-modal .portfolio-entries{
+  justify-content: space-between;
+}
+
+.portfolio-modal .portfolio-entries .portfolio-entry {
+  background-color: #f8f9fa;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+@media(min-width: 768px) {
+  .portfolio-card .portfolio-entries .portfolio-entry {
+    flex-basis: 25%;
+  }
+
+  .portfolio-modal .portfolio-entries .portfolio-entry {
+    flex-basis: 48%;
+  }
+}

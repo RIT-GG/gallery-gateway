@@ -2,10 +2,14 @@ query Portfolios($studentUsername: String!) {
   portfolios(studentUsername: $studentUsername) {
     id
     name
+    createdAt
     entries{
       id
       title
       entryType
+      forSale
+      comment
+      moreCopies
       ... on Video {
         provider
         videoId

@@ -2,15 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
   Form,
-  FormGroup,
   FormFeedback,
-  Label,
   Button,
   Row,
   Col
 } from 'reactstrap'
 import { Formik, Field } from 'formik'
-import yup from 'yup'
+import * as yup from 'yup'
 
 class EditHometown extends Component {
   static propTypes = {
