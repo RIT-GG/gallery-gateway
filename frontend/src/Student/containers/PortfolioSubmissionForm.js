@@ -3,12 +3,13 @@ import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
-import { uploadPortfolio, clearPreview } from '../actions'
+import { uploadPDF, uploadImage, clearPreview } from '../actions'
 import { displayError, setUserHometown, setUserDisplayName} from '../../shared/actions'
 
 //import PortfolioSubmissionForm from '../components/PortfolioSubmissionForm'
 import CreatePortfolio from '../mutations/createPortfolio.graphql'
 import CurrentStudentPortfolio from '../queries/currentStudentPortfolio.graphql'
+import PortfolioSubmission from '../components/CreatePortfolio'
 
 const mapStateToProps = state => ({
   previewImage: state.student.ui.submission.previewFile || {},
@@ -17,7 +18,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   done: () => dispatch(push('/')),
-  handleUpload: file => dispatch(uploadPortfolio(file)),
+  handlePDFUpload: file => dispatch(uploadPDF(file)),
+  handleImageUpload: file => dispatch(uploadImage(file)),
   handleHometown: hometown => dispatch(setUserHometown(hometown)),
   handleDisplayName: displayName => dispatch(setUserDisplayName(displayName)),
   clearPreview: () => dispatch(clearPreview()),
@@ -41,4 +43,4 @@ export default compose(
       }
     })
   })
-)(null)//(PortfolioSubmissionForm)
+)(PortfolioSubmission)

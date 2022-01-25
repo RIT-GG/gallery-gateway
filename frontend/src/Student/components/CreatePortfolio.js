@@ -33,12 +33,12 @@ function EntryInput(props) {
       <div className='w-100'>
         <h4>Entry type</h4>
         <div className='d-flex my-3'>
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class={`btn btn-primary${entryType === "photo" ? " active" : ""}`}>
-              <input type="radio" name="options" id="option1" checked={entryType === "photo"} onClick={() => { setType("photo") }} /> Photo
+          <div className="btn-group btn-group-toggle" data-toggle="buttons">
+            <label className={`btn btn-primary${entryType === "photo" ? " active" : ""}`}>
+              <input type="radio" name="options" id="option1" checked={entryType === "photo"} onClick={() => { setType("photo") }} onChange={() => {}}/> Photo
             </label>
-            <label class={`btn btn-primary${entryType === "video" ? " active" : ""}`}>
-              <input type="radio" name="options" id="option2" checked={entryType === "video"} onClick={() => { setType("video") }} /> Video
+            <label className={`btn btn-primary${entryType === "video" ? " active" : ""}`}>
+              <input type="radio" name="options" id="option2" checked={entryType === "video"} onClick={() => { setType("video") }} onChange={() => {}} /> Video
             </label>
           </div>
         </div>
