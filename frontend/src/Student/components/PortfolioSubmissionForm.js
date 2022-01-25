@@ -86,7 +86,7 @@ function EntryInput(props) {
   )
 }
 
-class CreatePortfolio extends Component {
+class PortfolioSubmissionForm extends Component {
   static defaultProps = {
     previewImage: {}
   }
@@ -190,4 +190,4 @@ class CreatePortfolio extends Component {
     )
   }
 }
-export default CreatePortfolio
+export default PortfolioSubmissionForm

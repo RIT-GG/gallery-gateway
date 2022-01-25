@@ -9,7 +9,7 @@ import { displayError, setUserHometown, setUserDisplayName} from '../../shared/a
 //import PortfolioSubmissionForm from '../components/PortfolioSubmissionForm'
 import CreatePortfolio from '../mutations/createPortfolio.graphql'
 import CurrentStudentPortfolio from '../queries/currentStudentPortfolio.graphql'
-import PortfolioSubmission from '../components/CreatePortfolio'
+import PortfolioSubmission from '../components/PortfolioSubmissionForm'
 
 const mapStateToProps = state => ({
   previewImage: state.student.ui.submission.previewFile || {},
