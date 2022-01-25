@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, useState } from 'react'
 import { Form, FormGroup, FormFeedback, Label, Button, Row, Col } from 'reactstrap'
 
 import { Formik, Field } from 'formik'
@@ -25,24 +25,85 @@ const ListContainer = styled.div`
   list-style: none
 `
 
+function EntryInput(props) {
+  const [entryType, setType] = useState("photo");
+
+  const EntryTypeButtons = () => {
+    return (
+      <div className='w-100'>
+        <h4>Entry type</h4>
+        <div className='d-flex my-3'>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class={`btn btn-primary${entryType === "photo" ? " active" : ""}`}>
+              <input type="radio" name="options" id="option1" checked={entryType === "photo"} onClick={() => { setType("photo") }} /> Photo
+            </label>
+            <label class={`btn btn-primary${entryType === "video" ? " active" : ""}`}>
+              <input type="radio" name="options" id="option2" checked={entryType === "video"} onClick={() => { setType("video") }} /> Video
+            </label>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (entryType === "photo") {
+    return (
+      <div className='my-3'>
+        <EntryTypeButtons />
+        <p>Upload a file (Photo or Other Media Submission):</p>
+        <FileUploadInput
+          key={props.index + ' file'}
+          path={props.path}
+          name='path'
+          accept='image/jpeg'
+          errors={props.errors}
+          handleImageUpload={props.handleImageUpload}
+          handlePDFUpload={props.handlePDFUpload}
+          previewFile={props.previewImage}
+          renderErrors={props.renderErrors}
+          setFieldValue={props.setFieldValue}
+          touched={props.touched}
+          type={props.type}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className='my-3'>
+      <EntryTypeButtons />
+      <Label>YouTube or Vimeo Video URL</Label>
+      <Field
+        key={props.index + ' video'}
+        url={props.url}
+        type="url"
+        id="url"
+        name="url"
+        className="form-control"
+        placeholder="http://youtube.com/"
+      />
+    </div>
+  )
+}
+
 class CreatePortfolio extends Component {
   static defaultProps = {
     previewImage: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state = { }
+    this.state = {}
     // Clear any uploaded files for the next time a user views the form.
     if (props.clearPreview) { props.clearPreview() }
   }
 
-  buildInput(){
-    
+  buildInput() {
+
   }
 
-  buildValidationSchema(){
-    
+  buildValidationSchema() {
+
   }
 
   renderErrors = (touched, errors, field) => {
@@ -59,12 +120,12 @@ class CreatePortfolio extends Component {
   }
 
   // Create the object of input values and submit the entry
-  submitForm (values) {
+  submitForm(values) {
     const inputs = this.buildInput(values)
     this.createEntry(inputs, values)
   }
 
-  render () {
+  render() {
     const validation = this.buildValidationSchema()
     return (
       <FormGroup>
@@ -72,7 +133,7 @@ class CreatePortfolio extends Component {
           <Formik
             initialValues={{
               submissions: new Array(10).fill(null).map(() => ({ path: '', url: '' }))
-              
+
             }}
             validationSchema={validation}
             onSubmit={values => { this.submitForm(values) }}>
@@ -97,15 +158,10 @@ class CreatePortfolio extends Component {
                       {/* Render 10 FileUploadInputs and Video URL inputs */}
                       <ul>
                         {values.submissions.map((submission, index) =>
-                          <ListContainer>
+                          <ListContainer key={index}>
                             <li>
-                              <hr/>
-                              <p>Upload a file (Photo or Other Media Submission), or a YouTube or Vimeo link:</p>
-                              <FileUploadInput 
-                                key={index + ' file'}
+                              <EntryInput
                                 path={submission.path}
-                                name='path'
-                                accept='image/jpeg'
                                 errors={errors}
                                 handleImageUpload={this.props.handleImageUpload}
                                 handlePDFUpload={this.props.handlePDFUpload}
@@ -114,21 +170,11 @@ class CreatePortfolio extends Component {
                                 setFieldValue={setFieldValue}
                                 touched={touched}
                                 type={this.props.type}
-                              />
-                              <b>OR</b><br/>
-                              <Label>YouTube or Vimeo Video URL</Label>
-                              <Field
-                                key={index + ' video'}
+                                index={index}
                                 url={submission.url}
-                                type="url"
-                                id="url"
-                                name="url"
-                                className="form-control"
-                                placeholder="http://youtube.com/"
-                                disabled
                               />
-                              <br/>
                             </li>
+                            <hr />
                           </ListContainer>
                         )}
                       </ul>
