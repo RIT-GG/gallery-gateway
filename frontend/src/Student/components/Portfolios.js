@@ -23,7 +23,7 @@ function Portfolios (props) {
   if (!Array.isArray(portfolios) || portfolios.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center w-100 h-100">
-        <p className="h3">No portfolios found. You can start by <a href="">creating a potfolio</a>.</p>
+        <p className="h3">No portfolios found. You can start by <a href="/portfolios/create">creating a potfolio</a>.</p>
       </div>
     )
   }
