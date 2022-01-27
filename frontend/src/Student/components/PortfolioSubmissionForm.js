@@ -1,7 +1,7 @@
 import React, { Component, Fragment, useState } from 'react'
 import { Form, FormGroup, FormFeedback, Label, Button, Row, Col } from 'reactstrap'
 
-import { Formik, Field } from 'formik'
+import { Formik, Field, FieldArray } from 'formik'
 import * as yup from 'yup'
 import styled from 'styled-components'
 
@@ -24,6 +24,15 @@ const ButtonContainer = styled.div`
 const ListContainer = styled.div`
   list-style: none
 `
+let entry_index_global = 1;
+
+const ENTRY_FACTORY = () => {
+  return {
+    id: entry_index_global++,
+    path: '',
+    url: ''
+  }
+}
 
 function EntryInput(props) {
   const [entryType, setType] = useState("photo");
@@ -35,10 +44,13 @@ function EntryInput(props) {
         <div className='d-flex my-3'>
           <div className="btn-group btn-group-toggle" data-toggle="buttons">
             <label className={`btn btn-primary${entryType === "photo" ? " active" : ""}`}>
-              <input type="radio" name="options" id="option1" checked={entryType === "photo"} onClick={() => { setType("photo") }} onChange={() => {}}/> Photo
+              <input type="radio" name="options" id="photo-entry" checked={entryType === "photo"} onClick={() => { setType("photo") }} onChange={() => { }} /> Photo
             </label>
             <label className={`btn btn-primary${entryType === "video" ? " active" : ""}`}>
-              <input type="radio" name="options" id="option2" checked={entryType === "video"} onClick={() => { setType("video") }} onChange={() => {}} /> Video
+              <input type="radio" name="options" id="video-entry" checked={entryType === "video"} onClick={() => { setType("video") }} onChange={() => { }} /> Video
+            </label>
+            <label className={`btn btn-primary${entryType === "other" ? " active" : ""}`}>
+              <input type="radio" name="options" id="other-entry" checked={entryType === "other"} onClick={() => { setType("other") }} onChange={() => { }} /> Other
             </label>
           </div>
         </div>
@@ -50,11 +62,9 @@ function EntryInput(props) {
     return (
       <div className='my-3'>
         <EntryTypeButtons />
-        <p>Upload a file (Photo or Other Media Submission):</p>
         <FileUploadInput
-          key={props.index + ' file'}
           path={props.path}
-          name='path'
+          name={`submissions.${props.index}.path`}
           accept='image/jpeg'
           errors={props.errors}
           handleImageUpload={props.handleImageUpload}
@@ -69,16 +79,24 @@ function EntryInput(props) {
     )
   }
 
+  if (entryType === "other") {
+    return (
+      <div className='my-3'>
+        <EntryTypeButtons />
+        <p>Upload a file</p>
+      </div>
+    )
+  }
+
   return (
     <div className='my-3'>
       <EntryTypeButtons />
       <Label>YouTube or Vimeo Video URL</Label>
       <Field
-        key={props.index + ' video'}
         url={props.url}
         type="url"
         id="url"
-        name="url"
+        name={`submissions.${props.index}.url`}
         className="form-control"
         placeholder="http://youtube.com/"
       />
@@ -132,8 +150,7 @@ class PortfolioSubmissionForm extends Component {
         <Fragment>
           <Formik
             initialValues={{
-              submissions: new Array(10).fill(null).map(() => ({ path: '', url: '' }))
-
+              submissions: [ENTRY_FACTORY()]
             }}
             validationSchema={validation}
             onSubmit={values => { this.submitForm(values) }}>
@@ -156,28 +173,38 @@ class PortfolioSubmissionForm extends Component {
                       <p>You may only upload one file OR video link per row.</p>
 
                       {/* Render 10 FileUploadInputs and Video URL inputs */}
-                      <ul>
-                        {values.submissions.map((submission, index) =>
-                          <ListContainer key={index}>
-                            <li>
-                              <EntryInput
-                                path={submission.path}
-                                errors={errors}
-                                handleImageUpload={this.props.handleImageUpload}
-                                handlePDFUpload={this.props.handlePDFUpload}
-                                previewFile={this.props.previewImage}
-                                renderErrors={this.renderErrors}
-                                setFieldValue={setFieldValue}
-                                touched={touched}
-                                type={this.props.type}
-                                index={index}
-                                url={submission.url}
-                              />
-                            </li>
-                            <hr />
-                          </ListContainer>
-                        )}
-                      </ul>
+                      <FieldArray
+                        name="submissions"
+                        render={arrayHelpers => {
+                          return (
+                            <div>
+                              {values.submissions.length > 0 &&
+                                values.submissions.map((submission, index) => {
+                                  return (
+                                    <div key={`submissions.${index}.${submission.id}`}>
+                                      <EntryInput
+                                        path={submission.path}
+                                        errors={errors}
+                                        handleImageUpload={this.props.handleImageUpload}
+                                        handlePDFUpload={this.props.handlePDFUpload}
+                                        previewFile={this.props.previewImage}
+                                        renderErrors={this.renderErrors}
+                                        setFieldValue={setFieldValue}
+                                        touched={touched}
+                                        type={this.props.type}
+                                        index={submission.id}
+                                        url={submission.url}
+                                      />
+                                      <Button color="danger" onClick={() => { console.log("\n\n\n\n"); console.log(index); console.log(arrayHelpers.remove(index)); console.log("\n\n\n\n"); }}>Delete</Button>
+                                      <hr />
+                                    </div>
+                                  )
+                                })}
+                              <Button color="secondary d-block mt-5" onClick={() => { arrayHelpers.push(ENTRY_FACTORY()) }}>Add Entry</Button>
+                            </div>
+                          )
+                        }}
+                      />
                     </Col>
                   </Row>
                 </Form>
