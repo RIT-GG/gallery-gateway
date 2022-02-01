@@ -42,6 +42,7 @@ input GroupInput {
 }
 type Portfolio {
     id: ID!
+    title: String
     name: String!
     studentUsername: String!
     description: String
