@@ -58,13 +58,13 @@ function EntryInput(props) {
       </div>
     )
   }
-
+  const name = `submissions.${props.index}.url`;
   if (entryType === "photo") {
     return (
       <div className='my-3'>
         <EntryTypeButtons />
         <CreatePortfolioEntryCard 
-        name={`submissions.${props.index}.url`}
+        name={name}
         type='photo' />
       </div>
     )
@@ -83,14 +83,7 @@ function EntryInput(props) {
     <div className='my-3'>
       <EntryTypeButtons />
       <Label>YouTube or Vimeo Video URL</Label>
-      <Field
-        url={props.url}
-        type="url"
-        id="url"
-        name={`submissions.${props.index}.url`}
-        className="form-control"
-        placeholder="http://youtube.com/"
-      />
+      <input type="url" name={name} className="form-control" placeholder="http://youtube.com/"/>
     </div>
   )
 }
