@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import SuccessModal from './SuccessModal'
 import DisplayNameInput from './DisplayNameInput'
 import FileUploadInput from './FileUploadInput'
+import CreatePortfolioEntryCard from './CreatePortfolioEntryCard'
 
 const Header = styled.h1`
   margin-bottom: 10px;
@@ -62,19 +63,9 @@ function EntryInput(props) {
     return (
       <div className='my-3'>
         <EntryTypeButtons />
-        <FileUploadInput
-          path={props.path}
-          name={`submissions.${props.index}.path`}
-          accept='image/jpeg'
-          errors={props.errors}
-          handleImageUpload={props.handleImageUpload}
-          handlePDFUpload={props.handlePDFUpload}
-          previewFile={props.previewImage}
-          renderErrors={props.renderErrors}
-          setFieldValue={props.setFieldValue}
-          touched={props.touched}
-          type={props.type}
-        />
+        <CreatePortfolioEntryCard 
+        name={`submissions.${props.index}.url`}
+        type='photo' />
       </div>
     )
   }
@@ -105,24 +96,6 @@ function EntryInput(props) {
 }
 
 class PortfolioSubmissionForm extends Component {
-  static defaultProps = {
-    previewImage: {}
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {}
-    // Clear any uploaded files for the next time a user views the form.
-    if (props.clearPreview) { props.clearPreview() }
-  }
-
-  buildInput() {
-
-  }
-
-  buildValidationSchema() {
-
-  }
 
   renderErrors = (touched, errors, field) => {
     // Render feedback if this field's been touched and has errors
@@ -144,7 +117,6 @@ class PortfolioSubmissionForm extends Component {
   }
 
   render() {
-    const validation = this.buildValidationSchema()
     return (
       <FormGroup>
         <Fragment>
@@ -152,7 +124,6 @@ class PortfolioSubmissionForm extends Component {
             initialValues={{
               submissions: [ENTRY_FACTORY()]
             }}
-            validationSchema={validation}
             onSubmit={values => { this.submitForm(values) }}>
             {({
               values,
