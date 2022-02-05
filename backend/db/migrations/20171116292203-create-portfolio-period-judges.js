@@ -1,32 +1,36 @@
 /**
- * Creates the 'portfolios' table
+ * Creates the 'portfolioPeriodJudges' table
  * @param {*} queryInterface 
  * @param {*} Sequelize 
- * @returns 'portfolios' table
+ * @returns 'portfolioPeriodJudges' table
  */
-export function up (queryInterface, Sequelize) {
-    return queryInterface.createTable('portfolios', {
+ export function up (queryInterface, Sequelize) {
+    return queryInterface.createTable('portfolioPeriodJudges', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
-        type: Sequelize.STRING,
+      
+      // id of the Portfolio Period
+      portfolioPeriodId: {
         allowNull: false,
-        notEmpty: true
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'portfolioPeriods',
+          key: 'id'
+        },
       },
-      studentUsername: {
+
+      // The username of the judge for the Portfolio Period
+      judgeUsername: {
         type: Sequelize.STRING,
         allowNull: false,
         references: { model: 'users', key: 'username' },
         primaryKey: true
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -39,8 +43,7 @@ export function up (queryInterface, Sequelize) {
       }
     })
   }
-  
+    
   export function down (queryInterface) {
-    return queryInterface.dropTable('portfolios')
+    return queryInterface.dropTable('portfolioPeriodJudges')
   }
-  

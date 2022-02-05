@@ -7,7 +7,7 @@ const PortfolioPeriodJudge = sequelize.define('portfolioPeriodJudge', {
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: 'portfolio',
+          model: 'portfolioPeriods',
           key: 'id'
         },
         onDelete: 'cascade',
@@ -20,7 +20,7 @@ const PortfolioPeriodJudge = sequelize.define('portfolioPeriodJudge', {
         type: DataTypes.INTEGER,
         references: {
           model: 'users',
-          key: 'id'
+          key: 'username'
         },
         onDelete: 'cascade',
         onUpdate: 'cascade'
