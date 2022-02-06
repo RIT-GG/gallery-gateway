@@ -1,13 +1,8 @@
-import React, { Component, Fragment, useState } from 'react'
-import { Form, FormGroup, FormFeedback, Label, Button, Row, Col } from 'reactstrap'
+import React, { useEffect, useState } from 'react'
+import { Button, Col, Container, Form, FormGroup, Input, Label, Row, } from 'reactstrap'
 
-import { Formik, Field, FieldArray } from 'formik'
-import * as yup from 'yup'
 import styled from 'styled-components'
 
-import SuccessModal from './SuccessModal'
-import DisplayNameInput from './DisplayNameInput'
-import FileUploadInput from './FileUploadInput'
 import CreatePortfolioEntryCard from './CreatePortfolioEntryCard'
 
 const Header = styled.h1`
@@ -30,155 +25,168 @@ let entry_index_global = 1;
 const ENTRY_FACTORY = () => {
   return {
     id: entry_index_global++,
-    path: '',
-    url: ''
+    type: "photo",
+    file: null,
+    url: '',
+    title: '',
+    comment: '',
   }
 }
 
 function EntryInput(props) {
-  const [entryType, setType] = useState("photo");
+  const entryType = props.submission.type;
+
+  function handleChange(field, value) {
+    const updated_submissions = props.submissions.map((sub) => {
+      if (sub.id === props.submission.id) {
+        return {
+          ...sub,
+          [field]: value
+        }
+      }
+      return sub;
+    })
+    props.setSubmissions(updated_submissions);
+  }
 
   const EntryTypeButtons = () => {
     return (
       <div className='w-100'>
-        <h4>Entry type</h4>
-        <div className='d-flex my-3'>
+        <Label for="entry-type">Entry Type</Label>
+        <div className='d-flex mb-3'>
           <div className="btn-group btn-group-toggle" data-toggle="buttons">
             <label className={`btn btn-primary${entryType === "photo" ? " active" : ""}`}>
-              <input type="radio" name="options" id="photo-entry" checked={entryType === "photo"} onClick={() => { setType("photo") }} onChange={() => { }} /> Photo
+              <input type="radio" name="entry-type" id="photo-entry" value="photo" checked={entryType === "photo"} onClick={(event) => { handleChange("type", event.target.value) }} onChange={() => { }} /> Photo
             </label>
             <label className={`btn btn-primary${entryType === "video" ? " active" : ""}`}>
-              <input type="radio" name="options" id="video-entry" checked={entryType === "video"} onClick={() => { setType("video") }} onChange={() => { }} /> Video
+              <input type="radio" name="entry-type" id="video-entry" value="video" checked={entryType === "video"} onClick={(event) => { handleChange("type", event.target.value) }} onChange={() => { }} /> Video
             </label>
             <label className={`btn btn-primary${entryType === "other" ? " active" : ""}`}>
-              <input type="radio" name="options" id="other-entry" checked={entryType === "other"} onClick={() => { setType("other") }} onChange={() => { }} /> Other
+              <input type="radio" name="entry-type" id="other-entry" value="other" checked={entryType === "other"} onClick={(event) => { handleChange("type", event.target.value) }} onChange={() => { }} /> Other
             </label>
           </div>
         </div>
       </div>
     )
   }
-  const name = `submissions.${props.index}.url`;
-  if (entryType === "photo") {
-    return (
-      <div className='my-3'>
-        <EntryTypeButtons />
-        <CreatePortfolioEntryCard 
-        name={name}
-        type='photo' />
-      </div>
-    )
-  }
 
-  if (entryType === "other") {
-    return (
-      <div className='my-3'>
-        <EntryTypeButtons />
-        <p>Upload a file</p>
-      </div>
-    )
-  }
+  const name = `submissions.${props.index}`;
+
 
   return (
     <div className='my-3'>
       <EntryTypeButtons />
-      <Label>YouTube or Vimeo Video URL</Label>
-      <input type="url" name={name} className="form-control" placeholder="http://youtube.com/"/>
+
+      <FormGroup>
+        <Label for={`${props.name}.title`}>Title</Label>
+        <Input type="text" name={`${props.name}.title`} placeholder="Entry Title" onChange={(event) => { handleChange("title", event.target.value) }} />
+      </FormGroup>
+      <CreatePortfolioEntryCard
+        name={name}
+        type={entryType}
+        submission={props.submission}
+        handleChange={handleChange}
+      />
     </div>
-  )
+  );
 }
+function PortfolioSubmissionForm(props) {
 
-class PortfolioSubmissionForm extends Component {
+  const [submissions, setSubmissions] = useState([ENTRY_FACTORY()]);
+  const [form_data, setFormData] = useState({
+    title: "",
+    studentUsername: props.user.username
+  });
 
-  renderErrors = (touched, errors, field) => {
-    // Render feedback if this field's been touched and has errors
-    if (touched[field] && errors[field]) {
-      return (
-        <FormFeedback style={{ display: 'block' }}>
-          {errors[field]}
-        </FormFeedback>
-      )
+  /**
+   * Effect for ensuring there is always 1 submission on the form
+   */
+  useEffect(() => {
+    if (submissions.length === 0) {
+      addSubmission();
     }
-    // Otherwise, don't render anything
-    return null
+  }, [submissions])
+
+  /**
+   * Handles only allowing 10 submissions to be created a for a portfoliko
+   */
+  function addSubmission() {
+    if (submissions.length < 10) {
+      setSubmissions(submissions.concat(ENTRY_FACTORY()))
+    }
+  }
+
+  function deleteSubmissions(submission_id) {
+    const filtered_submissions = submissions.filter((sub) => {
+      if (sub.id === submission_id) {
+        return false;
+      }
+      return true;
+    });
+    setSubmissions(filtered_submissions);
   }
 
   // Create the object of input values and submit the entry
-  submitForm(values) {
-    const inputs = this.buildInput(values)
-    this.createEntry(inputs, values)
+  function handleSubmit(event) {
+    event.preventDefault();
+    const portfolio = {
+      title: form_data.title,
+      studentUsername: form_data.studentUsername,
+      entries: submissions.map((sub) => {
+        // TODO: build entries
+        return {
+
+        }
+      }),
+    }
   }
 
-  render() {
-    return (
-      <FormGroup>
-        <Fragment>
-          <Formik
-            initialValues={{
-              submissions: [ENTRY_FACTORY()]
-            }}
-            onSubmit={values => { this.submitForm(values) }}>
-            {({
-              values,
-              errors,
-              touched,
-              setFieldValue,
-              setFieldTouched,
-              handleSubmit,
-              isSubmitting
-            }) => {
-              return (
-                <Form onSubmit={handleSubmit} style={{ marginBottom: '75px' }}>
-                  <Row>
-                    <Col xs='12' md='8' style={{ margin: '0 auto' }}>
-                      <Header>New Portfolio</Header>
-                      <SubHeader>Upload Media Submissions</SubHeader>
-                      <b>You may upload up to 10 submissions. (Photo, Video, or Other Media)</b>
-                      <p>You may only upload one file OR video link per row.</p>
 
-                      {/* Render 10 FileUploadInputs and Video URL inputs */}
-                      <FieldArray
-                        name="submissions"
-                        render={arrayHelpers => {
-                          return (
-                            <div>
-                              {values.submissions.length > 0 &&
-                                values.submissions.map((submission, index) => {
-                                  return (
-                                    <div key={`submissions.${index}.${submission.id}`}>
-                                      <EntryInput
-                                        path={submission.path}
-                                        errors={errors}
-                                        handleImageUpload={this.props.handleImageUpload}
-                                        handlePDFUpload={this.props.handlePDFUpload}
-                                        previewFile={this.props.previewImage}
-                                        renderErrors={this.renderErrors}
-                                        setFieldValue={setFieldValue}
-                                        touched={touched}
-                                        type={this.props.type}
-                                        index={submission.id}
-                                        url={submission.url}
-                                      />
-                                      <Button color="danger" onClick={() => { console.log("\n\n\n\n"); console.log(index); console.log(arrayHelpers.remove(index)); console.log("\n\n\n\n"); }}>Delete</Button>
-                                      <hr />
-                                    </div>
-                                  )
-                                })}
-                              <Button color="secondary d-block mt-5" onClick={() => { arrayHelpers.push(ENTRY_FACTORY()) }}>Add Entry</Button>
-                            </div>
-                          )
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                </Form>
-              )
-            }}
-          </Formik>
-          <SuccessModal isOpen={this.props.showModal} />
-        </Fragment>
-      </FormGroup>
-    )
-  }
+  return (
+    <Form onSubmit={handleSubmit} style={{ marginBottom: '75px' }}>
+      <Container>
+        <Row>
+          <Col xs='12' md='8'>
+            <Header>New Portfolio</Header>
+            <FormGroup>
+              <Label for="title">Portfolio title</Label>
+              <Input type="text" className="form-control" placeholder="My Portfolio" required onChange={(event) => {
+                setFormData({
+                  ...form_data,
+                  title: event.target.value
+                })
+              }} />
+            </FormGroup>
+            <SubHeader>Upload Media Submissions</SubHeader>
+            <b>You may upload up to 10 submissions. (Photo, Video, or Other Media)</b>
+            <p>You may only upload one file OR video link per row.</p>
+            {submissions.length > 0 &&
+              submissions.map((submission, index) => {
+                return (
+                  <div key={`submissions.${submission.id}`}>
+                    <EntryInput
+                      submission={submission}
+                      renderErrors={this.renderErrors}
+                      setSubmissions={setSubmissions}
+                      submissions={submissions}
+                    />
+                    <Button color="danger" onClick={() => { deleteSubmissions(submission.id) }}>Delete</Button>
+                    <hr />
+                  </div>
+                )
+              })}
+
+          </Col>
+        </Row>
+        <Row>
+          <Col md={8} className="d-flex justify-content-between align-items-center">
+            <Button color="secondary d-block mb-3" onClick={addSubmission}>Add Entry</Button>
+            <Button type="submit" color="primary">Create</Button>
+          </Col>
+        </Row>
+      </Container>
+    </Form>
+  )
 }
+
 export default PortfolioSubmissionForm

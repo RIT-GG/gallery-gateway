@@ -1,46 +1,62 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types"
-import { FormGroup, Label } from "reactstrap";
+import { FormGroup, Input, Label } from "reactstrap";
 import Dropzone from "react-dropzone";
 
-function CreatePortfolioEntryCard(props){
-    const [file, setFile] = useState(null);
-    return (
-        <FormGroup>
-          <Label for={props.name}>Photo</Label>
-          <Dropzone name={props.name} accept='image/jpeg' className='form-control d-flex align-items-center justify-content-center' onDrop={(acceptedFiles) => {setFile(acceptedFiles[0])}}>
-            {({ getRootProps, getInputProps }) => {
-              return (
-                <section>
-                  <div {...getRootProps()} style={{ cursor: 'pointer', height: '250px' }} className="border p-3">
-                    <input {...getInputProps()} name={name} />
+function CreatePortfolioEntryCard(props) {
+  const [file, setFile] = useState(null);
 
-                    {
-                      file !== null ? <img className="h-100" src={URL.createObjectURL(file)} alt="Uploaded file preview" />
-                        : <div>
-                          <p>Click or drop to upload your file.</p>
-                          <p>Only {props.type === 'other' ? '*.jpg, *jpeg, and *.pdf' : '*.jpg and *.jpeg'} files will be accepted.</p>
-                          <p>(50MB Maximum File Size)</p>
-                        </div>
-                    }
-                  </div>
-                </section>
-              )
-            }}
-          </Dropzone>
-        </FormGroup>
+  /**
+   * Handles onChange event from a react-dropzone input
+   */
+  function handleDrop(acceptedFiles) {
+    setFile(acceptedFiles[0]);
+    props.handleChange("file", acceptedFiles[0]);
+  }
+
+  if (props.type === "photo" || props.type === "other") {
+    return (
+      <FormGroup>
+        <Label for={`${props.name}.${props.type}`}>Photo</Label>
+        <Dropzone name={`${props.name}.${props.type}`} accept={`image/jpeg ${props.type === "other" ? ",application/pdf" : ""}`} className='form-control d-flex align-items-center justify-content-center' onDrop={handleDrop}>
+          {({ getRootProps, getInputProps }) => {
+            return (
+              <section>
+                <div {...getRootProps()} style={{ cursor: 'pointer', height: '250px' }} className="border p-3">
+                  <input {...getInputProps()} name={props.name} />
+
+                  {
+                    file !== null ? <img className="h-100" src={URL.createObjectURL(file)} alt="Uploaded file preview" />
+                      : <div>
+                        <p>Click or drop to upload your file.</p>
+                        <p>Only {props.type === 'other' ? '*.jpg, *.jpeg, and *.pdf' : '*.jpg and *.jpeg'} files will be accepted.</p>
+                        <p>(50MB Maximum File Size)</p>
+                      </div>
+                  }
+                </div>
+              </section>
+            )
+          }}
+        </Dropzone>
+      </FormGroup>
     );
+  }
+
+  return (
+    <FormGroup>
+      <Label>YouTube or Vimeo Video URL</Label>
+      <input type="url" name={name} className="form-control" placeholder="http://youtube.com/" onChange={(event) => {props.handleChange("url", event.target.value)}} />
+    </FormGroup>
+  );
 }
 
 CreatePortfolioEntryCard.propTypes = {
-    // Name of the input
-    name: PropTypes.string.isRequired,
-    // Accepts a File from the browser file API
-    onDrop: PropTypes.func,
-    // A file to be shown as the preview
-    file: PropTypes.any,
-    // One of the submission types. photo, video, other
-    type: PropTypes.string.isRequired
+  // Name of the input
+  name: PropTypes.string.isRequired,
+  // Accepts a File from the browser file API
+  handleChange: PropTypes.func,
+  // One of the submission types. photo, video, other
+  type: PropTypes.string.isRequired
 }
 
 export default CreatePortfolioEntryCard;

@@ -30,9 +30,9 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   graphql(CreatePortfolio, {
     props: ({ mutate }) => ({
-      create: entries =>
+      create: portfolio =>
         mutate({
-          variables: { input: entries }
+          variables: { input: portfolio }
         })
     })
   }),
