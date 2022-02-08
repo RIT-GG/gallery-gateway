@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Button, Card, CardBody, CardHeader } from 'reactstrap'
-import { getImageThumbnail, STATIC_PATH } from '../../utils'
 import SinglePortfolioModal from './SinglePortfolioModal'
 import '../../assets/css/portfolio.css'
 import PortfolioEntry from './portfolio/PortfolioEntry'

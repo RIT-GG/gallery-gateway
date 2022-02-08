@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Form, FormGroup, Input, Label, Row, } from 'reactstrap'
 
 import styled from 'styled-components'
-import { IMAGE_UPLOAD_PATH } from '../../utils'
-import { uploadImage } from '../actions'
+import { IMAGE_UPLOAD_PATH, PDF_UPLOAD_PATH } from '../../utils'
 
-import CreatePortfolioEntryCard from './CreatePortfolioEntryCard'
+import PortfolioEntryInput from './portfolio/PortfolioEntryInput'
 
 const Header = styled.h1`
   margin-bottom: 10px;
@@ -14,14 +13,6 @@ const Header = styled.h1`
 
 const SubHeader = styled.h3`
   margin-bottom: 25px;
-`
-
-const ButtonContainer = styled.div`
-  margin-top: 50px;
-`
-
-const ListContainer = styled.div`
-  list-style: none
 `
 let entry_index_global = 1;
 
@@ -36,68 +27,11 @@ const ENTRY_FACTORY = () => {
   }
 }
 
-function EntryInput(props) {
-  const entryType = props.submission.type;
-
-  function handleChange(field, value) {
-    const updated_submissions = props.submissions.map((sub) => {
-      if (sub.id === props.submission.id) {
-        return {
-          ...sub,
-          [field]: value
-        }
-      }
-      return sub;
-    })
-    props.setSubmissions(updated_submissions);
-  }
-
-  const EntryTypeButtons = () => {
-    return (
-      <div className='w-100'>
-        <Label for="entry-type">Entry Type</Label>
-        <div className='d-flex mb-3'>
-          <div className="btn-group btn-group-toggle" data-toggle="buttons">
-            <label className={`btn btn-primary${entryType === "photo" ? " active" : ""}`}>
-              <input type="radio" name="entry-type" id="photo-entry" value="photo" checked={entryType === "photo"} onClick={(event) => { handleChange("type", event.target.value) }} onChange={() => { }} /> Photo
-            </label>
-            <label className={`btn btn-primary${entryType === "video" ? " active" : ""}`}>
-              <input type="radio" name="entry-type" id="video-entry" value="video" checked={entryType === "video"} onClick={(event) => { handleChange("type", event.target.value) }} onChange={() => { }} /> Video
-            </label>
-            <label className={`btn btn-primary${entryType === "other" ? " active" : ""}`}>
-              <input type="radio" name="entry-type" id="other-entry" value="other" checked={entryType === "other"} onClick={(event) => { handleChange("type", event.target.value) }} onChange={() => { }} /> Other
-            </label>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const name = `submissions.${props.index}`;
-
-
-  return (
-    <div className='my-3'>
-      <EntryTypeButtons />
-
-      <FormGroup>
-        <Label for={`${props.name}.title`}>Title</Label>
-        <Input type="text" name={`${props.name}.title`} placeholder="Entry Title" onChange={(event) => { handleChange("title", event.target.value) }} />
-      </FormGroup>
-      <CreatePortfolioEntryCard
-        name={name}
-        type={entryType}
-        submission={props.submission}
-        handleChange={handleChange}
-      />
-    </div>
-  );
-}
 function PortfolioSubmissionForm(props) {
 
   const [submissions, setSubmissions] = useState([ENTRY_FACTORY()]);
   const [form_data, setFormData] = useState({
-    title: "",
+    title: "Untitled",
     studentUsername: props.user.username
   });
 
@@ -129,56 +63,91 @@ function PortfolioSubmissionForm(props) {
     setSubmissions(filtered_submissions);
   }
 
-  // Create the object of input values and submit the entry
+  async function submitEntry(entry, portfolio_id) {
+    // Instantiate default return value
+    let created_entry = null;
+    if (entry.type === "video") {
+      created_entry = await props.createVideoEntry({
+        entry: {
+          studentUsername: form_data.studentUsername,
+          "portfolioId": parseInt(portfolio_id),
+          title: entry.title
+        },
+        url: entry.url
+      });
+    }
+
+    else if (entry.type === "photo") {
+      const formData = new FormData()
+      formData.append('image', entry.file)
+
+      const photo_path = await axios.post(IMAGE_UPLOAD_PATH, formData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("_token_v1")}` }
+      });
+      console.log(photo_path)
+      created_entry = await props.createPhotoEntry({
+        entry: {
+          studentUsername: form_data.studentUsername,
+          "portfolioId": parseInt(portfolio_id),
+          title: entry.title
+        },
+        path: photo_path.data.path,
+        horizDimInch: 11.5,
+        vertDimInch: 12.3,
+        mediaType: "print"
+      })
+      console.log(created_entry)
+    }
+
+    else if (entry.type === "other") {
+      const formData = new FormData()
+      formData.append('pdf', entry.file)
+
+      const pdf_path = await axios.post(PDF_UPLOAD_PATH, formData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("_token_v1")}` }
+      })
+      console.log(pdf_path)
+      created_entry = await props.createOtherMediaEntry({
+        entry: {
+          studentUsername: form_data.studentUsername,
+          "portfolioId": parseInt(portfolio_id),
+          title: entry.title
+        },
+        path: pdf_path.data.path
+      })
+      console.log(created_entry)
+    }
+
+    return created_entry
+  }
+
+  /**
+   * 
+   * @param {React.FormEvent} event 
+   */
   async function handleSubmit(event) {
     event.preventDefault();
+    // Create the portfolio from form_data
     const portfolio = {
       title: form_data.title,
       studentUsername: form_data.studentUsername,
-      portfolioPeriodId: "1992"
+      portfolioPeriodId: "6744"
     }
     const portfolio_response = await props.createPortfolio(portfolio);
-    try{
+    try {
+      // Extract the portfolio id and use that to create all the entries
       const portfolio_id = portfolio_response.data.createPortfolio.id;
-
-      for( let i=0; i<submissions.length; i++){
+      for (let i = 0; i < submissions.length; i++) {
         const entry = submissions[i];
-        let created_entry = null;
-        if(entry.type === "video"){
-          created_entry = await props.createVideoEntry({
-            entry: {
-              studentUsername: form_data.studentUsername,
-              "portfolioId": parseInt(portfolio_id),
-              title: entry.title
-            },
-            url: entry.url
-          });
-          continue;
-        }
-        if(entry.type === "photo"){
-          const formData = new FormData()
-          formData.append('image', entry.file)
-        
-          const photo_path = await axios.post(IMAGE_UPLOAD_PATH, formData, {
-              headers: { Authorization: `Bearer ${localStorage.getItem("_token_v1")}` }
-            })
-          console.log(photo_path)
-          created_entry = await props.createPhotoEntry({
-            entry: {
-              studentUsername: form_data.studentUsername,
-              "portfolioId": parseInt(portfolio_id),
-              title: entry.title
-            },
-            path: (await photo_path).data.path,
-            horizDimInch: 11.5,
-            vertDimInch: 12.3,
-            mediaType: "print"
-          })
-        }
+        await submitEntry(entry, portfolio_id);
       }
-    }catch(e){
+
+    } catch (e) {
       // Should prob do something here
+      console.log(e)
     }
+
+    // Naviagte back to the portfolios page
     window.location.href = '/portfolios';
   }
 
@@ -205,7 +174,7 @@ function PortfolioSubmissionForm(props) {
               submissions.map((submission, index) => {
                 return (
                   <div key={`submissions.${submission.id}`}>
-                    <EntryInput
+                    <PortfolioEntryInput
                       submission={submission}
                       renderErrors={this.renderErrors}
                       setSubmissions={setSubmissions}
