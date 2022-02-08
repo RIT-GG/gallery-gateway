@@ -42,7 +42,7 @@ input GroupInput {
 }
 type Portfolio {
     id: ID!
-    name: String!
+    title: String!
     studentUsername: String!
     description: String
     entries: [Entry]
@@ -51,9 +51,10 @@ type Portfolio {
 }
 
 input PortfolioInput {
-    name: String!
+    title: String!
     description: String
     studentUsername: String
+    portfolioPeriodId: String
 }
 
 
@@ -113,6 +114,7 @@ interface Entry {
     group: Group
     student: User
     show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -129,7 +131,8 @@ interface Entry {
 input EntryInput {
     group: GroupInput
     studentUsername: String
-    showId: Int!
+    showId: Int
+    portfolioId: Int
     title: String!
     comment: String
     forSale: Boolean
@@ -155,7 +158,8 @@ type Photo implements Entry {
     id: ID!
     group: Group
     student: User
-    show: Show!
+    show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -186,7 +190,8 @@ type Video implements Entry {
     id: ID!
     group: Group
     student: User
-    show: Show!
+    show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -212,7 +217,8 @@ type OtherMedia implements Entry {
     id: ID!
     group: Group
     student: User
-    show: Show!
+    show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -270,6 +276,8 @@ type Mutation {
     deleteShow(id: ID!): Boolean
     assignToShow(showId: ID!, usernames: [String]!): Boolean
     removeFromShow(showId: ID!, usernames: [String]!): Boolean
+
+    createPortfolio(input: PortfolioInput!): Portfolio
 
     createPhoto(input: PhotoInput!): Show
     createVideo(input: VideoInput!): Show

@@ -80,7 +80,11 @@ const createEntry = (entry, entryType, entryId, t) => {
         );
       })
     })
-    .then(() => Show.findByPk(entry.showId))
+    .then(() => {
+      if( !entry.showId){
+        return Promise.resolve()
+      }
+      return Show.findByPk(entry.showId)})
 }
 
 // Rejects the promise if the supplied args indicate the student is doing a
@@ -103,6 +107,10 @@ const canMakeMoreSingleEntries = (
   // if submitting as a group, ignore this check
   if (group && group.creatorUsername) {
     return Promise.resolve()
+  }
+  // ignore submission cap for portfolios
+  if( !showId){
+    return Promise.resolve();
   }
   // find the entry cap for this show
   return Show.findByPk(showId, { transaction: t, rejectOnEmpty: true })
@@ -128,6 +136,9 @@ const isSubmissionEntryOpen = (
   },
   t
 ) => {
+  if( !showId){
+    return Promise.resolve();
+  }
   return Show.findByPk(showId, { transaction: t, rejectOnEmpty: true })
     .then(show => {
       if (moment().isBefore(moment(show.entryEnd))) {
