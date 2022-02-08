@@ -21,9 +21,20 @@ const Portfolio = sequelize.define('portfolio', {
     onDelete: 'cascade',
     onUpdate: 'cascade'
   },
+  // Leave it for reasons unbeknownst to anyone anymore
   name: {
     type:DataTypes.STRING,
     allowNull: true
+  },
+  // The portfolioPeriodId the portfolio is associated with
+  portfolioPeriodId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'portfolioPeriods',
+      key: 'id'
+    },
+    onDelete: 'no action',
+    onUpdate: 'cascade'
   }
 })
 
