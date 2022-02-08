@@ -9,6 +9,9 @@ import { displayError, setUserHometown, setUserDisplayName} from '../../shared/a
 //import PortfolioSubmissionForm from '../components/PortfolioSubmissionForm'
 import CreatePortfolio from '../mutations/createPortfolio.graphql'
 import CurrentStudentPortfolio from '../queries/currentStudentPortfolio.graphql'
+import CreatePhotoEntry from '../mutations/createPhotoEntry.graphql'
+import CreateVideoEntry from '../mutations/createVideoEntry.graphql'
+import CreateOtherMediaEntry from '../mutations/createOtherMediaEntry.graphql'
 import PortfolioSubmission from '../components/PortfolioSubmissionForm'
 
 const mapStateToProps = state => ({
@@ -30,10 +33,34 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   graphql(CreatePortfolio, {
     props: ({ mutate }) => ({
-      create: portfolio =>
+      createPortfolio: portfolio =>
         mutate({
           variables: { input: portfolio }
-        })
+        }),
+    })
+  }),
+  graphql(CreatePhotoEntry, {
+    props: ({ mutate }) => ({
+      createPhotoEntry: entry =>
+        mutate({
+          variables: { input: entry }
+        }),
+    })
+  }),
+  graphql(CreateVideoEntry, {
+    props: ({ mutate }) => ({
+      createVideoEntry: entry =>
+        mutate({
+          variables: { input: entry }
+        }),
+    })
+  }),
+  graphql(CreateOtherMediaEntry, {
+    props: ({ mutate }) => ({
+      createOtherMediaEntry: entry =>
+        mutate({
+          variables: { input: entry }
+        }),
     })
   }),
   graphql(CurrentStudentPortfolio, {

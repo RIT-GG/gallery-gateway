@@ -1,7 +1,10 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Form, FormGroup, Input, Label, Row, } from 'reactstrap'
 
 import styled from 'styled-components'
+import { IMAGE_UPLOAD_PATH } from '../../utils'
+import { uploadImage } from '../actions'
 
 import CreatePortfolioEntryCard from './CreatePortfolioEntryCard'
 
@@ -127,18 +130,56 @@ function PortfolioSubmissionForm(props) {
   }
 
   // Create the object of input values and submit the entry
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     const portfolio = {
       title: form_data.title,
       studentUsername: form_data.studentUsername,
-      entries: submissions.map((sub) => {
-        // TODO: build entries
-        return {
-
-        }
-      }),
+      portfolioPeriodId: "1992"
     }
+    const portfolio_response = await props.createPortfolio(portfolio);
+    try{
+      const portfolio_id = portfolio_response.data.createPortfolio.id;
+
+      for( let i=0; i<submissions.length; i++){
+        const entry = submissions[i];
+        let created_entry = null;
+        if(entry.type === "video"){
+          created_entry = await props.createVideoEntry({
+            entry: {
+              studentUsername: form_data.studentUsername,
+              "portfolioId": parseInt(portfolio_id),
+              title: entry.title
+            },
+            url: entry.url
+          });
+          continue;
+        }
+        if(entry.type === "photo"){
+          const formData = new FormData()
+          formData.append('image', entry.file)
+        
+          const photo_path = await axios.post(IMAGE_UPLOAD_PATH, formData, {
+              headers: { Authorization: `Bearer ${localStorage.getItem("_token_v1")}` }
+            })
+          console.log(photo_path)
+          created_entry = await props.createPhotoEntry({
+            entry: {
+              studentUsername: form_data.studentUsername,
+              "portfolioId": parseInt(portfolio_id),
+              title: entry.title
+            },
+            path: (await photo_path).data.path,
+            horizDimInch: 11.5,
+            vertDimInch: 12.3,
+            mediaType: "print"
+          })
+        }
+      }
+    }catch(e){
+      // Should prob do something here
+    }
+    window.location.href = '/portfolios';
   }
 
 

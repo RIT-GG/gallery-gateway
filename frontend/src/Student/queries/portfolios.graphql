@@ -1,7 +1,7 @@
 query Portfolios($studentUsername: String!) {
   portfolios(studentUsername: $studentUsername) {
     id
-    name
+    title
     createdAt
     entries{
       id
