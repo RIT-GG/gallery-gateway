@@ -14,6 +14,8 @@ const Header = styled.h1`
 const SubHeader = styled.h3`
   margin-bottom: 25px;
 `
+
+// Incrementing index for tracking each submission
 let entry_index_global = 1;
 
 const ENTRY_FACTORY = () => {
@@ -28,39 +30,44 @@ const ENTRY_FACTORY = () => {
 }
 
 function PortfolioSubmissionForm(props) {
-
-  const [submissions, setSubmissions] = useState([ENTRY_FACTORY()]);
   const [form_data, setFormData] = useState({
     title: "Untitled",
-    studentUsername: props.user.username
+    studentUsername: props.user.username,
+    submissions: [ENTRY_FACTORY()]
   });
 
   /**
    * Effect for ensuring there is always 1 submission on the form
    */
   useEffect(() => {
-    if (submissions.length === 0) {
+    if (form_data.submissions.length === 0) {
       addSubmission();
     }
-  }, [submissions])
+  }, [form_data.submissions])
 
   /**
    * Handles only allowing 10 submissions to be created a for a portfoliko
    */
   function addSubmission() {
-    if (submissions.length < 10) {
-      setSubmissions(submissions.concat(ENTRY_FACTORY()))
+    if (form_data.submissions.length < 10) {
+      setFormData({
+          ...form_data,
+          submissions: form_data.submissions.concat(ENTRY_FACTORY())
+        });
     }
   }
 
   function deleteSubmissions(submission_id) {
-    const filtered_submissions = submissions.filter((sub) => {
+    const filtered_submissions = form_data.submissions.filter((sub) => {
       if (sub.id === submission_id) {
         return false;
       }
       return true;
     });
-    setSubmissions(filtered_submissions);
+    setFormData({
+      ...form_data,
+      submissions: filtered_submissions
+    });
   }
 
   async function submitEntry(entry, portfolio_id) {
@@ -84,7 +91,6 @@ function PortfolioSubmissionForm(props) {
       const photo_path = await axios.post(IMAGE_UPLOAD_PATH, formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("_token_v1")}` }
       });
-      console.log(photo_path)
       created_entry = await props.createPhotoEntry({
         entry: {
           studentUsername: form_data.studentUsername,
@@ -96,17 +102,16 @@ function PortfolioSubmissionForm(props) {
         vertDimInch: 12.3,
         mediaType: "print"
       })
-      console.log(created_entry)
     }
 
     else if (entry.type === "other") {
       const formData = new FormData()
       formData.append('pdf', entry.file)
 
+      // Upload the image to the server then store the file link in the database
       const pdf_path = await axios.post(PDF_UPLOAD_PATH, formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("_token_v1")}` }
       })
-      console.log(pdf_path)
       created_entry = await props.createOtherMediaEntry({
         entry: {
           studentUsername: form_data.studentUsername,
@@ -115,14 +120,15 @@ function PortfolioSubmissionForm(props) {
         },
         path: pdf_path.data.path
       })
-      console.log(created_entry)
     }
 
     return created_entry
   }
 
   /**
-   * 
+   * Creates the portfolio via the graphQL mutation prop provided by the container
+   * Extracts the portfolio_id then loops over each submission and 
+   * creates an entry using the porfolio_id
    * @param {React.FormEvent} event 
    */
   async function handleSubmit(event) {
@@ -137,20 +143,29 @@ function PortfolioSubmissionForm(props) {
     try {
       // Extract the portfolio id and use that to create all the entries
       const portfolio_id = portfolio_response.data.createPortfolio.id;
-      for (let i = 0; i < submissions.length; i++) {
-        const entry = submissions[i];
+      for (let i = 0; i < form_data.submissions.length; i++) {
+        const entry = form_data.submissions[i];
         await submitEntry(entry, portfolio_id);
       }
 
     } catch (e) {
-      // Should prob do something here
-      console.log(e)
+      // portfolio creation failed
     }
 
     // Naviagte back to the portfolios page
     window.location.href = '/portfolios';
   }
 
+  /**
+   * Updates the 
+   * @param {React.FormEvent} event 
+   */
+  function handleChange(event) {
+    setFormData({
+      ...form_data,
+      [event.target.name]: event.target.value
+    })
+  }
 
   return (
     <Form onSubmit={handleSubmit} style={{ marginBottom: '75px' }}>
@@ -160,25 +175,20 @@ function PortfolioSubmissionForm(props) {
             <Header>New Portfolio</Header>
             <FormGroup>
               <Label for="title">Portfolio title</Label>
-              <Input type="text" className="form-control" placeholder="My Portfolio" required onChange={(event) => {
-                setFormData({
-                  ...form_data,
-                  title: event.target.value
-                })
-              }} />
+              <Input type="text" className="form-control" name="title" placeholder="My Portfolio" required onChange={handleChange} />
             </FormGroup>
             <SubHeader>Upload Media Submissions</SubHeader>
             <b>You may upload up to 10 submissions. (Photo, Video, or Other Media)</b>
             <p>You may only upload one file OR video link per row.</p>
-            {submissions.length > 0 &&
-              submissions.map((submission, index) => {
+            {form_data.submissions.length > 0 &&
+              form_data.submissions.map((submission, index) => {
                 return (
-                  <div key={`submissions.${submission.id}`}>
+                  <div key={`form_data.submissions.${submission.id}`}>
                     <PortfolioEntryInput
                       submission={submission}
                       renderErrors={this.renderErrors}
                       setSubmissions={setSubmissions}
-                      submissions={submissions}
+                      submissions={form_data.submissions}
                     />
                     <Button color="danger" onClick={() => { deleteSubmissions(submission.id) }}>Delete</Button>
                     <hr />
