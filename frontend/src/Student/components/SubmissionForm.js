@@ -12,6 +12,7 @@ import SubmitAsGroupRadio from './SubmitAsGroupRadio'
 import HomeTownInput from './HomeTownInput'
 import DisplayNameInput from './DisplayNameInput'
 import FileUploadInput from './FileUploadInput'
+import InfoPopover from '../../shared/components/InfoPopover'
 
 const Header = styled.h1`
   margin-bottom: 10px;
@@ -30,7 +31,7 @@ class SubmissionForm extends Component {
     previewImage: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = { showModal: false }
     // Clear any uploaded files for the next time a user views the form.
@@ -55,13 +56,13 @@ class SubmissionForm extends Component {
   }
 
   // Create the object of input values and submit the entry
-  submitForm (values) {
+  submitForm(values) {
     const inputs = this.buildInput(values)
     this.createEntry(inputs, values)
   }
 
   // Create the object containing all input values for submission
-  buildInput (values) {
+  buildInput(values) {
     return {
       entry: {
         group: values.submittingAsGroup === 'yes'
@@ -70,6 +71,7 @@ class SubmissionForm extends Component {
             participants: values.groupParticipants
           } : null,
         displayName: values.displayName,
+        distributionAllowed: values.distributionAllowed === 'yes',
         hometown: values.submittingAsGroup === 'no' ? values.hometown : null,
         studentUsername: values.submittingAsGroup === 'no' ? this.props.user.username : null,
         showId: this.props.forShow.id,
@@ -92,7 +94,7 @@ class SubmissionForm extends Component {
   }
 
   // Create the validation schema for the form ui
-  buildValidationSchema () {
+  buildValidationSchema() {
     const isRequiredString = yup.string().required('Required') // required string field
     const isRequiredNumber = yup.number().required('Required') // required number field
     const radioValues = yup.string().required('Required').oneOf(['yes', 'no']) // radio values
@@ -102,6 +104,7 @@ class SubmissionForm extends Component {
       academicProgram: isRequiredString,
       yearLevel: isRequiredString,
       title: isRequiredString,
+      distributionAllowed: radioValues,
       submittingAsGroup: radioValues,
       forSale: radioValues,
       moreCopies: radioValues,
@@ -124,11 +127,11 @@ class SubmissionForm extends Component {
   }
 
   // Create an entry, show the success modal, and then go to the dashboard
-  createEntry (input, values) {
+  createEntry(input, values) {
     const cleanInput = Object.fromEntries(Object.entries(input).filter(([_, v]) => v != null))
     this.props.create(cleanInput)
       .then(() => {
-        if (values.submittingAsGroup === 'no') 
+        if (values.submittingAsGroup === 'no')
           this.props.handleHometown(values.hometown)
         this.props.handleDisplayName(values.displayName)
       })
@@ -138,8 +141,21 @@ class SubmissionForm extends Component {
       .catch(err => this.props.handleError(err.message))
   }
 
-  render () {
+  render() {
     const validation = this.buildValidationSchema()
+    const workReleaseContent = (
+      <React.Fragment>
+        <p>
+          I, for consideration received, do hereby grant to Rochester Institute of Technology (“RIT”), and its respective individual employees, directors, officers, agents, representatives, successors and assigns, the nonexclusive, worldwide, absolute and irrevocable right and unrestricted permission, and without further notice to me or any other or further consent or authorization from me, to use and reproduce my Work(s) being submitted here.
+        </p>
+        <p>
+          I warrant and represent that I am the owner and/or creator of the Work(s) described above and that I have the legal right and authority to enter into this Agreement for purposes of providing this Permission and Release to RIT. I agree that I am entitled to no additional compensation from RIT for use of the Work(s) other than what may have already been given to me upon execution of this Release.
+        </p>
+        <p>
+          I do hereby release RIT, its individual employees, directors, officers, agents, representatives, successors and assigns, now and forever, from any actions, suits, claims, covenants, damages, executions, demands and liabilities which I or my heirs, representatives, successors and assigns ever had, now have or may have arising out of the aforesaid authorization and consent, without limitation, including any claims for libel or alleged misrepresentation of me by virtue of the use of these Work(s).
+        </p>
+      </React.Fragment>
+    );
     return (
       <FormGroup>
         <Fragment>
@@ -154,6 +170,7 @@ class SubmissionForm extends Component {
               mediaType: this.props.type === 'Photo' ? '' : null,
               horizDimInch: this.props.type === 'Photo' ? '' : null,
               vertDimInch: this.props.type === 'Photo' ? '' : null,
+              distributionAllowed: 'no',
               forSale: 'no',
               moreCopies: 'no',
               path: this.props.type !== 'Video' ? '' : null,
@@ -379,6 +396,34 @@ class SubmissionForm extends Component {
                           {this.renderErrors(touched, errors, 'moreCopies')}
                         </FormGroup>
                       ) : null}
+                      <FormGroup>
+                        <Label>
+                          <span className='d-inline-flex align-items-center'>
+                            <span className='mr-2'>I have read and agree to the terms.</span>
+
+                            <InfoPopover id='distributionAllowedInfo' title='PERMISSION AND RELEASE TO USE WORK(S)' content={workReleaseContent} />
+                          </span>
+
+                        </Label>
+                        {['no', 'yes'].map((value, idx) => { // rendering no and yes radios
+                          return (
+                            <FormGroup check key={idx}>
+                              <Label check>
+                                <Field
+                                  type='radio'
+                                  id='distributionAllowed'
+                                  name='distributionAllowed'
+                                  value={value}
+                                  required
+                                  checked={values.distributionAllowed === value}
+                                />
+                                <span className='ml-2'>{value}</span>
+                              </Label>
+                            </FormGroup>
+                          )
+                        })}
+                        {this.renderErrors(touched, errors, 'forSale')}
+                      </FormGroup>
                       {this.props.type !== 'Video' ? <FileUploadInput
                         accept='image/jpeg'
                         errors={errors}

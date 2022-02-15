@@ -60,6 +60,9 @@ export function up (queryInterface, Sequelize) {
     comment: {
       type: Sequelize.TEXT
     },
+    distributionAllowed: {
+      type: Sequelize.BOOLEAN
+    },
     moreCopies: {
       allowNull: false,
       defaultValue: false,

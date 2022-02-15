@@ -111,6 +111,7 @@ input VoteInput {
 
 interface Entry {
     id: ID!
+    distributionAllowed: Boolean
     group: Group
     student: User
     show: Show
@@ -130,6 +131,7 @@ interface Entry {
 
 input EntryInput {
     group: GroupInput
+    distributionAllowed: Boolean
     studentUsername: String
     showId: Int
     portfolioId: Int
@@ -157,6 +159,7 @@ input EntryUpdate {
 type Photo implements Entry {
     id: ID!
     group: Group
+    distributionAllowed: Boolean
     student: User
     show: Show
     portfolioId: Int
@@ -190,6 +193,7 @@ type Video implements Entry {
     id: ID!
     group: Group
     student: User
+    distributionAllowed: Boolean
     show: Show
     portfolioId: Int
     title: String
@@ -216,6 +220,7 @@ input VideoInput {
 type OtherMedia implements Entry {
     id: ID!
     group: Group
+    distributionAllowed: Boolean
     student: User
     show: Show
     portfolioId: Int
