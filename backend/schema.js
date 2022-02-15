@@ -268,6 +268,7 @@ type Query {
     users(type: UserType): [User]
     group(id: ID!): Group
     portfolio(id: ID!): Portfolio
+    portfolioPeriod(id: ID, active: Boolean): PortfolioPeriod
     portfolios(orderBy: OrderByItem, studentUsername: String): [Portfolio]
     show(id: ID!): Show
     groups: [Group]
@@ -280,8 +281,6 @@ type Query {
     entry(id: ID!): Entry
     entries(showId: ID, studentUsername: String): [Entry]
 }
-
-portfolioPeriod(id: ID, active: Boolean): PortfolioPeriod
 
 type Mutation {
     createJudge(input: UserInput!): User
