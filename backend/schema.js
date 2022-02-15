@@ -40,6 +40,18 @@ input GroupInput {
     creatorUsername: String!
     participants: String!
 }
+
+type PortfolioPeriod {
+    id: ID!
+    startDate: Date!
+    endDate: Date!
+    judgingStartDate: Date!
+    judgingEndDate: Date!
+    portfolios: [Portfolio]
+    createdAt: Date!
+    updatedAt: Date!
+}
+
 type Portfolio {
     id: ID!
     title: String!
@@ -268,6 +280,8 @@ type Query {
     entry(id: ID!): Entry
     entries(showId: ID, studentUsername: String): [Entry]
 }
+
+portfolioPeriod(id: ID, active: Boolean): PortfolioPeriod
 
 type Mutation {
     createJudge(input: UserInput!): User

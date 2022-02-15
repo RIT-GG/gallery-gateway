@@ -6,12 +6,14 @@ import User from './types/userType'
 import DateScalar from './types/dateScalar'
 import Group from './types/groupType'
 import Portfolio from './types/portfolioType'
+import PortfolioPeriod from './types/portfolioPeriodType'
 import Show from './types/showType'
 import Vote from './types/voteType'
 import * as EntryMutations from './mutations/entry'
 import * as EntryQuery from './queries/entryQuery'
 import * as PortfolioMutations from './mutations/portfolio'
 import * as PortfolioQuery from './queries/portfolioQuery'
+import * as PortfolioPeriodQuery from './queries/portfolioPeroidQuery'
 import * as ShowMutations from './mutations/show'
 import * as ShowQuery from './queries/showQuery'
 import * as UserMutations from './mutations/user'
@@ -29,11 +31,13 @@ export default {
   ...Group,
   ...Portfolio,
   ...Show,
+  ...PortfolioPeriod,
   ...Vote,
   Query: {
     ...EntryQuery,
     ...PortfolioQuery,
     ...ShowQuery,
+    ...PortfolioPeriodQuery,
     ...UserQuery,
     ...VoteQuery
   },
