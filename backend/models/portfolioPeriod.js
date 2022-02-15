@@ -1,6 +1,7 @@
 import DataTypes from 'sequelize'
 import sequelize from '../config/sequelize'
 import PortfolioPeriodJudge from './portfolioPeriodJudge'
+import Portfolio from './portfolio'
 
 const PortfolioPeriod = sequelize.define('portfolioPeriod', {
     // Start and end dates for the period's submission period
@@ -27,6 +28,10 @@ const PortfolioPeriod = sequelize.define('portfolioPeriod', {
         notEmpty: true
     }
 })
+
+PortfolioPeriod.prototype.getPortfolios = function getPortfolios () {
+    return Portfolio.findAll({ where: { portfolioPeriodId: this.id } })
+}
 
 PortfolioPeriod.prototype.getJudges = function getJudges () {
     return PortfolioPeriodJudge.findAll({ where: { portfolioPeriodId: this.id } })

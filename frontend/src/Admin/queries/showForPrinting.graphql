@@ -9,6 +9,7 @@ query Show($id: ID!) {
       entryType
       invited
       forSale
+      distributionAllowed
       moreCopies
       excludeFromJudging
       student {

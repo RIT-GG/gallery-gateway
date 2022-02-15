@@ -40,6 +40,18 @@ input GroupInput {
     creatorUsername: String!
     participants: String!
 }
+
+type PortfolioPeriod {
+    id: ID!
+    startDate: Date!
+    endDate: Date!
+    judgingStartDate: Date!
+    judgingEndDate: Date!
+    portfolios: [Portfolio]
+    createdAt: Date!
+    updatedAt: Date!
+}
+
 type Portfolio {
     id: ID!
     title: String!
@@ -111,6 +123,7 @@ input VoteInput {
 
 interface Entry {
     id: ID!
+    distributionAllowed: Boolean
     group: Group
     student: User
     show: Show
@@ -130,6 +143,7 @@ interface Entry {
 
 input EntryInput {
     group: GroupInput
+    distributionAllowed: Boolean
     studentUsername: String
     showId: Int
     portfolioId: Int
@@ -157,6 +171,7 @@ input EntryUpdate {
 type Photo implements Entry {
     id: ID!
     group: Group
+    distributionAllowed: Boolean
     student: User
     show: Show
     portfolioId: Int
@@ -190,6 +205,7 @@ type Video implements Entry {
     id: ID!
     group: Group
     student: User
+    distributionAllowed: Boolean
     show: Show
     portfolioId: Int
     title: String
@@ -216,6 +232,7 @@ input VideoInput {
 type OtherMedia implements Entry {
     id: ID!
     group: Group
+    distributionAllowed: Boolean
     student: User
     show: Show
     portfolioId: Int
@@ -251,6 +268,7 @@ type Query {
     users(type: UserType): [User]
     group(id: ID!): Group
     portfolio(id: ID!): Portfolio
+    portfolioPeriod(id: ID, active: Boolean): PortfolioPeriod
     portfolios(orderBy: OrderByItem, studentUsername: String): [Portfolio]
     show(id: ID!): Show
     groups: [Group]
