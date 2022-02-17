@@ -52,6 +52,13 @@ type PortfolioPeriod {
     updatedAt: Date!
 }
 
+input PortfolioPeriodInput {
+    startDate: Date!
+    endDate: Date!
+    judgingStartDate: Date!
+    judgingEndDate: Date!
+}
+
 type Portfolio {
     id: ID!
     title: String!
@@ -296,6 +303,8 @@ type Mutation {
     removeFromShow(showId: ID!, usernames: [String]!): Boolean
 
     createPortfolio(input: PortfolioInput!): Portfolio
+
+    createPortfolioPeriod(input: PortfolioPeriodInput!): PortfolioPeriod
 
     createPhoto(input: PhotoInput!): Show
     createVideo(input: VideoInput!): Show
