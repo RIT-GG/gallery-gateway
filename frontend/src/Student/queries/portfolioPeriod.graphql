@@ -1,0 +1,7 @@
+query PortfolioPeriod($active: Boolean) {
+  portfolioPeriod(active: $active) {
+    id
+    startDate
+    endDate
+  }
+}
