@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { displayError } from '../../shared/actions'
 
-//import PortfolioPeriodsQuery from '../queries/portfolioPeriods.graphql'
-//import CreatePortfolioPeriodMutation from '../mutations/createPortfolioPeriod.graphql'
+import CreatePortfolioPeriodMutation from '../mutations/createPortfolioPeriod.graphql'
 import CreatePortfolioPeriodForm from '../components/CreatePortfolioPeriodForm'
 
 const mapDispatchToProps = dispatch => ({
@@ -15,19 +14,12 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(null, mapDispatchToProps),
-  // graphql(CreatePortfolioPeriodMutation, {
-  //   props: ({ mutate }) => ({
-  //     create: portfolioPeriod =>
-  //       mutate({
-  //         variables: { input: portfolioPeriod }
-  //       })
-  //   }),
-  //   options: () => ({
-  //     refetchQueries: [
-  //       {
-  //         query: PortfolioPeriodsQuery
-  //       }
-  //     ]
-  //   })
-  // })
+  graphql(CreatePortfolioPeriodMutation, {
+    props: ({ mutate }) => ({
+      create: portfolioPeriod =>
+        mutate({
+          variables: { input: portfolioPeriod }
+        })
+    })
+  })
 )(CreatePortfolioPeriodForm)

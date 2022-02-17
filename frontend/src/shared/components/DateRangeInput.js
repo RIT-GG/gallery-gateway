@@ -12,7 +12,7 @@ class DateRangeInput extends Component {
       input: PropTypes.shape({
         value: PropTypes.any,
         onChange: PropTypes.func.isRequired, // setFieldValue
-        onBlur: PropTypes.func.isRequired // setFieldTouched
+        onBlur: PropTypes.func // setFieldTouched
       }).isRequired
     }).isRequired,
     endDateField: PropTypes.shape({
@@ -20,7 +20,7 @@ class DateRangeInput extends Component {
       input: PropTypes.shape({
         value: PropTypes.any,
         onChange: PropTypes.func.isRequired, // setFieldValue
-        onBlur: PropTypes.func.isRequired // setFieldTouched
+        onBlur: PropTypes.func // setFieldTouched
       }).isRequired
     }).isRequired
   }
