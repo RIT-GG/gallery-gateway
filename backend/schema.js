@@ -57,6 +57,7 @@ type Portfolio {
     title: String!
     studentUsername: String!
     description: String
+    portfolioPeriodId: ID
     entries: [Entry]
     createdAt: Date!
     updatedAt: Date!
