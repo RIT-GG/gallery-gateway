@@ -8,9 +8,9 @@ import { displayError, setUserHometown, setUserDisplayName} from '../../shared/a
 
 //import PortfolioSubmissionForm from '../components/PortfolioSubmissionForm'
 import CreatePortfolio from '../mutations/createPortfolio.graphql'
-import CurrentStudentPortfolio from '../queries/currentStudentPortfolio.graphql'
 import CreatePhotoEntry from '../mutations/createPhotoEntry.graphql'
 import CreateVideoEntry from '../mutations/createVideoEntry.graphql'
+import PortfolioPeriodQuery from '../queries/portfolioPeriod.graphql'
 import CreateOtherMediaEntry from '../mutations/createOtherMediaEntry.graphql'
 import PortfolioSubmission from '../components/PortfolioSubmissionForm'
 
@@ -63,10 +63,16 @@ export default compose(
         }),
     })
   }),
-  graphql(CurrentStudentPortfolio, {
+  // Query for the active portfolio period, if one exists
+  graphql(PortfolioPeriodQuery, {
+    props: ({ data: { portfolioPeriod, loading, error } }) => ({
+      activePortfolioPeriod: portfolioPeriod,
+      loading,
+      error
+    }),
     options: ownProps => ({
       variables: {
-        id: ownProps.id
+        active: true
       }
     })
   })

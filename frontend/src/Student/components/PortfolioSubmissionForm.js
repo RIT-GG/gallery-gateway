@@ -24,7 +24,7 @@ const ENTRY_FACTORY = () => {
     type: "photo",
     file: null,
     url: '',
-    title: '',
+    title: 'Untitled',
     comment: '',
   }
 }
@@ -51,9 +51,9 @@ function PortfolioSubmissionForm(props) {
   function addSubmission() {
     if (form_data.submissions.length < 10) {
       setFormData({
-          ...form_data,
-          submissions: form_data.submissions.concat(ENTRY_FACTORY())
-        });
+        ...form_data,
+        submissions: form_data.submissions.concat(ENTRY_FACTORY())
+      });
     }
   }
 
@@ -137,7 +137,7 @@ function PortfolioSubmissionForm(props) {
     const portfolio = {
       title: form_data.title,
       studentUsername: form_data.studentUsername,
-      portfolioPeriodId: "6744"
+      portfolioPeriodId: props.activePortfolioPeriod.id
     }
     const portfolio_response = await props.createPortfolio(portfolio);
     try {
@@ -167,6 +167,21 @@ function PortfolioSubmissionForm(props) {
     })
   }
 
+  if (props.activePortfolioPeriod === null) {
+    return (
+      <Container>
+        <Row>
+          <Col xs='12' md='8'>
+            <Header>New Portfolio</Header>
+          </Col>
+          <Col xs='12' md='8'>
+            <p>There is no active portfolio period, portfolios can only be created during an active portfolio period</p>
+          </Col>
+        </Row>
+      </Container>
+    )
+  }
+
   return (
     <Form onSubmit={handleSubmit} style={{ marginBottom: '75px' }}>
       <Container>
@@ -187,7 +202,12 @@ function PortfolioSubmissionForm(props) {
                     <PortfolioEntryInput
                       submission={submission}
                       renderErrors={this.renderErrors}
-                      setSubmissions={setSubmissions}
+                      setSubmissions={(submissions) => {
+                        setFormData({
+                          ...form_data,
+                          submissions
+                        })
+                      }}
                       submissions={form_data.submissions}
                     />
                     <Button color="danger" onClick={() => { deleteSubmissions(submission.id) }}>Delete</Button>

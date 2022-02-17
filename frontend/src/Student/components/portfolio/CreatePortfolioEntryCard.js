@@ -26,7 +26,7 @@ function CreatePortfolioEntryCard(props) {
                   <input {...getInputProps()} name={props.name} />
 
                   {
-                    file !== null ? <img className="h-100" src={URL.createObjectURL(file)} alt="Uploaded file preview" />
+                    file !== null ? <img className="img-fluid" src={URL.createObjectURL(file)} alt="Uploaded file preview" style={{maxHeight: "100%"}}/>
                       : <div>
                         <p>Click or drop to upload your file.</p>
                         <p>Only {props.type === 'other' ? '*.jpg, *.jpeg, and *.pdf' : '*.jpg and *.jpeg'} files will be accepted.</p>
