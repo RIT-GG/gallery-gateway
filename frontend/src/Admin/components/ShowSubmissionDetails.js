@@ -128,6 +128,7 @@ class ShowSubmissionDetails extends Component {
       yearLevel: PropTypes.string.isRequired,
       academicProgram: PropTypes.string.isRequired,
       forSale: PropTypes.bool.isRequired,
+      distributionAllowed: PropTypes.bool,
       moreCopies: PropTypes.bool.isRequired,
       entryType: PropTypes.string.isRequired,
       // For Photo or Other Entries
@@ -200,6 +201,8 @@ class ShowSubmissionDetails extends Component {
             ) : null}
             <dt>Score</dt>
             <dd>{submission.score.toFixed(3)}</dd>
+            <dt>Distribution Allowed?</dt>
+            <dd>{submission.distributionAllowed ? 'Yes' : 'No'}</dd>
             <dt>Invited?</dt>
             <dd>{submission.invited ? 'Yes' : 'No'}</dd>
             {renderSubmissionByType(submission)}

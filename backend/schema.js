@@ -40,9 +40,28 @@ input GroupInput {
     creatorUsername: String!
     participants: String!
 }
+
+type PortfolioPeriod {
+    id: ID!
+    startDate: Date!
+    endDate: Date!
+    judgingStartDate: Date!
+    judgingEndDate: Date!
+    portfolios: [Portfolio]
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+input PortfolioPeriodInput {
+    startDate: Date!
+    endDate: Date!
+    judgingStartDate: Date!
+    judgingEndDate: Date!
+}
+
 type Portfolio {
     id: ID!
-    name: String!
+    title: String!
     studentUsername: String!
     description: String
     entries: [Entry]
@@ -51,9 +70,10 @@ type Portfolio {
 }
 
 input PortfolioInput {
-    name: String!
+    title: String!
     description: String
     studentUsername: String
+    portfolioPeriodId: String
 }
 
 
@@ -110,9 +130,11 @@ input VoteInput {
 
 interface Entry {
     id: ID!
+    distributionAllowed: Boolean
     group: Group
     student: User
     show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -128,8 +150,10 @@ interface Entry {
 
 input EntryInput {
     group: GroupInput
+    distributionAllowed: Boolean
     studentUsername: String
-    showId: Int!
+    showId: Int
+    portfolioId: Int
     title: String!
     comment: String
     forSale: Boolean
@@ -154,8 +178,10 @@ input EntryUpdate {
 type Photo implements Entry {
     id: ID!
     group: Group
+    distributionAllowed: Boolean
     student: User
-    show: Show!
+    show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -186,7 +212,9 @@ type Video implements Entry {
     id: ID!
     group: Group
     student: User
-    show: Show!
+    distributionAllowed: Boolean
+    show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -211,8 +239,10 @@ input VideoInput {
 type OtherMedia implements Entry {
     id: ID!
     group: Group
+    distributionAllowed: Boolean
     student: User
-    show: Show!
+    show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -245,6 +275,7 @@ type Query {
     users(type: UserType): [User]
     group(id: ID!): Group
     portfolio(id: ID!): Portfolio
+    portfolioPeriod(id: ID, active: Boolean): PortfolioPeriod
     portfolios(orderBy: OrderByItem, studentUsername: String): [Portfolio]
     show(id: ID!): Show
     groups: [Group]
@@ -270,6 +301,10 @@ type Mutation {
     deleteShow(id: ID!): Boolean
     assignToShow(showId: ID!, usernames: [String]!): Boolean
     removeFromShow(showId: ID!, usernames: [String]!): Boolean
+
+    createPortfolio(input: PortfolioInput!): Portfolio
+
+    createPortfolioPeriod(input: PortfolioPeriodInput!): PortfolioPeriod
 
     createPhoto(input: PhotoInput!): Show
     createVideo(input: VideoInput!): Show
