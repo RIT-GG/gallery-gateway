@@ -30,7 +30,7 @@ const PhotoThumbnail = styled.img`
   width: auto;
 `
 
-const EntryNoThumbContainer = styled.div`
+export const EntryNoThumbContainer = styled.div`
   color: black;
   height: 100%;
   margin-bottom: 10px;
