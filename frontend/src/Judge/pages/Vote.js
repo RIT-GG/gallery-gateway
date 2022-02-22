@@ -26,12 +26,12 @@ const Arrow = styled.span`
   }
 `
 
-const Previous = Arrow.extend`
+const Previous = styled(Arrow)`
   left: 25px;
   padding: 35vh 25px 15vh 0; /* Create a larger click target */
 `
 
-const Next = Arrow.extend`
+const Next = styled(Arrow)`
   padding: 35vh 0 15vh 25px; /* Create a larger click target */
   right: 25px;
 `
