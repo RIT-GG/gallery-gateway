@@ -23,6 +23,12 @@ export async function portfolioPeriod(_, args, context) {
         return PortfolioPeriod.findOne(Object.assign({}, whereClause, order))
     }
 
-    // Otherwise just show all portfolios (with possible ordering)
-    return PortfolioPeriod.findAll(order)
+    // Can only query for portfolio periods by active and id
+    return null;
+}
+
+export async function portfolioPeriods(_, args, context) {
+    // Apply ordering, if desired
+    const order = args.orderBy ? { order: [[args.orderBy.sort, args.orderBy.direction]] } : {}
+    return PortfolioPeriod.findAll(order);
 }

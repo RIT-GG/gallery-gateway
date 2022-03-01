@@ -281,6 +281,7 @@ type Query {
     group(id: ID!): Group
     portfolio(id: ID!): Portfolio
     portfolioPeriod(id: ID, active: Boolean): PortfolioPeriod
+    portfolioPeriods(orderBy: OrderByItem): [PortfolioPeriod]
     portfolios(orderBy: OrderByItem, studentUsername: String): [Portfolio]
     show(id: ID!): Show
     groups: [Group]
