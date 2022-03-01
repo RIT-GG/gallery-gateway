@@ -35,7 +35,6 @@ function CreatePortfolioPeriodForm(props) {
       judgingEndDate: form_data.judgingEnd
     }
     try {
-      console.log(portfolio_period.startDate)
       props.create(portfolio_period)
         .then(() => {navigateHome()})
         .catch(err => handleError(err.message))
