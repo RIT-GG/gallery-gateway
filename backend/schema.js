@@ -43,6 +43,8 @@ input GroupInput {
 
 type PortfolioPeriod {
     id: ID!
+    name: String
+    description: String
     startDate: Date!
     endDate: Date!
     judgingStartDate: Date!
@@ -53,6 +55,8 @@ type PortfolioPeriod {
 }
 
 input PortfolioPeriodInput {
+    name: String
+    description: String
     startDate: Date!
     endDate: Date!
     judgingStartDate: Date!
