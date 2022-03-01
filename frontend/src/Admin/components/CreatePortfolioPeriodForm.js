@@ -8,7 +8,7 @@ const CalendarContainer = styled.div`
   margin-bottom: 25px;
 `
 
-function CreatePortfolioPeriodForm() {
+function CreatePortfolioPeriodForm(props) {
 
   const [form_data, setFormData] = useState({
     name: '',
