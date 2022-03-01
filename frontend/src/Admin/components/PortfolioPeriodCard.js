@@ -29,16 +29,13 @@ const FormattedDate = (props) => (
 class PortfolioPeriodCard extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    entryStart: PropTypes.string.isRequired,
-    entryEnd: PropTypes.string.isRequired,
-    judgingStart: PropTypes.string.isRequired,
-    judgingEnd: PropTypes.string.isRequired,
-    entries: PropTypes.arrayOf(
-      PropTypes.shape({
-        entryType: PropTypes.string.isRequired
-      })
-    )
+    name: PropTypes.string,
+    description: PropTypes.string,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    judgingStartDate: PropTypes.string.isRequired,
+    judgingEndDate: PropTypes.string.isRequired,
+    portfolios: PropTypes.array,
   }
 
   renderOpenClose = (opens, closes) => (
@@ -55,7 +52,7 @@ class PortfolioPeriodCard extends Component {
   )
 
   renderSubmissionSummary = (props) => {
-    const totalPortfolios = props.entries.length
+    const totalPortfolios = Array.isArray(props.portfolios) ? props.portfolios.length : 0;
 
     return (
       <Fragment>
@@ -70,31 +67,31 @@ class PortfolioPeriodCard extends Component {
     )
   }
 
-  renderClosedPortfolioPeriod = ({ entryStart, judgingEnd }) => (
+  renderClosedPortfolioPeriod = ({ startDate, judgingEndDate }) => (
     <Row>
       <Col className='mb-3'>
         <h4>Closed Portfolio Period</h4>
-        <FormattedDate>{entryStart}</FormattedDate>
+        <FormattedDate>{startDate}</FormattedDate>
         {' - '}
-        <FormattedDate>{judgingEnd}</FormattedDate>
+        <FormattedDate>{judgingEndDate}</FormattedDate>
       </Col>
     </Row>
   )
 
   renderBody = (props) => {
     const {
-      entryStart,
-      entryEnd,
-      judgingStart,
-      judgingEnd
+      startDate,
+      endDate,
+      judgingStartDate,
+      judgingEndDate
     } = props
 
     const now = moment()
-    const isPortfolioPeriodInFuture = now.isBefore(moment(entryStart))
-    const isPortfolioPeriodInSubmission = now.isAfter(moment(entryStart)) && now.isBefore(moment(entryEnd))
-    const isPortfolioPeriodBetweenSubmissionAndJudging = now.isAfter(moment(entryEnd)) && now.isBefore(moment(judgingStart))
-    const isPortfolioPeriodInJudging = now.isAfter(moment(judgingStart)) && now.isBefore(moment(judgingEnd))
-    const isPortfolioPeriodClosed = now.isAfter(moment(judgingEnd))
+    const isPortfolioPeriodInFuture = now.isBefore(moment(startDate))
+    const isPortfolioPeriodInSubmission = now.isAfter(moment(startDate)) && now.isBefore(moment(endDate))
+    const isPortfolioPeriodBetweenSubmissionAndJudging = now.isAfter(moment(endDate)) && now.isBefore(moment(judgingStartDate))
+    const isPortfolioPeriodInJudging = now.isAfter(moment(judgingStartDate)) && now.isBefore(moment(judgingEndDate))
+    const isPortfolioPeriodClosed = now.isAfter(moment(judgingEndDate))
 
     if (isPortfolioPeriodClosed) {
       return this.renderClosedPortfolioPeriod(props)
@@ -126,12 +123,12 @@ class PortfolioPeriodCard extends Component {
         <Col xs='12' md='6'>
           <h4>Submission Period</h4>
           <h6>{subHeading1}</h6>
-          {this.renderOpenClose(entryStart, entryEnd)}
+          {this.renderOpenClose(startDate, endDate)}
           {isPortfolioPeriodInSubmission ? (
             <Fragment>
               <h4>Judging Period</h4>
               <h6>{subHeading2}</h6>
-              {this.renderOpenClose(judgingStart, judgingEnd)}
+              {this.renderOpenClose(judgingStartDate, judgingEndDate)}
             </Fragment>
           ) : null}
         </Col>
@@ -142,7 +139,7 @@ class PortfolioPeriodCard extends Component {
               <Fragment>
                 <h4>Judging Period</h4>
                 <h6>{subHeading2}</h6>
-                {this.renderOpenClose(judgingStart, judgingEnd)}
+                {this.renderOpenClose(judgingStartDate, judgingEndDate)}
               </Fragment>
             )}
         </Col>
