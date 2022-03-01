@@ -23,7 +23,7 @@ const Admin = () => (
       <Route path='/show/:id/print' component={PrintableReport} />
       <Route path='/show/:id' component={ViewShow} />
       <Route path='/users' component={ManageUsers} />
-      <Route exact path='/portfolioperiod/new' component={CreatePortfolioPeriod} />
+      <Route exact path='/portfolio-period/new' component={CreatePortfolioPeriod} />
       <Route component={NotFound} />
     </Switch>
   </Layout>
