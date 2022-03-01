@@ -1,0 +1,12 @@
+query PortfolioPeriod {
+  portfolioPeriod(active: true) {
+    name
+    description
+    startDate
+    endDate
+    id
+    judgingStartDate
+    judgingEndDate
+    createdAt
+  }
+}
