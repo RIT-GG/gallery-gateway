@@ -1,0 +1,12 @@
+query PortfolioPeriods {
+  portfolioPeriods {
+    name
+    description
+    id
+    startDate
+    endDate
+    judgingStartDate
+    judgingEndDate
+    createdAt
+  }
+}

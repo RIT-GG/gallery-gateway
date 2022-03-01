@@ -70,14 +70,14 @@ const Dashboard = () => {
           </Nav>
         </Col>
         <Col>
-          <Carousel activeIndex={active_feature} interval={false}>
+          <Carousel activeIndex={active_feature} interval={false} next={()=>{}} previous={()=>{}}>
             <CarouselItem>
               <h1>Shows</h1>
               <Shows />
             </CarouselItem>
 
             <CarouselItem>
-              <h1>Portfolio Periods</h1>
+              <h1 className='my-3'>Portfolio Periods</h1>
               <PortfolioPeriods />
             </CarouselItem>
           </Carousel>
