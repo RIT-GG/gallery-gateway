@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'reactstrap'
 
 import Shows from '../containers/Shows'
+import PortfolioPeriods from '../containers/PortfolioPeriods'
 
 const Dashboard = () => (
   <Container>
@@ -21,10 +22,26 @@ const Dashboard = () => (
           Create Show
         </Button>
       </Col>
+      <Col md='3'>
+        <Button
+          color='primary'
+          className='btn-block'
+          style={{ cursor: 'pointer' }}
+          tag={Link}
+          to='/portfolioperiod/new'
+        >
+          Create Portfolio Period
+        </Button>
+      </Col>
     </Row>
     <Row>
       <Col>
         <Shows />
+      </Col>
+    </Row>
+    <Row>
+      <Col>
+        <PortfolioPeriods />
       </Col>
     </Row>
   </Container>
