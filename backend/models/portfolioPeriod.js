@@ -4,6 +4,14 @@ import PortfolioPeriodJudge from './portfolioPeriodJudge'
 import Portfolio from './portfolio'
 
 const PortfolioPeriod = sequelize.define('portfolioPeriod', {
+    name: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     // Start and end dates for the period's submission period
     startDate: {
         type: DataTypes.DATE,

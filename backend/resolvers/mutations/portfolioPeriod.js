@@ -7,14 +7,17 @@ export async function createPortfolioPeriod (_, args, context) {
   if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
-  const {startDate, endDate, judgingStartDate, judgingEndDate} = args.input
+  const {description, name, startDate, endDate, judgingStartDate, judgingEndDate} = args.input
 
   // Not all input is used in the portfolio table, extract only data needed for the portfolio
-  const newPortfolioPeriod = {
+  let newPortfolioPeriod = {
     startDate,
     endDate,
     judgingStartDate,
     judgingEndDate
   }
+
+  if(typeof description === "string" ){ newPortfolioPeriod.description = description };
+  if(typeof name === "string" ){ newPortfolioPeriod.name = name };
   return PortfolioPeriod.create(newPortfolioPeriod)
 }
