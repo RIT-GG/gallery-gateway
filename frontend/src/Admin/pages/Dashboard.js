@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link, Route } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, Route, useLocation } from 'react-router-dom'
 import { Container, Row, Col, Button, Carousel, CarouselItem } from 'reactstrap'
 
 import Shows from '../containers/Shows'
@@ -10,6 +10,11 @@ const FEATURE__PORTFOLIO_PERIODS = 1;
 
 const Dashboard = () => {
   const [active_feature, setActiveFeature] = useState(FEATURE__SHOWS);
+
+  const location = useLocation();
+  useEffect(() => {
+    console.log(location);
+  }, [location])
 
 
   return (
