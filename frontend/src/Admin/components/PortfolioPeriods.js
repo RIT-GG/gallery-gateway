@@ -15,7 +15,7 @@ class PortfolioPeriods extends Component {
     portfolioPeriods: []
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     const { error, handleError } = this.props
     if (error) {
       error.graphQLErrors.forEach(e => {
@@ -24,16 +24,23 @@ class PortfolioPeriods extends Component {
     }
   }
 
-  render () {
-    const { loading, portfolioPeriods } = this.props
+  render() {
+    const { loading, portfolioPeriods, activePortfolioPeriod } = this.props
 
+    if (loading) {
+      return <Loading />
+    }
+    
     return (
       <div>
-        {loading ? (
-          <Loading />
-        ) : (
-          portfolioPeriods.map(portfolioperiod => 
-            <PortfolioPeriodCard key={portfolioperiod.id} {...portfolioperiod} />)
+        <h3>Active Period</h3>
+        {activePortfolioPeriod === undefined ?
+          <p>There is no active portfolio period.</p>
+          : <PortfolioPeriodCard {...activePortfolioPeriod} />
+        }
+        <h3 className='mt-5'>Past Periods</h3>
+        {portfolioPeriods.map(portfolioperiod =>
+          <PortfolioPeriodCard key={portfolioperiod.id} {...portfolioperiod} />
         )}
       </div>
     )
