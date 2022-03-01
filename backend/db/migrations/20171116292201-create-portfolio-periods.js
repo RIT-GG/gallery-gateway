@@ -13,6 +13,17 @@
         type: Sequelize.INTEGER
       },
 
+      // Name of the portfolio period
+      name: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      // Description for the portfolio period
+      description: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+
       // Start and end dates for the period's submission period
       startDate: {
         type: Sequelize.DATE,
