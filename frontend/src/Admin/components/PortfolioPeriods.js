@@ -27,17 +27,14 @@ function PortfolioPeriods(props) {
         const judging_end_date = new Date(curr_portfolio.judgingEndDate);
         // Portfolios with end dates before today are past portfolios
         if (judging_end_date < today) {
-          console.log("past period")
           newPastPPs.push(curr_portfolio);
         }
         // Portfolios with judging end dates of today or later AND a submission start date before today are active
         else if (submission_start_date < today) {
-          console.log("active period")
           newActivePPs.push(curr_portfolio);
         }
         // All other portfolios are future portfolio periods
         else {
-          console.log("future period")
           newFuturePPs.push(curr_portfolio);
         }
       }
@@ -58,8 +55,6 @@ function PortfolioPeriods(props) {
       })
     }
   }, [props.error, props.handleError])
-
-  console.log(props)
 
   if (loading) {
     return <Loading />
