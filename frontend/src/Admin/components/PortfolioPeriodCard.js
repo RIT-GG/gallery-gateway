@@ -26,32 +26,36 @@ const FormattedDate = (props) => (
   </Moment>
 )
 
-class PortfolioPeriodCard extends Component {
-  static propTypes = {
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string,
-    description: PropTypes.string,
-    startDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
-    judgingStartDate: PropTypes.string.isRequired,
-    judgingEndDate: PropTypes.string.isRequired,
-    portfolios: PropTypes.array,
-  }
+function PortfolioPeriodCard(props) {
 
-  renderOpenClose = (opens, closes) => (
+  const {
+    startDate,
+    endDate,
+    judgingStartDate,
+    judgingEndDate
+  } = props
+
+  const now = moment()
+  const isPortfolioPeriodInFuture = now.isBefore(moment(startDate))
+  const isPortfolioPeriodInSubmission = now.isAfter(moment(startDate)) && now.isBefore(moment(endDate))
+  const isPortfolioPeriodBetweenSubmissionAndJudging = now.isAfter(moment(endDate)) && now.isBefore(moment(judgingStartDate))
+  const isPortfolioPeriodInJudging = now.isAfter(moment(judgingStartDate)) && now.isBefore(moment(judgingEndDate))
+  const isPortfolioPeriodClosed = now.isAfter(moment(judgingEndDate))
+
+  const renderOpenClose = (opens, closes) => (
     <Fragment>
-      <dl style={{width: '50%'}} className='d-inline-block'>
-        <dt>{moment().isBefore(moment(opens)) ? 'Opens:' : 'Opened:' }</dt>
+      <dl style={{ width: '50%' }} className='d-inline-block'>
+        <dt>{moment().isBefore(moment(opens)) ? 'Opens:' : 'Opened:'}</dt>
         <dd><FormattedDate>{opens}</FormattedDate></dd>
       </dl>
-      <dl style={{width: '50%'}} className='d-inline-block'>
-        <dt>{moment().isBefore(moment(closes)) ? 'Closes:' : 'Closed:' }</dt>
+      <dl style={{ width: '50%' }} className='d-inline-block'>
+        <dt>{moment().isBefore(moment(closes)) ? 'Closes:' : 'Closed:'}</dt>
         <dd><FormattedDate>{closes}</FormattedDate></dd>
       </dl>
     </Fragment>
   )
 
-  renderSubmissionSummary = (props) => {
+  const renderSubmissionSummary = (props) => {
     const totalPortfolios = Array.isArray(props.portfolios) ? props.portfolios.length : 0;
 
     return (
@@ -67,7 +71,7 @@ class PortfolioPeriodCard extends Component {
     )
   }
 
-  renderClosedPortfolioPeriod = ({ startDate, judgingEndDate }) => (
+  const renderClosedPortfolioPeriod = () => (
     <Row>
       <Col className='mb-3'>
         <h4>Closed Portfolio Period</h4>
@@ -78,28 +82,16 @@ class PortfolioPeriodCard extends Component {
     </Row>
   )
 
-  renderBody = (props) => {
-    const {
-      startDate,
-      endDate,
-      judgingStartDate,
-      judgingEndDate
-    } = props
-
-    const now = moment()
-    const isPortfolioPeriodInFuture = now.isBefore(moment(startDate))
-    const isPortfolioPeriodInSubmission = now.isAfter(moment(startDate)) && now.isBefore(moment(endDate))
-    const isPortfolioPeriodBetweenSubmissionAndJudging = now.isAfter(moment(endDate)) && now.isBefore(moment(judgingStartDate))
-    const isPortfolioPeriodInJudging = now.isAfter(moment(judgingStartDate)) && now.isBefore(moment(judgingEndDate))
-    const isPortfolioPeriodClosed = now.isAfter(moment(judgingEndDate))
+  const renderBody = (props) => {
 
     if (isPortfolioPeriodClosed) {
-      return this.renderClosedPortfolioPeriod(props)
+      return renderClosedPortfolioPeriod();
     }
 
     // Dynamically set the sub-heading based on the portfolio period state
     let subHeading1 = ''
     let subHeading2 = ''
+    let border = ''
 
     if (isPortfolioPeriodInFuture) {
       subHeading1 = 'Pre Portfolio Period'
@@ -107,12 +99,15 @@ class PortfolioPeriodCard extends Component {
     } else if (isPortfolioPeriodInSubmission) {
       subHeading1 = 'Accepting Submissions'
       subHeading2 = 'Pre Judging'
+      border = "border border-primary"
     } else if (isPortfolioPeriodBetweenSubmissionAndJudging) {
       subHeading1 = 'No Longer Accepting Submissions'
       subHeading2 = 'Pre Judging'
+      border = 'border border-warning'
     } else if (isPortfolioPeriodInJudging) {
       subHeading1 = 'No Longer Accepting Submissions'
       subHeading2 = 'Judging In Progress'
+      border = 'border border-secondary'
     }
 
     // We render Submission Period and Judging Period in two columns,
@@ -123,23 +118,23 @@ class PortfolioPeriodCard extends Component {
         <Col xs='12' md='6'>
           <h4>Submission Period</h4>
           <h6>{subHeading1}</h6>
-          {this.renderOpenClose(startDate, endDate)}
+          {renderOpenClose(startDate, endDate)}
           {isPortfolioPeriodInSubmission ? (
             <Fragment>
               <h4>Judging Period</h4>
               <h6>{subHeading2}</h6>
-              {this.renderOpenClose(judgingStartDate, judgingEndDate)}
+              {renderOpenClose(judgingStartDate, judgingEndDate)}
             </Fragment>
           ) : null}
         </Col>
         <Col xs='12' md='6'>
           {isPortfolioPeriodInSubmission
-            ? this.renderSubmissionSummary(props)
+            ? renderSubmissionSummary(props)
             : (
               <Fragment>
                 <h4>Judging Period</h4>
                 <h6>{subHeading2}</h6>
-                {this.renderOpenClose(judgingStartDate, judgingEndDate)}
+                {renderOpenClose(judgingStartDate, judgingEndDate)}
               </Fragment>
             )}
         </Col>
@@ -147,7 +142,7 @@ class PortfolioPeriodCard extends Component {
     )
   }
 
-  renderButtons = (props) => (
+  const renderButtons = (props) => (
     <Row>
       <Col>
         <Button
@@ -198,17 +193,38 @@ class PortfolioPeriodCard extends Component {
     </Row>
   )
 
-  render () {
-    return (
-      <Card>
-        <h2>
-          <Link to={`portfolioperiod/${this.props.id}`}>{this.props.name}</Link>
-        </h2>
-        {this.renderBody(this.props)}
-        {this.renderButtons(this.props)}
-      </Card>
-    )
+  let border = "";
+
+  if (isPortfolioPeriodInSubmission) {
+    border = "border border-primary"
+  } else if (isPortfolioPeriodBetweenSubmissionAndJudging) {
+    border = 'border border-warning'
+  } else if (isPortfolioPeriodInJudging) {
+    border = 'border border-info'
   }
+
+
+  return (
+    <Card className={border}>
+      <h2>
+        <Link to={`portfolioperiod/${props.id}`}>{props.name}</Link>
+      </h2>
+      {renderBody(props)}
+      {renderButtons(props)}
+    </Card>
+  )
+
+}
+
+PortfolioPeriodCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+  judgingStartDate: PropTypes.string.isRequired,
+  judgingEndDate: PropTypes.string.isRequired,
+  portfolios: PropTypes.array,
 }
 
 export default PortfolioPeriodCard

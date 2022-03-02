@@ -13,8 +13,8 @@ const Dashboard = () => {
 
   /**
    * Effect for updating the active feature in state
-   * decides active feature based of path name
-   * Default to the shows tab
+   * decides active feature based of path name in URL
+   * Defaults to the shows tab
    */
   useEffect(() => {
     const path = window.location.pathname;
@@ -81,8 +81,6 @@ const Dashboard = () => {
               <PortfolioPeriods />
             </CarouselItem>
           </Carousel>
-
-          <Shows />
         </Col>
       </Row>
     </Container>
