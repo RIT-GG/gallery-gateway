@@ -5,7 +5,7 @@ import PortfolioPeriodCard from '../components/PortfolioPeriodCard'
 import Loading from '../../shared/components/Loading'
 
 function PortfolioPeriods(props) {
-  const { loading, activePortfolioPeriod } = props
+  const { loading } = props
   const [pastPortfolioPeriods, setPastPortfoliosPeriods] = useState([]);
   const [activePortfolioPeriods, setActivePortfolioPeriods] = useState([]);
   const [futurePortfolioPeriods, setFuturePortfolioPeriods] = useState([]);
