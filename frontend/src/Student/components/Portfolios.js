@@ -14,7 +14,7 @@ function Portfolios(props) {
     }
   }, [props.error, props.handleError])
 
-  const { loading, portfolios, activePortfolioPeriod } = props
+  const { loading, portfolios, activePortfolioPeriods } = props
 
   if (loading) {
     return <Loading />
@@ -29,7 +29,7 @@ function Portfolios(props) {
           </Col>
           <Col xs={12} lg={8}>
             <p className="h3">No portfolios found.</p>
-            <p>{activePortfolioPeriod ? <React.Fragment>You can start by <a href="/portfolios/create">creating a portfolio</a>.</React.Fragment> : "You can only create portfolios during an active portfolio period"}</p>
+            <p>{activePortfolioPeriods.length > 0 ? <React.Fragment>You can start by <a href="/portfolios/create">creating a portfolio</a>.</React.Fragment> : "You can only create portfolios during an active portfolio period"}</p>
           </Col>
         </Row>
 
@@ -40,7 +40,7 @@ function Portfolios(props) {
   let activePortfolio = null;
   let pastPortfolios = [];
   // Extract the active portfolio from the past portfolios
-  if (activePortfolioPeriod) {
+  if (activePortfolioPeriods.length > 0) {
     for (let idx = 0; idx < portfolios.length; idx++) {
       const curr_portfolio = portfolios[idx];
       if (curr_portfolio.portfolioPeriodId === activePortfolioPeriod.id) {
@@ -60,7 +60,7 @@ function Portfolios(props) {
     <Container >
       <h1 className="mb-4">Your portfolios</h1>
       <h3>Current Portfolio</h3>
-      {activePortfolioPeriod === null ? <p>There is no active portfolio period</p>
+      {activePortfolioPeriods === null || activePortfolioPeriods.length === 0 ? <p>There is no active portfolio period</p>
         : activePortfolio ? <PortfolioCard portfolio={activePortfolio} key={activePortfolio.id} />
           : <p>You haven't created a portfolio for this portfolio period. You can <a href="/portfolios/create">create one here</a>.</p>
       }

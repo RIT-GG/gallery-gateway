@@ -33,14 +33,14 @@ export default compose(
   }),
   // Query for the active portfolio period, if one exists
   graphql(PortfolioPeriodQuery, {
-    props: ({ data: { portfolioPeriod, loading, error } }) => ({
-      activePortfolioPeriod: portfolioPeriod,
+    props: ({ data: { portfolioPeriods, loading, error } }) => ({
+      activePortfolioPeriods: portfolioPeriods,
       loading,
       error
     }),
     options: ownProps => ({
       variables: {
-        active: true
+        activeSubmission: true
       }
     })
   })
