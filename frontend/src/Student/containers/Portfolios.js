@@ -5,7 +5,7 @@ import { compose } from 'recompose'
 import { displayError } from '../../shared/actions'
 
 // Portfolio related data
-import PortfolioPeriodQuery from '../queries/portfolioPeriod.graphql'
+import ActivePortfolioPeriodsQuery from '../queries/activePortfolioPeriods.graphql'
 import PortfoliosQuery from '../queries/portfolios.graphql'
 import Portfolios from '../components/Portfolios'
 
@@ -32,9 +32,9 @@ export default compose(
     })
   }),
   // Query for the active portfolio period, if one exists
-  graphql(PortfolioPeriodQuery, {
+  graphql(ActivePortfolioPeriodsQuery, {
     props: ({ data: { portfolioPeriods, loading, error } }) => ({
-      activePortfolioPeriods: portfolioPeriods,
+      activePortfolioPeriods: portfolioPeriods || [],
       loading,
       error
     }),
