@@ -2,9 +2,11 @@ import { graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
-import ShowsQuery from '../queries/shows.graphql'
 import PortfolioPeriods from '../components/PortfolioPeriods'
 import { displayError } from '../../shared/actions'
+
+// Graph QL queries
+import PortfolioPeriodsQuery from "../queries/portfolio/portfolioPeriods.graphql"
 
 const mapDispatchToProps = dispatch => ({
   handleError: message => dispatch(displayError(message))
@@ -12,9 +14,9 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(null, mapDispatchToProps),
-  graphql(ShowsQuery, {
-    props: ({ ownProps, data: { shows, loading, error } }) => ({
-      shows,
+  graphql(PortfolioPeriodsQuery, {
+    props: ({ ownProps, data: { portfolioPeriods, loading, error } }) => ({
+      portfolioPeriods: portfolioPeriods,
       loading,
       error
     })

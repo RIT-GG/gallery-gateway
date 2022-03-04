@@ -280,7 +280,8 @@ type Query {
     users(type: UserType): [User]
     group(id: ID!): Group
     portfolio(id: ID!): Portfolio
-    portfolioPeriod(id: ID, active: Boolean): PortfolioPeriod
+    portfolioPeriod(id: ID): PortfolioPeriod
+    portfolioPeriods(orderBy: OrderByItem, active: Boolean, activeSubmission: Boolean, activeJudging: Boolean): [PortfolioPeriod]
     portfolios(orderBy: OrderByItem, studentUsername: String): [Portfolio]
     show(id: ID!): Show
     groups: [Group]

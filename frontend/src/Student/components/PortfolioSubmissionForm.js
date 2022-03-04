@@ -30,11 +30,14 @@ const ENTRY_FACTORY = () => {
 }
 
 function PortfolioSubmissionForm(props) {
+  const [showPreview, setShowPreview] = useState(false);
   const [form_data, setFormData] = useState({
     title: "Untitled",
     studentUsername: props.user.username,
     submissions: [ENTRY_FACTORY()]
   });
+  const params = new URLSearchParams(window.location.search);
+  const portfolioPeriodId = params.get("portfolioPeriodId");
 
   /**
    * Effect for ensuring there is always 1 submission on the form
@@ -137,7 +140,7 @@ function PortfolioSubmissionForm(props) {
     const portfolio = {
       title: form_data.title,
       studentUsername: form_data.studentUsername,
-      portfolioPeriodId: props.activePortfolioPeriod.id
+      portfolioPeriodId: portfolioPeriodId,
     }
     const portfolio_response = await props.createPortfolio(portfolio);
     try {
@@ -167,7 +170,8 @@ function PortfolioSubmissionForm(props) {
     })
   }
 
-  if (props.activePortfolioPeriod === null) {
+  // Display a message if no active portfolio period id is supplied
+  if (!portfolioPeriodId) {
     return (
       <Container>
         <Row>
@@ -175,7 +179,7 @@ function PortfolioSubmissionForm(props) {
             <Header>New Portfolio</Header>
           </Col>
           <Col xs='12' md='8'>
-            <p>There is no active portfolio period, portfolios can only be created during an active portfolio period</p>
+            <p>There is no active portfolio period, portfolios can only be created during an active portfolio period.</p>
           </Col>
         </Row>
       </Container>
