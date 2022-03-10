@@ -60,7 +60,6 @@ function PortfolioPeriodCard(props) {
 
     return (
       <Fragment>
-        {/* <h4>Submissions: <Badge color='primary'>{totalPortfolios}</Badge></h4> */}
         <div>
           <FontAwesomeIcon icon={FaImage} className='mr-2' />
           <h6 className='text-bold d-inline-block'>
@@ -160,11 +159,11 @@ function PortfolioPeriodCard(props) {
           color='primary'
           style={{ cursor: 'pointer' }}
           tag={Link}
-          to={`/portfolio-period/${props.id}/submissions`}
+          to={`/portfolio-period/${props.id}/portfolios`}
           block
           outline
         >
-          View Submissions
+          View Portfolios
         </Button>
       </Col>
       <Col>

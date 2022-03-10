@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container } from 'reactstrap'
 
-import CreatePortfolioPeriodForm from '../containers/CreatePortfolioPeriodForm'
+import CreatePortfolioPeriodForm from '../containers/portfolio/CreatePortfolioPeriodForm'
 
 const CreatePortfolioPeriod = () => (
   <Container>

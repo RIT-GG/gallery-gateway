@@ -2,10 +2,10 @@ import { graphql } from 'react-apollo'
 import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { displayError } from '../../shared/actions'
+import { displayError } from  "../../../shared/actions"
 
-import CreatePortfolioPeriodMutation from '../mutations/createPortfolioPeriod.graphql'
-import CreatePortfolioPeriodForm from '../components/CreatePortfolioPeriodForm'
+import CreatePortfolioPeriodMutation from '../../mutations/createPortfolioPeriod.graphql'
+import CreatePortfolioPeriodForm from '../../components/portfolio/CreatePortfolioPeriodForm'
 
 const mapDispatchToProps = dispatch => ({
   done: () => dispatch(push('/')),

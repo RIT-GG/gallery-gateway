@@ -13,6 +13,7 @@ import ManageUsers from './pages/ManageUsers'
 
 import Layout from './components/Layout'
 import NotFound from '../shared/components/NotFound'
+import ViewPortfolioPeriod from './pages/ViewPortfolioPeriod'
 
 const Admin = () => (
   <Layout>
@@ -28,6 +29,7 @@ const Admin = () => (
       <Route exact path='/portfolio-period' component={Dashboard} />
       <Route exact path='/portfolio-period/new' component={CreatePortfolioPeriod} />
       <Route exact path='/portfolio-period/:id/edit' component={EditPortfolioPeriod} />
+      <Route path='/portfolio-period/:id' component={ViewPortfolioPeriod} />
       <Route component={NotFound} />
     </Switch>
   </Layout>

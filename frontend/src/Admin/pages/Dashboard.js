@@ -3,7 +3,7 @@ import { Link, NavLink, Route, useLocation } from 'react-router-dom'
 import { Container, Row, Col, Button, Carousel, CarouselItem, NavItem, Nav } from 'reactstrap'
 
 import Shows from '../containers/Shows'
-import PortfolioPeriods from '../containers/PortfolioPeriods'
+import PortfolioPeriods from '../containers/portfolio/PortfolioPeriods'
 
 const FEATURE__SHOWS = 0;
 const FEATURE__PORTFOLIO_PERIODS = 1;

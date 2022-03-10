@@ -2,11 +2,11 @@ import { graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
-import PortfolioPeriods from '../components/PortfolioPeriods'
-import { displayError } from '../../shared/actions'
+import PortfolioPeriods from '../../components/portfolio/PortfolioPeriods'
+import { displayError } from '../../../shared/actions'
 
 // Graph QL queries
-import PortfolioPeriodsQuery from "../queries/portfolio/portfolioPeriods.graphql"
+import PortfolioPeriodsQuery from "../../queries/portfolio/portfolioPeriods.graphql"
 
 const mapDispatchToProps = dispatch => ({
   handleError: message => dispatch(displayError(message))
