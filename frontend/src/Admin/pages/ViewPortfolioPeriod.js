@@ -7,7 +7,7 @@ import { Route, Switch } from 'react-router-dom'
 import { compose } from 'recompose'
 
 import PortfolioPeriodDetailsTab from '../containers/portfolio/PortfolioPeriodDetailsTab'
-// import PortfolioPeriodPortfoliosTab from '../containers/portfolio/PortfolioPeriodPortfoliosTab'
+import PortfolioPeriodPortfoliosTab from '../containers/portfolio/PortfolioPeriodPortfoliosTab'
 // import PortfolioPeriodJudgesTab from '../containers/PortfolioPeriodJudgesTab'
 import PortfolioPeriodQuery from '../queries/portfolio/portfolioPeriod.graphql'
 import Loading from '../../shared/components/Loading'
@@ -68,11 +68,11 @@ const ViewPortfolioPeriod = props => {
               path={`${props.match.path}`}
               render={() => <PortfolioPeriodDetailsTab portfolioPeriod={props.portfolioPeriod} />}
             />
-            {/* <Route
+            <Route
               path={`${props.match.path}/portfolios`}
               render={() => <PortfolioPeriodPortfoliosTab portfolioPeriod={props.portfolioPeriod} />}
             />
-            <Route
+            {/* <Route
               path={`${props.match.path}/judges`}
               render={() => <PortfolioPeriodJudgesTab portfolioPeriod={props.portfolioPeriod} />}
             /> */}
