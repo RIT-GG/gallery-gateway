@@ -1,5 +1,5 @@
-query PortfolioPeriods {
-  portfolioPeriods {
+query PortfolioPeriod($id: ID) {
+  portfolioPeriod(id: $id) {
     name
     description
     id

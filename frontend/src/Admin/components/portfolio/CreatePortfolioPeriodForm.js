@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Form, FormGroup, Label, Input, Button, Row, Col } from 'reactstrap'
 import styled from 'styled-components'
 
-import DateRangeInput from '../../shared/components/DateRangeInput'
+import DateRangeInput from '../../../shared/components/DateRangeInput'
 
 const CalendarContainer = styled.div`
   margin-bottom: 25px;

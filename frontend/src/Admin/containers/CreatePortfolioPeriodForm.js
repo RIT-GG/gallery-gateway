@@ -5,7 +5,7 @@ import { compose } from 'recompose'
 import { displayError } from '../../shared/actions'
 
 import CreatePortfolioPeriodMutation from '../mutations/createPortfolioPeriod.graphql'
-import CreatePortfolioPeriodForm from '../components/CreatePortfolioPeriodForm'
+import CreatePortfolioPeriodForm from '../components/portfolio/CreatePortfolioPeriodForm'
 
 const mapDispatchToProps = dispatch => ({
   done: () => dispatch(push('/')),
