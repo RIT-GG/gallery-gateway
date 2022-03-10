@@ -150,7 +150,7 @@ function PortfolioPeriodCard(props) {
           className='mr-4'
           style={{ cursor: 'pointer' }}
           tag={Link}
-          to={`/portfolioperiod/${props.id}`}
+          to={`/portfolio-period/${props.id}`}
           block
           outline
         >
@@ -160,7 +160,7 @@ function PortfolioPeriodCard(props) {
           color='primary'
           style={{ cursor: 'pointer' }}
           tag={Link}
-          to={`/portfolioperiod/${props.id}/submissions`}
+          to={`/portfolio-period/${props.id}/submissions`}
           block
           outline
         >
@@ -173,7 +173,7 @@ function PortfolioPeriodCard(props) {
           color='primary'
           style={{ cursor: 'pointer' }}
           tag={Link}
-          to={`/portfolioperiod/${props.id}/judges`}
+          to={`/portfolio-period/${props.id}/judges`}
           block
           outline
         >
@@ -183,7 +183,7 @@ function PortfolioPeriodCard(props) {
           color='primary'
           style={{ cursor: 'pointer' }}
           tag={Link}
-          to={`/portfolioperiod/${props.id}/judges/assign`}
+          to={`/portfolio-period/${props.id}/judges/assign`}
           block
           outline
         >
@@ -207,7 +207,7 @@ function PortfolioPeriodCard(props) {
   return (
     <Card className={border}>
       <h2>
-        <Link to={`portfolioperiod/${props.id}`}>{props.name}</Link>
+        <Link to={`portfolio-period/${props.id}`}>{props.name}</Link>
       </h2>
       {renderBody(props)}
       {renderButtons(props)}

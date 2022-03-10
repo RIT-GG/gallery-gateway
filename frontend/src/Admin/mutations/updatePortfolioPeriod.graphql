@@ -1,0 +1,8 @@
+mutation UpdatePortfolioPeriod($id: ID! $input: PortfolioPeriodUpdate!) {
+  updatePortfolioPeriod(id: $id input: $input) {
+    startDate
+    endDate
+    judgingStartDate
+    judgingEndDate
+  }
+}
