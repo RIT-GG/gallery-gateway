@@ -9,7 +9,7 @@ export async function createPortfolioPeriod(_, args, context) {
   }
   const { description, name, startDate, endDate, judgingStartDate, judgingEndDate } = args.input
 
-  // Not all input is used in the portfolio table, extract only data needed for the portfolio
+  // Required portfolio period fields
   let newPortfolioPeriod = {
     startDate,
     endDate,
@@ -17,20 +17,27 @@ export async function createPortfolioPeriod(_, args, context) {
     judgingEndDate
   }
 
+  // Appened optional fields, check that types match expected schema type prior to appending 
   if (typeof description === "string") { newPortfolioPeriod.description = description };
   if (typeof name === "string") { newPortfolioPeriod.name = name };
+
   return PortfolioPeriod.create(newPortfolioPeriod)
 }
 
 
+/**
+ * Handles updating portfolio periods in the database
+ * from a graphql mutation
+ */
 export function updatePortfolioPeriod(_, args, context) {
-  // Only admins can update entries
+  // Only admins can update portfolio periods
   if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
   return PortfolioPeriod.findByPk(args.id)
     .then((portfolio_period) => {
       return portfolio_period.update(args.input, {
+        // All fields that are allowed to be updated
         fields: ['name', 'description',
           'startDate', 'endDate',
           'judgingStartDate', 'judgingEndDate'
