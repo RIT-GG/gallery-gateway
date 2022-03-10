@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import { compose, mapProps } from 'recompose'
 import { displayError } from '../../shared/actions'
 
-//import PortfolioPeriodsQuery from '../queries/portfolioPeriods.graphql'
-//import EditPortfolioPeriodMutation from '../mutations/editPortfolioPeriod.graphql'
+import PortfolioPeriodsQuery from '../queries/portfolio/portfolioPeriods.graphql'
+import UpdatePortfolioPeriodMutation from '../mutations/updatePortfolioPeriod.graphql'
 import EditPortfolioPeriodForm from '../components/EditPortfolioPeriodForm'
 
 const mapDispatchToProps = dispatch => ({
@@ -15,19 +15,19 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(null, mapDispatchToProps),
-  // graphql(EditPortfolioPeriodMutation, {
-  //   props: ({ mutate, ownProps }) => ({
-  //     update: portfolioPeriod =>
-  //       mutate({
-  //         variables: { id: ownProps.portfolioPeriod.id, input: portfolioPeriod }
-  //       })
-  //   }),
-  //   options: () => ({
-  //     refetchQueries: [
-  //       {
-  //         query: PortfolioPeriodsQuery
-  //       }
-  //     ]
-  //   })
-  // })
+  graphql(UpdatePortfolioPeriodMutation, {
+    props: ({ mutate, ownProps }) => ({
+      update: portfolioPeriod =>
+        mutate({
+          variables: { id: ownProps.portfolioPeriod.id, input: portfolioPeriod }
+        })
+    }),
+    options: () => ({
+      refetchQueries: [
+        {
+          query: PortfolioPeriodsQuery
+        }
+      ]
+    })
+  })
 )(EditPortfolioPeriodForm)

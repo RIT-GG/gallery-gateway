@@ -37,17 +37,13 @@ function EditPortfolioPeriodForm(props) {
       judgingStartDate: form_data.judgingStart,
       judgingEndDate: form_data.judgingEnd
     }
-    try {
-      props.update(portfolio_period)
-        .then(() => {navigateHome()})
-        .catch(err => handleError(err.message))
-    } catch (e) {
-      //error handling
-    }
+    props.update(portfolio_period)
+      .then(() => {navigateHome()})
+      .catch(err => console.error(err.message))
   }
 
   function navigateHome() {
-    window.location.href = '/';
+    window.location.href = '/portfolio-period';
   }
 
   function handleChange(event) {
@@ -65,7 +61,7 @@ function EditPortfolioPeriodForm(props) {
     })
   }
 
-  if(moment(form_data.entryStart).isAfter(moment())){
+  if(moment(form_data.judgingEnd).isAfter(moment())){
     return (
       <Form onSubmit={handleSubmit}>
         <Row>
@@ -101,7 +97,7 @@ function EditPortfolioPeriodForm(props) {
                   <CalendarContainer>
                   <DateRangeInput
                     isOutsideRange={day => !isAfterDay(day, moment())}
-                    startDateInput={{
+                    startDateField={{
                       field: 'entryStart',
                       input: {
                         onChange: handleDateRange,
@@ -109,7 +105,7 @@ function EditPortfolioPeriodForm(props) {
                         value: form_data.entryStart
                       }
                     }}
-                    endDateInput={{
+                    endDateField={{
                       field: 'entryEnd',
                       input: {
                         onChange: handleDateRange,
@@ -130,7 +126,7 @@ function EditPortfolioPeriodForm(props) {
                   <CalendarContainer>
                   <DateRangeInput
                     isOutsideRange={day => !isAfterDay(day, moment())}
-                    startDateInput={{
+                    startDateField={{
                       field: 'judgingStart',
                       input: {
                         onChange: handleDateRange,
@@ -138,7 +134,7 @@ function EditPortfolioPeriodForm(props) {
                         value: form_data.judgingStart
                       }
                     }}
-                    endDateInput={{
+                    endDateField={{
                       field: 'judgingEnd',
                       input: {
                         onChange: handleDateRange,
@@ -185,7 +181,7 @@ function EditPortfolioPeriodForm(props) {
   }
    else{
     return(
-      <h2>Portfolio Periods cannot be edited once the submission period has begun.</h2>
+      <h2>Portfolio Periods cannot be edited once the judging period has ended.</h2>
     )
   }
 }
