@@ -2,12 +2,12 @@ import { UserError } from 'graphql-errors'
 import { ADMIN } from '../../constants'
 import PortfolioPeriod from '../../models/portfolioPeriod'
 
-export async function createPortfolioPeriod (_, args, context) {
+export async function createPortfolioPeriod(_, args, context) {
   // only students can create portfolios
   if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
-  const {description, name, startDate, endDate, judgingStartDate, judgingEndDate} = args.input
+  const { description, name, startDate, endDate, judgingStartDate, judgingEndDate } = args.input
 
   // Not all input is used in the portfolio table, extract only data needed for the portfolio
   let newPortfolioPeriod = {
@@ -17,7 +17,24 @@ export async function createPortfolioPeriod (_, args, context) {
     judgingEndDate
   }
 
-  if(typeof description === "string" ){ newPortfolioPeriod.description = description };
-  if(typeof name === "string" ){ newPortfolioPeriod.name = name };
+  if (typeof description === "string") { newPortfolioPeriod.description = description };
+  if (typeof name === "string") { newPortfolioPeriod.name = name };
   return PortfolioPeriod.create(newPortfolioPeriod)
+}
+
+
+export function updatePortfolioPeriod(_, args, context) {
+  // Only admins can update entries
+  if (context.authType !== ADMIN) {
+    throw new UserError('Permission Denied')
+  }
+  return PortfolioPeriod.findByPk(args.id)
+    .then((portfolio_period) => {
+      return portfolio_period.update(args.input, {
+        fields: ['name', 'description',
+          'startDate', 'endDate',
+          'judgingStartDate', 'judgingEndDate'
+        ]
+      })
+    })
 }
