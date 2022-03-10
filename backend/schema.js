@@ -63,6 +63,15 @@ input PortfolioPeriodInput {
     judgingEndDate: Date!
 }
 
+input PortfolioPeriodUpdate {
+    name: String
+    description: String
+    startDate: Date
+    endDate: Date
+    judgingStartDate: Date
+    judgingEndDate: Date
+}
+
 type Portfolio {
     id: ID!
     title: String!
@@ -311,6 +320,7 @@ type Mutation {
     createPortfolio(input: PortfolioInput!): Portfolio
 
     createPortfolioPeriod(input: PortfolioPeriodInput!): PortfolioPeriod
+    updatePortfolioPeriod(id: ID!, input: PortfolioPeriodUpdate!): PortfolioPeriod
 
     createPhoto(input: PhotoInput!): Show
     createVideo(input: VideoInput!): Show
