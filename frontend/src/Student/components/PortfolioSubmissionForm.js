@@ -4,6 +4,7 @@ import { Button, Col, Container, Form, FormGroup, Input, Label, Row, } from 'rea
 
 import styled from 'styled-components'
 import { IMAGE_UPLOAD_PATH, PDF_UPLOAD_PATH } from '../../utils'
+import PortfolioCreationPreviewModal from './portfolio/PortfolioCreationPreviewModal'
 
 import PortfolioEntryInput from './portfolio/PortfolioEntryInput'
 
@@ -136,6 +137,10 @@ function PortfolioSubmissionForm(props) {
    */
   async function handleSubmit(event) {
     event.preventDefault();
+    setShowPreview(true);
+  }
+
+  async function createPortfolio() {
     // Create the portfolio from form_data
     const portfolio = {
       title: form_data.title,
@@ -229,6 +234,7 @@ function PortfolioSubmissionForm(props) {
           </Col>
         </Row>
       </Container>
+      <PortfolioCreationPreviewModal isOpen={showPreview} cancel={() => {setShowPreview(false)}} accept={createPortfolio} form_data={form_data} />
     </Form>
   )
 }
