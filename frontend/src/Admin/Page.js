@@ -7,6 +7,7 @@ import PrintableReport from './pages/PrintableReport'
 import CreateShow from './pages/CreateShow'
 import CreatePortfolioPeriod from './pages/CreatePortfolioPeriod'
 import EditShow from './pages/EditShow'
+import EditPortfolioPeriod from './pages/EditPortfolioPeriod'
 import AssignJudges from './pages/AssignJudges'
 import ManageUsers from './pages/ManageUsers'
 
@@ -26,8 +27,9 @@ const Admin = () => (
       <Route path='/show/:id' component={ViewShow} />
       <Route path='/users' component={ManageUsers} />
       <Route exact path='/portfolio-period' component={Dashboard} />
-      <Route path='/portfolio-period/:id' component={ViewPortfolioPeriod} />
       <Route exact path='/portfolio-period/new' component={CreatePortfolioPeriod} />
+      <Route exact path='/portfolio-period/:id/edit' component={EditPortfolioPeriod} />
+      <Route path='/portfolio-period/:id' component={ViewPortfolioPeriod} />
       <Route component={NotFound} />
     </Switch>
   </Layout>
