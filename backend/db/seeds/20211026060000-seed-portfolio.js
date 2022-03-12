@@ -14,10 +14,10 @@ export function up (queryInterface, Sequelize) {
     ])
     .then(() => {
       // Create ids for each portfolio period
-      const portfolioPeriodIdActive = genId()
-      const portfolioPeriodIdExpired = genId()
-      const portfolioPeriodIdInJudging = genId()
-      const portfolioPeriodIdFuture = genId()
+      const portfolioPeriodIdActive = 1
+      const portfolioPeriodIdExpired = 2
+      const portfolioPeriodIdInJudging = 3
+      const portfolioPeriodIdFuture = 4
 
       /// Create entry and judgings dates for each period
       // Active Period
@@ -102,11 +102,11 @@ export function up (queryInterface, Sequelize) {
     })
     .then (ids => {     
       const {portfolioPeriodIdActive, portfolioPeriodIdExpired, portfolioPeriodIdInJudging, portfolioPeriodIdFuture} = ids
-      const portfolioId1 = genId()
-      const portfolioId2 = genId()
-      const portfolioId3 = genId()
-      const portfolioId4 = genId()
-      const portfolioId5 = genId()
+      const portfolioId1 = 1 
+      const portfolioId2 = 2 
+      const portfolioId3 = 3 
+      const portfolioId4 = 4 
+      const portfolioId5 = 5 
 
       // Create 2 portfolios for student with username = "user7",
       // create 2 portfolios for student with username = "user6",
