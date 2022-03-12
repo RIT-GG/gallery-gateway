@@ -102,11 +102,11 @@ export function up (queryInterface, Sequelize) {
     })
     .then (ids => {     
       const {portfolioPeriodIdActive, portfolioPeriodIdExpired, portfolioPeriodIdInJudging, portfolioPeriodIdFuture} = ids
-      const portfolioId1 = genId()
-      const portfolioId2 = genId()
-      const portfolioId3 = genId()
-      const portfolioId4 = genId()
-      const portfolioId5 = genId()
+      const portfolioId1 = 1 //genId()
+      const portfolioId2 = 2 //genId()
+      const portfolioId3 = 3 //genId()
+      const portfolioId4 = 4 //genId()
+      const portfolioId5 = 5 //genId()
 
       // Create 2 portfolios for student with username = "user7",
       // create 2 portfolios for student with username = "user6",
