@@ -15,6 +15,18 @@ const ScholarshipSubmission = sequelize.define('scholarshipSubmissions', {
     onUpdate: 'cascade'
   },
 
+  // id of associated portfolio period
+  portfolioPeriodId: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'portfolioPeriods',
+      key: 'id'
+    },
+    onDelete: 'cascade',
+    onUpdate: 'cascade'
+  },
+
   // id of portfolio submitted
   portfolioId: {
     allowNull: false,

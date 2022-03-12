@@ -22,6 +22,15 @@
           key: 'id'
         }
       },
+      // id of associated portfolio period
+      portfolioPeriodId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'portfolioPeriods',
+          key: 'id'
+        }
+      },
       // id of portfolio submitted
       portfolioId: {
         allowNull: false,

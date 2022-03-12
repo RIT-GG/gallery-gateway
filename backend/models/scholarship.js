@@ -27,4 +27,11 @@ Scholarship.prototype.getSubmissions = function getSubmissions () {
   return ScholarshipSubmission.findAll({ where: { scholarshipId: this.id } })
 }
 
+Scholarship.prototype.getSubmissionsByPeriodId = function getSubmissionsByPeriodId (portfolioPeriodId) {
+  if (typeof portfolioPeriodId === "number"){
+    return ScholarshipSubmission.findAll({ where: { scholarshipId: this.id, portfolioPeriodId } })
+  }
+  return []
+}
+
 export default Scholarship
