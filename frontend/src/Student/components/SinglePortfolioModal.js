@@ -2,7 +2,8 @@ import React from 'react'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import PortfolioEntry from './portfolio/PortfolioEntry'
 
-function SinglePortfolioModal (props) {
+function SinglePortfolioModal(props) {
+
   return (
     <Modal isOpen={props.isOpen} toggle={props.toggle} size="lg" className="portfolio-modal">
       <ModalHeader toggle={props.toggle}>
@@ -13,8 +14,10 @@ function SinglePortfolioModal (props) {
         <p><strong>Created:</strong> {new Date(props.portfolio.createdAt).toDateString()}</p>
         <hr />
         <h2>Entries</h2>
-        <div className='portfolio-entries'>
-          {props.portfolio.entries.map((entry) => { return <PortfolioEntry entry={entry} key={entry.id}/> })}
+        <div className='d-flex flex-column'>
+          {props.portfolio.entries.map((entry) => {
+            return <PortfolioEntry entry={entry} key={entry.id} />
+          })}
         </div>
       </ModalBody>
       <ModalFooter>
