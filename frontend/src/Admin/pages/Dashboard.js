@@ -38,7 +38,7 @@ const Dashboard = () => {
         <Col md='3'>
           <Button
             color='primary'
-            className='btn-block'
+            className='btn-block mb-3 mb-lg-0'
             style={{ cursor: 'pointer' }}
             tag={Link}
             to='/show/new'
