@@ -5,6 +5,7 @@ import { EntryNoThumbContainer } from "../ShowCard";
 import FaYouTube from '@fortawesome/fontawesome-free-brands/faYoutube'
 import FaVimeo from '@fortawesome/fontawesome-free-brands/faVimeoV'
 import FaBook from '@fortawesome/fontawesome-free-solid/faBook'
+import FaImage from "@fortawesome/fontawesome-free-solid/faImage"
 
 /**
  * Handles rendering a single entry
@@ -24,25 +25,27 @@ function PortfolioEntry(props) {
           <FontAwesomeIcon icon={FaVimeo} size='3x' />
         )
       return (
-        <a href={url} target='_blank'>
-          <EntryNoThumbContainer>
-            {icon}
-            <h5>{props.entry.title}</h5>
-          </EntryNoThumbContainer>
-        </a>
+        <EntryNoThumbContainer className='portfolio-entry border border-dark rounded position-relative'>
+          <h5>Video Submission {icon} </h5>Î
+          <h5>
+            <span className="text-muted">Title: </span>
+            <a href={url} target='_blank' className="stretched-link">{props.entry.title}</a>
+          </h5>
+        </EntryNoThumbContainer>
       )
     case "PHOTO":
       return (
-        <div key={props.entry.id} className='portfolio-entry'>
-          <h4>{props.entry.title}</h4>
+        <EntryNoThumbContainer className='portfolio-entry border border-dark rounded position-relative'>
+          <h5>Photo Submission  <FontAwesomeIcon icon={FaImage} /> </h5>
+          <h5><span className="text-muted">Title: </span> {props.entry.title}</h5>
           <img className="img-fluid" src={`${STATIC_PATH}${getImageThumbnail(props.entry.path)}`} alt="Submitted entry" />
-        </div>
+        </EntryNoThumbContainer>
       )
     case "OTHER":
       return (
-        <EntryNoThumbContainer>
-          <FontAwesomeIcon icon={FaBook} size='3x' />
-          <h5>{props.entry.title}</h5>
+        <EntryNoThumbContainer className='portfolio-entry border border-dark rounded position-relative'>
+          <h5>Other Submission  <FontAwesomeIcon icon={FaBook} /> </h5>
+          <h5><span className="text-muted">Title: </span> {props.entry.title}</h5>
         </EntryNoThumbContainer>
       )
     default:
