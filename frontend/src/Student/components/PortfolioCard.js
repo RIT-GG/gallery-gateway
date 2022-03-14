@@ -17,7 +17,13 @@ function PortfolioCard(props) {
       </CardHeader>
       <CardBody>
         <div className="portfolio-entries">
-          {props.portfolio.entries.map((entry) => { return <PortfolioEntry entry={entry} key={entry.id} /> })}
+          {props.portfolio.entries.map((entry) => {
+            return (
+              <div className='mr-lg-3'>
+                <PortfolioEntry entry={entry} key={entry.id} />
+              </div>
+            )
+          })}
         </div>
       </CardBody>
       <SinglePortfolioModal isOpen={showPortfolioModal} toggle={togglePortfolioModal} portfolio={props.portfolio} />

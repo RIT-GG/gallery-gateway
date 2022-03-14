@@ -1,15 +1,78 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "reactstrap";
+import SinglePortfolioModal from "../../../Student/components/SinglePortfolioModal";
 
-function PortfolioPeriodPortfoliosTab(props){
-    console.log(props)
+
+function PortfolioPeriodPortfoliosTab(props) {
+    const { portfolioPeriod } = props
+    const [active_portfolio_id, setActivePortfolioId] = useState("");
+
+    // Handle bad state where portfolio period is not an object
+    if (typeof portfolioPeriod !== "object") {
+        return (
+            <Container fluid>
+                <Row className={"d-none d-lg-flex mt-5"}>
+                    <Col xs={12}>
+                        No portfolio period selected.
+                    </Col>
+                </Row>
+            </Container>
+        )
+    }
+
+    // Handle displaying when no portfolio period have been submitted
+    if (!Array.isArray(portfolioPeriod.portfolios) || portfolioPeriod.portfolios.length === 0) {
+        return (
+            <Container fluid>
+                <Row className={"d-none d-lg-flex mt-5"}>
+                    <Col xs={12}>
+                        No portfolios have been submitted to this portfolio period.
+                    </Col>
+                </Row>
+            </Container>
+        )
+    }
+
     return (
         <Container fluid>
-            <Row>
-                <Col xs={12}>
-                    <h1>Portfolios</h1>
+            <Row className={"d-none d-lg-flex mt-5"}>
+                <Col xs={4} className=" h5">
+                    Title
+                </Col>
+                <Col xs={4} className=" h5">
+                    Artist
+                </Col>
+                <Col xs={4} className="d-flex justify-content-end h5">
+                    View
                 </Col>
             </Row>
+            {portfolioPeriod.portfolios.map((portfolio, i) => {
+                return (
+                    <Row className="my-3 p-3 border rounded">
+                        <Col xs={6} lg={4} className="d-flex flex-column flex-lg-row align-items-lg-center">
+                            <span className="d-lg-none text-muted">Title</span>
+                            {portfolio.title}
+                        </Col>
+                        <Col xs={6} lg={4} className="d-flex flex-column flex-lg-row align-items-lg-center">
+                            <span className="d-lg-none text-muted">Artist</span>
+                            {portfolio.studentUsername}
+                        </Col>
+                        <Col xs={12} lg={4} className="d-flex justify-content-lg-end mt-3 mt-lg-0">
+                            <button
+                                className="btn btn-primary w-100"
+                                onClick={() => { setActivePortfolioId(portfolio.id) }}
+                            >
+                                View Portfolio
+                            </button>
+                        </Col>
+                        <SinglePortfolioModal
+                            isOpen={portfolio.id === active_portfolio_id}
+                            toggle={() => { setActivePortfolioId("") }}
+                            portfolio={portfolio}
+                        />
+                    </Row>
+                )
+            })}
         </Container>
     )
 }
