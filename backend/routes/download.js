@@ -193,7 +193,7 @@ const submissionsWithSubmittersPromise = (entries) => {
 router.route('/csv/:showId')
   .get(ensureAdminDownloadToken, (req, res, next) => {
     // find the show
-    Show.findById(req.params.showId, { rejectOnEmpty: true })
+    Show.findByPk(req.params.showId, { rejectOnEmpty: true })
       .then(show => {
         // find all image Entries to this show id
         Entry.findAll({ where: { showId: req.params.showId } })
@@ -438,7 +438,7 @@ function buildSubmisionTitlesForDownload(submissions) {
 router.route('/zips/shows/:showId')
   .get(ensureAdminDownloadToken, (req, res, next) => {
     // find the show
-    Show.findById(req.params.showId, { rejectOnEmpty: true })
+    Show.findByPk(req.params.showId, { rejectOnEmpty: true })
       .then(show => {
         // find all image Entries to this show id
         Entry.findAll({ where: { showId: req.params.showId, entryType: IMAGE_ENTRY } })
