@@ -34,16 +34,15 @@ const router = Router()
 const ensureAdminDownloadToken = (req, res, next) => {
   const token = req.query.token
   next()
-  return
-  // parseToken(token, (err, decoded) => {
-  //   if (err || decoded.type !== ADMIN) {
-  //     res.status(401)
-  //       .type('html')
-  //       .send('Permission Denied')
-  //   } else {
-  //     next()
-  //   }
-  // })
+  parseToken(token, (err, decoded) => {
+    if (err || decoded.type !== ADMIN) {
+      res.status(401)
+        .type('html')
+        .send('Permission Denied')
+    } else {
+      next()
+    }
+  })
 }
 
 const groupEntriesBySubmitter = (entries) => {
