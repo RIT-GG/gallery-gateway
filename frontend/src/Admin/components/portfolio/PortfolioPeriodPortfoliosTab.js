@@ -48,7 +48,7 @@ function PortfolioPeriodPortfoliosTab(props) {
             </Row>
             {portfolioPeriod.portfolios.map((portfolio, i) => {
                 return (
-                    <Row className="my-3 p-3 border rounded">
+                    <Row className="my-3 p-3 border rounded" key={`portfolio-row-${portfolio.id}`}>
                         <Col xs={6} lg={4} className="d-flex flex-column flex-lg-row align-items-lg-center">
                             <span className="d-lg-none text-muted">Title</span>
                             {portfolio.title}
@@ -57,9 +57,15 @@ function PortfolioPeriodPortfoliosTab(props) {
                             <span className="d-lg-none text-muted">Artist</span>
                             {portfolio.studentUsername}
                         </Col>
-                        <Col xs={12} lg={4} className="d-flex justify-content-lg-end mt-3 mt-lg-0">
+                        <Col xs={12} lg={4} className="d-flex flex-column flex-lg-row justify-content-lg-end mt-3 mt-lg-0">
+                        <button
+                                className="btn btn-outline-primary mb-3 mb-lg-0 mr-lg-3"
+                                onClick={() => { props.downloadZip(portfolio.id) }}
+                            >
+                                Download Portfolio
+                            </button>
                             <button
-                                className="btn btn-primary w-100"
+                                className="btn btn-primary"
                                 onClick={() => { setActivePortfolioId(portfolio.id) }}
                             >
                                 View Portfolio
