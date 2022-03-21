@@ -460,21 +460,16 @@ router.route('/zips/shows/:showId')
 router.route('/zips/portfolio/:portfolioId')
   .get(ensureAdminDownloadToken, (req, res, next) => {
     // find the show
-    console.log("Finding portfolio....")
-    console.log(req.params)
     Portfolio.findByPk(req.params.portfolioId, { rejectOnEmpty: true })
       .then(portfolio => {
-        console.log("Portfolio found, finding entries....")
         // find all image Entries to this show id
         Entry.findAll({ where: { portfolioId: req.params.portfolioId, entryType: IMAGE_ENTRY } })
           .then(entries => {
-            console.log("Entries found, getting images....")
             const imageIds = entries.map((entry) => entry.entryId)
             return getImagesForZipDown(entries, imageIds)
           })
           .then((entries) => submissionsWithSubmittersPromise(entries))
           .then(submissionsWithSubmitters => {
-            console.log("Images found, building entries....")
             return buildSubmisionTitlesForDownload(submissionsWithSubmitters)
           })
           .then(entrySummaries => {
@@ -488,17 +483,16 @@ router.route('/zips/portfolio/:portfolioId')
             //   },
             //   ...
             // ]
-            console.log("Entries built, making tar....")
             const archive = archiver('tar');
             res.status(200)
               .type('tar')
-              .attachment(`${portfolio.name}.tar`);
+              .attachment(`${portfolio.title}.tar`);
 
             archive.pipe(res);
 
             entrySummaries.map((summary) => {
               const filename = path.join(IMAGE_DIR, summary.path)
-              archive.append(fs.createReadStream(filename), { name: `${portfolio.name}/${summary.name}` });
+              archive.append(fs.createReadStream(filename), { name: `${portfolio.title}/${summary.name}` });
             })
             archive.finalize();
           })
