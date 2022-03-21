@@ -498,11 +498,12 @@ router.route('/zips/portfolio/:portfolioId')
             const imageIds = entries.filter(entry => entry.entryType === IMAGE_ENTRY).map(entry => entry.entryId)
             return getImagesForZipDown(entries, imageIds)
           })
+          // Find and append the upload path for all pdfs
           .then(entries => {
             const pdfIds = entries.filter(entry => entry.entryType === OTHER_ENTRY).map(entry => entry.entryId)
             return getPdfsForZipDown(entries, pdfIds)
           })
-          .then(async (entries) => {
+          .then(entries => {
             return submissionsWithSubmittersPromise(entries)
           })
           .then(submissionsWithSubmitters => {
@@ -527,6 +528,7 @@ router.route('/zips/portfolio/:portfolioId')
             archive.pipe(res);
 
             entrySummaries.map((summary) => {
+              // Video entries dont have a path object so skip them
               if (summary.entryType !== VIDEO_ENTRY) {
                 const parent_path = summary.entryType === IMAGE_ENTRY ? IMAGE_DIR : PDF_DIR
                 const filename = path.join(parent_path, summary.path)
