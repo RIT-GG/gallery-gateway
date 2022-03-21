@@ -4,7 +4,7 @@ import { compose } from 'recompose'
 import { push } from 'connected-react-router'
 
 import { getDownloadToken } from '../../shared/actions'
-import { downloadZip, downloadCsv } from '../actions'
+import { downloadCsv, downloadShowZip } from '../actions'
 import ShowDetailsTab from '../components/ShowDetailsTab'
 
 import DeleteShow from '../mutations/deleteShow.graphql'
@@ -13,7 +13,7 @@ import ShowsQuery from '../queries/shows.graphql'
 const mapDispatchToProps = (dispatch, ownProps) => ({
   downloadZip: () =>
     dispatch(getDownloadToken()).then(() =>
-      dispatch(downloadZip(ownProps.show.id))
+      dispatch(downloadShowZip(ownProps.show.id))
     ),
   downloadCsv: () =>
     dispatch(getDownloadToken()).then(() =>
