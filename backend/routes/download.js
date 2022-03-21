@@ -19,18 +19,19 @@ import config from '../config'
 import sequelize from '../config/sequelize'
 import { parseToken } from '../helpers/jwt'
 import Portfolio from '../models/portfolio'
+import Other from '../models/other'
 
 const readFileAsync = promisify(fs.readFile)
 const stringifyAsync = promisify(stringify)
 
 const IMAGE_DIR = config.get('upload:imageDir')
+const PDF_DIR = config.get('upload:pdfDir')
 const YOUTUBE_BASE_URL = 'https://www.youtube.com/watch?v='
 const VIMEO_BASE_URL = 'https://vimeo.com/'
 
 const router = Router()
 
 const ensureAdminDownloadToken = (req, res, next) => {
-  console.log("Ensuring admin download token")
   const token = req.query.token
   next()
   return
@@ -362,7 +363,30 @@ function getImagesForZipDown(entries, imageIds) {
 
       // assign 'path' to all entries
       entries.forEach(entry => {
-        entry.path = imageIdsToImage[entry.entryId].path
+        if (entry.entryType === IMAGE_ENTRY && imageIdsToImage[entry.entryId] !== undefined) {
+          entry.path = imageIdsToImage[entry.entryId].path
+        }
+      })
+
+      return entries
+    })
+}
+
+function getPdfsForZipDown(entries, pdfIds) {
+  return Other.findAll({ where: { id: { $in: pdfIds } } })
+    .then(pdfs => {
+      // create a mapping of imageId -> image for easy assigning
+      // Evaluates to: [Entry]
+      const otherIdsToPdfs = pdfs.reduce((obj, pdf) => ({
+        ...obj,
+        [pdf.id]: pdf
+      }), {})
+
+      // assign 'path' to all entries
+      entries.forEach(entry => {
+        if (entry.entryType === OTHER_ENTRY && otherIdsToPdfs[entry.entryId] !== undefined) {
+          entry.path = otherIdsToPdfs[entry.entryId].path
+        }
       })
       return entries
     })
@@ -383,7 +407,8 @@ function buildSubmisionTitlesForDownload(submissions) {
   const namesSeen = new Set()
   return submissions.reduce((arr, { user, group, entries }) => {
     // ['Clark Kent - Daily Planet Office']
-    const newSubmissionSummaries = entries.map(({ path, title, invited }) => {
+    const newSubmissionSummaries = entries.map((entry) => {
+      const { path, title, invited, entryType } = entry
       // If this is a group submission, we insert the group participants in the name
       const entryNamePrefix = `${user.lastName}, ${user.firstName}${group ? ` & ${group.participants}` : ''} - ${title}`
       // enforce non-conflicting titles by adding (1), (2), ... to end of name
@@ -395,11 +420,15 @@ function buildSubmisionTitlesForDownload(submissions) {
         i += 1
       }
       namesSeen.add(proposedName)
-      return {
-        name: `${proposedName}.jpg`,
+
+      const entry_title = {
+        name: `${proposedName}.${entryType === IMAGE_ENTRY ? "jpg" : "pdf"}`,
         path,
-        invited
+        invited,
+        entryType,
       }
+
+      return entry_title
     })
     return [...arr, ...newSubmissionSummaries]
   }, [])
@@ -459,16 +488,23 @@ router.route('/zips/shows/:showId')
 
 router.route('/zips/portfolio/:portfolioId')
   .get(ensureAdminDownloadToken, (req, res, next) => {
-    // find the show
+    // find the portfolio
     Portfolio.findByPk(req.params.portfolioId, { rejectOnEmpty: true })
       .then(portfolio => {
-        // find all image Entries to this show id
-        Entry.findAll({ where: { portfolioId: req.params.portfolioId, entryType: IMAGE_ENTRY } })
+        // find all Entries for this portfolio id
+        Entry.findAll({ where: { portfolioId: req.params.portfolioId } })
+          // Find and append the upload path for all images
           .then(entries => {
-            const imageIds = entries.map((entry) => entry.entryId)
+            const imageIds = entries.filter(entry => entry.entryType === IMAGE_ENTRY).map(entry => entry.entryId)
             return getImagesForZipDown(entries, imageIds)
           })
-          .then((entries) => submissionsWithSubmittersPromise(entries))
+          .then(entries => {
+            const pdfIds = entries.filter(entry => entry.entryType === OTHER_ENTRY).map(entry => entry.entryId)
+            return getPdfsForZipDown(entries, pdfIds)
+          })
+          .then(async (entries) => {
+            return submissionsWithSubmittersPromise(entries)
+          })
           .then(submissionsWithSubmitters => {
             return buildSubmisionTitlesForDownload(submissionsWithSubmitters)
           })
@@ -491,14 +527,16 @@ router.route('/zips/portfolio/:portfolioId')
             archive.pipe(res);
 
             entrySummaries.map((summary) => {
-              const filename = path.join(IMAGE_DIR, summary.path)
-              archive.append(fs.createReadStream(filename), { name: `${portfolio.title}/${summary.name}` });
+              if (summary.entryType !== VIDEO_ENTRY) {
+                const parent_path = summary.entryType === IMAGE_ENTRY ? IMAGE_DIR : PDF_DIR
+                const filename = path.join(parent_path, summary.path)
+                archive.append(fs.createReadStream(filename), { name: `${portfolio.title}/${summary.name}` });
+              }
             })
             archive.finalize();
           })
       })
       .catch(sequelize.EmptyResultError, () => {
-        console.log("No portfolio found")
         res.status(404).send('Portfolio Not Found')
       })
       .catch(err => {
