@@ -350,7 +350,7 @@ router.route('/csv/:showId')
  * Evaluates to:
  *   [Entry]
  */
-function getImagesForZipDown(entries, imageIds) {
+function getImagesForZip(entries, imageIds) {
   return Image.findAll({ where: { id: { $in: imageIds } } })
     .then(images => {
       // create a mapping of imageId -> image for easy assigning
@@ -371,7 +371,7 @@ function getImagesForZipDown(entries, imageIds) {
     })
 }
 
-function getPdfsForZipDown(entries, pdfIds) {
+function getPdfsForZip(entries, pdfIds) {
   return Other.findAll({ where: { id: { $in: pdfIds } } })
     .then(pdfs => {
       // create a mapping of imageId -> image for easy assigning
@@ -443,7 +443,7 @@ router.route('/zips/shows/:showId')
         Entry.findAll({ where: { showId: req.params.showId, entryType: IMAGE_ENTRY } })
           .then(entries => {
             const imageIds = entries.map((entry) => entry.entryId)
-            return getImagesForZipDown(entries, imageIds)
+            return getImagesForZip(entries, imageIds)
           })
           .then((entries) => submissionsWithSubmittersPromise(entries))
           .then(submissionsWithSubmitters => {
@@ -495,12 +495,12 @@ router.route('/zips/portfolio/:portfolioId')
           // Find and append the upload path for all images
           .then(entries => {
             const imageIds = entries.filter(entry => entry.entryType === IMAGE_ENTRY).map(entry => entry.entryId)
-            return getImagesForZipDown(entries, imageIds)
+            return getImagesForZip(entries, imageIds)
           })
           // Find and append the upload path for all pdfs
           .then(entries => {
             const pdfIds = entries.filter(entry => entry.entryType === OTHER_ENTRY).map(entry => entry.entryId)
-            return getPdfsForZipDown(entries, pdfIds)
+            return getPdfsForZip(entries, pdfIds)
           })
           .then(entries => {
             return submissionsWithSubmittersPromise(entries)
