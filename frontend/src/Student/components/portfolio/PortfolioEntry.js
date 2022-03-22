@@ -26,7 +26,7 @@ function PortfolioEntry(props) {
         )
       return (
         <EntryNoThumbContainer className='portfolio-entry border border-dark rounded position-relative'>
-          <h5>Video Submission {icon} </h5>Î
+          <h5>Video Submission {icon} </h5>
           <h5>
             <span className="text-muted">Title: </span>
             <a href={url} target='_blank' className="stretched-link">{props.entry.title}</a>
