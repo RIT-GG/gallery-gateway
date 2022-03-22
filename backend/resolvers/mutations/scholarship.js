@@ -4,13 +4,13 @@ import { ADMIN } from '../../constants'
 import Scholarship from '../../models/scholarship'
 
 export async function createScholarship (_, args, context) {
-  // only students can create portfolios
+  // only admins can create scholarships
   if (context.authType !== ADMIN) {
     throw new UserError('Permission Denied')
   }
   const {name, description} = args.input
 
-  // Not all input is used in the portfolio table, extract only data needed for the portfolio
+  // All scholraships are considered active when created
   const newScholarship = {
     name,
     description,
