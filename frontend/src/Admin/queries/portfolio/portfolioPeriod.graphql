@@ -9,6 +9,7 @@ query PortfolioPeriod($id: ID) {
     judgingEndDate
     createdAt
     portfolios {
+      createdAt
       description
       entries{
         id
