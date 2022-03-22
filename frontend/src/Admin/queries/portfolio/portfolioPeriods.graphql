@@ -9,6 +9,7 @@ query PortfolioPeriods {
     judgingEndDate
     createdAt
     portfolios {
+      createdAt
       description
       entries{
         id
