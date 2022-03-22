@@ -90,6 +90,17 @@ input PortfolioInput {
     portfolioPeriodId: String
 }
 
+input ScholarshipInput {
+    name: String!
+    description: String!
+}
+
+type Scholarship {
+    id: ID!
+    name: String!
+    description: String
+    submissions: [Portfolio]
+}
 
 type Show {
     id: ID!
@@ -292,6 +303,8 @@ type Query {
     portfolioPeriod(id: ID): PortfolioPeriod
     portfolioPeriods(orderBy: OrderByItem, active: Boolean, activeSubmission: Boolean, activeJudging: Boolean): [PortfolioPeriod]
     portfolios(orderBy: OrderByItem, studentUsername: String): [Portfolio]
+    scholarship(id: ID): Scholarship
+    scholarships: [Scholarship]
     show(id: ID!): Show
     groups: [Group]
     shows(orderBy: OrderByItem, studentUsername: String): [Show]
@@ -310,6 +323,8 @@ type Mutation {
     updatePermissions(input: PermissionInput!): User
     updateUser(input: UserInput!): User
     deleteUser(id: ID!): User
+
+    createScholarship(input: ScholarshipInput!): Scholarship
 
     createShow(input: ShowInput!): Show
     updateShow(id: ID!, input: ShowUpdate!): Show
