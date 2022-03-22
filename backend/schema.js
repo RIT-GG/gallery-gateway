@@ -90,6 +90,17 @@ input PortfolioInput {
     portfolioPeriodId: String
 }
 
+input ScholarshipInput {
+    name: String!
+    description: String!
+}
+
+type Scholarship {
+    id: ID!
+    name: String!
+    description: String
+    submissions: [Portfolio]
+}
 
 type Show {
     id: ID!
