@@ -324,6 +324,8 @@ type Mutation {
     updateUser(input: UserInput!): User
     deleteUser(id: ID!): User
 
+    createScholarship(input: ScholarshipInput!): Scholarship
+
     createShow(input: ShowInput!): Show
     updateShow(id: ID!, input: ShowUpdate!): Show
     deleteShow(id: ID!): Boolean
