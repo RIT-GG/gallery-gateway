@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 
 import Dashboard from './pages/Dashboard'
 import Portfolios from './containers/Portfolios'
+import Scholarships from './containers/Scholarships'
 import Submit from './pages/Submit'
 
 import Layout from './components/Layout'
@@ -15,6 +16,7 @@ const Student = () => (
       <Route exact path='/' component={Dashboard} />
       <Route exact path='/portfolios' component={Portfolios} />
       <Route exact path='/portfolios/create' component={PortfolioSubmissionForm} />
+      <Route exact path='/scholarships' component={Scholarships} />
       <Route path='/submit' component={Submit} />
       <Route component={NotFound} />
     </Switch>
