@@ -48,6 +48,11 @@ export default class NavBar extends Component {
                 </Link>
               </NavItem>
               <NavItem>
+                <Link to='/scholarships' className='nav-link'>
+                  Scholarships
+                </Link>
+              </NavItem>
+              <NavItem>
                 <Link to='/' className='nav-link' onClick={this.props.logout}>
                   Logout
                 </Link>
