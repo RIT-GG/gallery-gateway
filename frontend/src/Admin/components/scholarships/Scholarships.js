@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Col, Container, Row } from "reactstrap"
-import ScholarshipCard from "../../../Student/components/scholarships/ScholarshipCard";
+import AdminScholarshipCard from "./AdminScholarshipCard";
 
 function Scholarships(props) {
     const { scholarships } = props
@@ -25,7 +25,6 @@ function Scholarships(props) {
     }, [scholarships])
 
 
-    console.log(props)
     // Handle invalid or no scholarships
     if (!Array.isArray(scholarships) || scholarships.length === 0) {
         return (
@@ -46,7 +45,7 @@ function Scholarships(props) {
                     <h3 className="text-success">Active Scholarships</h3>
                     {
                         activeScholarships.map(scholarship => {
-                            return <ScholarshipCard scholarship={scholarship} />
+                            return <AdminScholarshipCard scholarship={scholarship} />
                         })
                     }
                 </Col>
@@ -54,7 +53,7 @@ function Scholarships(props) {
                     <h3 className="text-warning">Inactive Scholarships</h3>
                     {
                         inactiveScholarships.map(scholarship => {
-                            return <ScholarshipCard scholarship={scholarship} />
+                            return <AdminScholarshipCard scholarship={scholarship} />
                         })
                     }
                 </Col>
