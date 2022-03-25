@@ -57,6 +57,17 @@ const Dashboard = () => {
             Create Portfolio Period
           </Button>
         </Col>
+        <Col md='3'>
+          <Button
+            color='primary'
+            className='btn-block'
+            style={{ cursor: 'pointer' }}
+            tag={Link}
+            to='/scholarships/new'
+          >
+            Create Scholarship
+          </Button>
+        </Col>
       </Row>
       <Row>
         <Col xs={12} className="my-3">
