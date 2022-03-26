@@ -4,9 +4,11 @@ import { Container, Row, Col, Button, Carousel, CarouselItem, NavItem, Nav } fro
 
 import Shows from '../containers/Shows'
 import PortfolioPeriods from '../containers/portfolio/PortfolioPeriods'
+import Scholarships from '../containers/scholarships/Scholarships'
 
 const FEATURE__SHOWS = 0;
 const FEATURE__PORTFOLIO_PERIODS = 1;
+const FEATURE__SCHOLARSHIPS = 2;
 
 const Dashboard = () => {
   const [active_feature, setActiveFeature] = useState(FEATURE__SHOWS);
@@ -21,6 +23,9 @@ const Dashboard = () => {
     switch (path) {
       case "/portfolio-period":
         setActiveFeature(FEATURE__PORTFOLIO_PERIODS);
+        return;
+      case "/scholarships":
+        setActiveFeature(FEATURE__SCHOLARSHIPS);
         return;
       default:
         setActiveFeature(FEATURE__SHOWS);
@@ -72,16 +77,19 @@ const Dashboard = () => {
       <Row>
         <Col xs={12} className="my-3">
           <Nav tabs>
-              <NavItem>
-                <Link className={`nav-link${active_feature === FEATURE__SHOWS ? " active" : ""}`} to='/show'>Shows</Link>
-              </NavItem>
-              <NavItem>
-                <Link className={`nav-link${active_feature === FEATURE__PORTFOLIO_PERIODS ? " active" : ""}`} to="/portfolio-period">Portfolio Periods</Link>
-              </NavItem>
+            <NavItem>
+              <Link className={`nav-link${active_feature === FEATURE__SHOWS ? " active" : ""}`} to='/show'>Shows</Link>
+            </NavItem>
+            <NavItem>
+              <Link className={`nav-link${active_feature === FEATURE__PORTFOLIO_PERIODS ? " active" : ""}`} to="/portfolio-period">Portfolio Periods</Link>
+            </NavItem>
+            <NavItem>
+              <Link className={`nav-link${active_feature === FEATURE__SCHOLARSHIPS ? " active" : ""}`} to="/scholarships">Scholarships</Link>
+            </NavItem>
           </Nav>
         </Col>
         <Col>
-          <Carousel activeIndex={active_feature} interval={false} next={()=>{}} previous={()=>{}}>
+          <Carousel activeIndex={active_feature} interval={false} next={() => { }} previous={() => { }}>
             <CarouselItem>
               <h1>Shows</h1>
               <Shows />
@@ -90,6 +98,11 @@ const Dashboard = () => {
             <CarouselItem>
               <h1 className='my-3'>Portfolio Periods</h1>
               <PortfolioPeriods />
+            </CarouselItem>
+
+            <CarouselItem>
+              <h1 className='my-3'>Scholarships</h1>
+              <Scholarships />
             </CarouselItem>
           </Carousel>
         </Col>

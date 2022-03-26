@@ -1,0 +1,8 @@
+query Scholarships {
+  scholarships(includeInactive: true) {
+    id
+    name
+    description
+    active
+  }
+}

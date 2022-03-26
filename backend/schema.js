@@ -97,6 +97,7 @@ input ScholarshipInput {
 
 type Scholarship {
     id: ID!
+    active: Boolean
     name: String!
     description: String
     submissions: [Portfolio]
