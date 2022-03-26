@@ -15,6 +15,9 @@ import * as PortfolioPeriodQuery from './queries/portfolioPeriodQuery'
 import Scholarship from './types/scholarshipType'
 import * as ScholarshipQuery from './queries/scholarshipQuery'
 import * as ScholarshipMutations from './mutations/scholarship'
+import scholarshipSubmission from './types/scholarshipSubmissionType'
+import * as ScholarshipSubmissionQuery from './queries/scholarshipSubmissionQuery'
+import * as ScholarshipSubmissionMutations from './mutations/scholarshipSubmissions'
 import Show from './types/showType'
 import * as ShowMutations from './mutations/show'
 import * as ShowQuery from './queries/showQuery'
@@ -35,6 +38,7 @@ export default {
   ...Group,
   ...Portfolio,
   ...Scholarship,
+  ...scholarshipSubmission,
   ...Show,
   ...PortfolioPeriod,
   ...Vote,
@@ -42,6 +46,7 @@ export default {
     ...EntryQuery,
     ...PortfolioQuery,
     ...ScholarshipQuery,
+    ...ScholarshipSubmissionQuery,
     ...ShowQuery,
     ...PortfolioPeriodQuery,
     ...UserQuery,
@@ -52,6 +57,7 @@ export default {
     ...PortfolioMutations,
     ...PortfolioPeriodMutations,
     ...ScholarshipMutations,
+    ...ScholarshipSubmissionMutations,
     ...ShowMutations,
     ...UserMutations,
     ...VoteMutations
