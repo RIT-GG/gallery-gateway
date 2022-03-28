@@ -85,18 +85,6 @@ function PortfolioPeriodCard(props) {
                         {hasSubmitted === false ? "Create portfolio" : "You've already submitted a portfolio"}
                     </Button>
                 </Col>
-                <Col>
-                    <Button
-                        color='primary'
-                        style={{ cursor: 'pointer' }}
-                        tag={Link}
-                        to={`/scholarships/?portfolioPeriodId=${id}&portfolioId=${portfolioId}`}
-                        block
-                        disabled={hasSubmitted === false}
-                    >
-                        {hasSubmitted === false ? "Create a portfolio before applying to scholarships" : "Apply to scholarships with this portfolio"}
-                    </Button>
-                </Col>
             </Row>
         )
     }

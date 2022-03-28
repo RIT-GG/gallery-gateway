@@ -105,7 +105,6 @@ type Scholarship {
 
 input ScholarshipSubmissionInput {
     scholarshipId: Int
-    portfolioPeriodId: Int
     portfolioId: Int
 }
 
