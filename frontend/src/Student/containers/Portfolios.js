@@ -7,7 +7,7 @@ import { displayError } from '../../shared/actions'
 // Portfolio related data
 import ActivePortfolioPeriodsQuery from '../queries/activePortfolioPeriods.graphql'
 import PortfoliosQuery from '../queries/portfolios.graphql'
-import Portfolios from '../components/Portfolios'
+import Portfolios from '../components/portfolio/Portfolios'
 
 const mapStateToProps = state => ({
   studentUsername: state.shared.auth.user.username

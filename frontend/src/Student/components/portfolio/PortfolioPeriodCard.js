@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { Button, Row, Col, Badge } from 'reactstrap'
+import { Button, Row, Col } from 'reactstrap'
 import moment from 'moment'
 import Moment from 'react-moment'
 
@@ -25,6 +25,7 @@ const FormattedDate = (props) => (
 )
 
 function PortfolioPeriodCard(props) {
+    const {portfolioPeriod, hasSubmitted} = props
 
     const {
         id,
@@ -34,7 +35,7 @@ function PortfolioPeriodCard(props) {
         endDate,
         judgingStartDate,
         judgingEndDate
-    } = props.portfolioPeriod
+    } = portfolioPeriod
 
     const renderBody = () => {
 
@@ -79,9 +80,9 @@ function PortfolioPeriodCard(props) {
                         to={`/portfolios/create?portfolioPeriodId=${id}`}
                         block
                         outline
-                        disabled={props.hasSubmitted}
+                        disabled={hasSubmitted === true}
                     >
-                        {props.hasSubmitted === false ? "Create portfolio" : "You've already submitted a portfolio"}
+                        {hasSubmitted === false ? "Create portfolio" : "You've already submitted a portfolio"}
                     </Button>
                 </Col>
             </Row>

@@ -30,5 +30,5 @@ export default compose(
                 studentUsername: ownProps.studentUsername
             }
         })
-    }),
+    })
 )(Scholarships)

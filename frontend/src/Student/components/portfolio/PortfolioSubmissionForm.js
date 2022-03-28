@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Form, FormGroup, Input, Label, Row, } from 'reactstrap'
 
 import styled from 'styled-components'
-import { IMAGE_UPLOAD_PATH, PDF_UPLOAD_PATH } from '../../utils'
-import PortfolioCreationPreviewModal from './portfolio/PortfolioCreationPreviewModal'
+import { IMAGE_UPLOAD_PATH, PDF_UPLOAD_PATH } from '../../../utils'
+import PortfolioCreationPreviewModal from './PortfolioCreationPreviewModal'
 
-import PortfolioEntryInput from './portfolio/PortfolioEntryInput'
+import PortfolioEntryInput from './PortfolioEntryInput'
 
 const Header = styled.h1`
   margin-bottom: 10px;

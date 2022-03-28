@@ -103,6 +103,19 @@ type Scholarship {
     submissions: [Portfolio]
 }
 
+input ScholarshipSubmissionInput {
+    scholarshipId: Int
+    portfolioId: Int
+}
+
+type ScholarshipSubmission {
+    id: ID!
+    scholarshipId: Int
+    portfolioPeriodId: Int
+    portfolioId: Int
+    portfolio: Portfolio
+}
+
 type Show {
     id: ID!
     name: String!
@@ -305,7 +318,9 @@ type Query {
     portfolioPeriods(orderBy: OrderByItem, active: Boolean, activeSubmission: Boolean, activeJudging: Boolean): [PortfolioPeriod]
     portfolios(orderBy: OrderByItem, studentUsername: String): [Portfolio]
     scholarship(id: ID): Scholarship
-    scholarships(includeInactive: Boolean): [Scholarship]
+    scholarships(orderBy: OrderByItem, includeInactive: Boolean): [Scholarship]
+    scholarshipSubmission(id: ID): ScholarshipSubmission
+    scholarshipSubmissions(orderBy: OrderByItem, portfolioId: Int, portfolioPeriodId: Int, scholarshipId: Int): [ScholarshipSubmission]
     show(id: ID!): Show
     groups: [Group]
     shows(orderBy: OrderByItem, studentUsername: String): [Show]
@@ -326,6 +341,8 @@ type Mutation {
     deleteUser(id: ID!): User
 
     createScholarship(input: ScholarshipInput!): Scholarship
+
+    createScholarshipSubmission(input: ScholarshipSubmissionInput!): ScholarshipSubmission
 
     createShow(input: ShowInput!): Show
     updateShow(id: ID!, input: ShowUpdate!): Show

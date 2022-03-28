@@ -11,10 +11,17 @@ const CIRCLE_CHECK_ICON = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox
 </svg>)
 
 function ScholarshipCard(props) {
-    const { scholarship } = props
+    const { scholarship, disabled, scholarshipSubmissions = [] } = props
     // Handle no scholarship being passed in
     if (scholarship === null) {
         return <React.Fragment></React.Fragment>
+    }
+
+    function handleSubmit(){
+        props.createScholarshipSubmission({
+            portfolioId: parseInt(props.portfolioId),
+            scholarshipId: parseInt(scholarship.id)
+        })
     }
 
     const { name, description } = scholarship;
@@ -22,7 +29,7 @@ function ScholarshipCard(props) {
         <Card className="mb-5">
             <CardHeader>
                 <h3 className="d-flex align-items-center">
-                    <span className="mr-3 d-flex"><AWARD_ICON /></span>
+                    <span className="mr-3 d-flex">{scholarshipSubmissions.length === 0 ? <AWARD_ICON /> : <CIRCLE_CHECK_ICON />}</span>
                     <span>{name}</span>
                 </h3>
             </CardHeader>
@@ -30,7 +37,7 @@ function ScholarshipCard(props) {
                 <p>{description}</p>
             </CardBody>
             <CardFooter>
-                <Button color="primary">Apply</Button>
+                <Button color="primary" disabled={disabled || scholarshipSubmissions.length > 0} onClick={handleSubmit}>Apply</Button>
             </CardFooter>
         </Card>
     )
