@@ -40,6 +40,18 @@ export default compose(
             mutate({
               variables: { input: submission }
             }),
-        })
+        }),
+        options: ({scholarship, portfolioId, portfolioPeriodId}) => ({
+            refetchQueries: [
+              {
+                query: HasSubmittedScholarshipQuery,
+                variables: {
+                    scholarshipId: parseInt(scholarship.id),
+                    portfolioId,
+                    portfolioPeriodId
+                }
+              }
+            ]
+          })
       }),
 )(ScholarshipCard)
