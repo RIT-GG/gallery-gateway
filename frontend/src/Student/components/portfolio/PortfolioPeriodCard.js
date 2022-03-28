@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { Button, Row, Col, Badge } from 'reactstrap'
+import { Button, Row, Col } from 'reactstrap'
 import moment from 'moment'
 import Moment from 'react-moment'
 
@@ -25,7 +25,7 @@ const FormattedDate = (props) => (
 )
 
 function PortfolioPeriodCard(props) {
-    const {portfolioPeriod, hasSubmitted, portfolioId} = props
+    const {portfolioPeriod, hasSubmitted} = props
 
     const {
         id,

@@ -44,21 +44,6 @@ function Portfolios(props) {
 
   const { loading, portfolios, activePortfolioPeriods } = props
 
-  /**
-   * Retrieves the portfolio submitted to the provided portfolio period.
-   * @param {string} portfolioPeriodId Id of the portfolio period that we want the submitted portfolio for
-   * @returns 
-   */
-  function getSubmittedPortfolioIdForPortfolioPeriod(portfolioPeriodId) {
-    let value = ""
-    const portfolio_for_period = portfolios.find(portfolio => portfolio.portfolioPeriodId === portfolioPeriodId)
-    if (portfolio_for_period !== undefined) {
-      value = portfolio_for_period.id
-    }
-    return value
-
-  }
-
   function RenderPortfolios() {
     if (!Array.isArray(portfolios) || portfolios.length === 0) {
       return (
@@ -94,7 +79,6 @@ function Portfolios(props) {
               <PortfolioPeriodCard
                 portfolioPeriod={portfolioPeriod}
                 hasSubmitted={!!portfolioPeriodPortfolios[portfolioPeriod.id]}
-                portfolioId={getSubmittedPortfolioIdForPortfolioPeriod(portfolioPeriod.id)}
                 key={`portfolioPeriod.${portfolioPeriod.id}`} />
             )
           }

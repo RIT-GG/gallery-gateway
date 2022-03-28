@@ -8,7 +8,6 @@ import ScholarshipCard from '../components/scholarships/ScholarshipCard'
 import HasSubmittedScholarshipQuery from "../queries/scholarships/hasSubmittedToScholarship.graphql"
 import CreateScholarshipSubmission from "../mutations/createScholarshipSubmission.graphql"
 
-// Portfolio related data
 const mapStateToProps = state => ({
     studentUsername: state.shared.auth.user.username
 })
@@ -19,7 +18,7 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    // Query for scholarships and attach them to props
+    // Query for if this scholarship has been submitted to with this portfolio
     graphql(HasSubmittedScholarshipQuery, {
         props: ({ data: { scholarshipSubmissions, loading, error } }) => ({
             scholarshipSubmissions,

@@ -10,7 +10,7 @@ export function scholarshipSubmissions(_, args, context) {
     let whereClause = {
         where: {}
     }
-
+    // Build the where clause and ensure all ids provided are an int
     if(!isNaN(portfolioId)) whereClause.where.portfolioId = portfolioId
     if(!isNaN(portfolioPeriodId)) whereClause.where.portfolioPeriodId = portfolioPeriodId
     if(!isNaN(scholarshipId)) whereClause.where.scholarshipId = scholarshipId

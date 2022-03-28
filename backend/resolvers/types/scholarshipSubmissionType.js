@@ -1,7 +1,7 @@
 
 export default {
     ScholarshipSubmission: {
-      // Retrieves submissions submitted to this specific scholarships
+      // Retrieves the portfolio for this specific scholarship submission
       portfolio (scholarshipSubmission, _, context) {
         return scholarshipSubmission.getPortfolio()
       }
