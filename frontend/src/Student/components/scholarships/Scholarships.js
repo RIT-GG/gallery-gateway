@@ -1,13 +1,14 @@
 import React from "react"
 import { Alert, Container } from "reactstrap"
 import {Link} from "react-router-dom"
-import ScholarshipCard from "./ScholarshipCard";
+import ScholarshipCard from "../../containers/ScholarshipCard";
 
 function Scholarships(props) {
     const { scholarships, createScholarshipSubmission } = props
     // The portfolio period and portfolio id are provided via route params
-    const path = new URLSearchParams(window.location.search);
+    const path = new URLSearchParams(window.location.search)
     const portfolioId = path.get("portfolioId")
+    const portfolioPeriodId = path.get("portfolioPeriodId")
 
     // Handle rending inavlid or no scholarships
     if (!Array.isArray(scholarships) || scholarships.length === 0) {
@@ -40,10 +41,8 @@ function Scholarships(props) {
                 disabled={!portfolioId} 
                 key={`scholarship.${scholarship.id}`} 
                 scholarship={scholarship} 
-                submit={() => {createScholarshipSubmission({
-                    scholarshipId: parseInt(scholarship.id),
-                    portfolioId: parseInt(portfolioId)
-                })}}
+                portfolioId={parseInt(portfolioId)}
+                portfolioPeriodId={parseInt(portfolioPeriodId)}
                 />
                 )
                 )}

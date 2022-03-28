@@ -6,7 +6,6 @@ import { displayError } from '../../shared/actions'
 import Scholarships from '../components/scholarships/Scholarships'
 
 import ScholarshipQuery from "../queries/scholarships/activeScholarships.graphql"
-import CreateScholarshipSubmission from "../mutations/createScholarshipSubmission.graphql"
 
 // Portfolio related data
 const mapStateToProps = state => ({
@@ -31,13 +30,5 @@ export default compose(
                 studentUsername: ownProps.studentUsername
             }
         })
-    }),
-    graphql(CreateScholarshipSubmission, {
-        props: ({ mutate }) => ({
-            createScholarshipSubmission: submission =>
-            mutate({
-              variables: { input: submission }
-            }),
-        })
-      }),
+    })
 )(Scholarships)

@@ -20,7 +20,7 @@ function PortfolioCard(props) {
             color='primary'
             style={{ cursor: 'pointer' }}
             tag={Link}
-            to={`/scholarships/?portfolioId=${portfolio.id}`}
+            to={`/scholarships/?portfolioId=${portfolio.id}&portfolioPeriodId=${portfolio.portfolioPeriodId}`}
           >
             Apply to scholarships with this portfolio
           </Button>
@@ -30,8 +30,8 @@ function PortfolioCard(props) {
         <div className="portfolio-entries">
           {entries.map((entry) => {
             return (
-              <div className='mr-lg-3'>
-                <PortfolioEntry entry={entry} key={`portfolio.${portfolio.id}.entry.${entry.id}`} />
+              <div className='mr-lg-3' key={`portfolio.${portfolio.id}.entry.${entry.id}`}>
+                <PortfolioEntry entry={entry}  />
               </div>
             )
           })}

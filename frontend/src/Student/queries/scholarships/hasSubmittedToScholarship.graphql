@@ -1,0 +1,5 @@
+query ScholarshipSubmissions($portfolioId: Int, $portfolioPeriodId: Int, $scholarshipId: Int) {
+  scholarshipSubmissions(portfolioId: $portfolioId, portfolioPeriodId: $portfolioPeriodId, scholarshipId: $scholarshipId) {
+    scholarshipId
+  }
+}

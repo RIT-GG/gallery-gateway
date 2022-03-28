@@ -6,11 +6,17 @@ export function scholarshipSubmission(_, args, context) {
 }
 
 export function scholarshipSubmissions(_, args, context) {
+    const { orderBy, portfolioId, portfolioPeriodId, scholarshipId } = args
     let whereClause = {
         where: {}
     }
+
+    if(!isNaN(portfolioId)) whereClause.where.portfolioId = portfolioId
+    if(!isNaN(portfolioPeriodId)) whereClause.where.portfolioPeriodId = portfolioPeriodId
+    if(!isNaN(scholarshipId)) whereClause.where.scholarshipId = scholarshipId
+
     // Apply ordering, if desired
-    const order = args.orderBy ? { order: [[args.orderBy.sort, args.orderBy.direction]] } : {}
-    
+    const order = orderBy ? { order: [[orderBy.sort, orderBy.direction]] } : {}
+
     return ScholarshipSubmissions.findAll(Object.assign({}, whereClause, order))
 }
