@@ -50,8 +50,8 @@ function Portfolios(props) {
    * @returns 
    */
   function getSubmittedPortfolioIdForPortfolioPeriod(portfolioPeriodId) {
-    let value = "";
-    const portfolio_for_period = portfolios.find(portfolio => portfolio.portfolioPeriodId === portfolioPeriodId);
+    let value = ""
+    const portfolio_for_period = portfolios.find(portfolio => portfolio.portfolioPeriodId === portfolioPeriodId)
     if (portfolio_for_period !== undefined) {
       value = portfolio_for_period.id
     }

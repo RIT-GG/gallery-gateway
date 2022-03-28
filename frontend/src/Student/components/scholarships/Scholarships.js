@@ -1,5 +1,5 @@
 import React from "react"
-import { Container } from "reactstrap"
+import { Alert, Container } from "reactstrap"
 import ScholarshipCard from "./ScholarshipCard";
 
 function Scholarships(props) {
@@ -19,11 +19,30 @@ function Scholarships(props) {
         )
     }
 
+    function SubmissionAlert(){
+        if( portfolioPeriodId && portfolioId) return <React.Fragment></React.Fragment>
+
+        let message = "You have not provided a "
+        if( !portfolioPeriodId){message += "portfolio period "}
+        if( !portfolioId){
+            if(!portfolioPeriodId) message += "or a "
+            message += "portfolio "
+        }
+        message += "to apply to scholarships. You may still view scholarships but you cannot apply."
+
+        return (
+            <Alert color="warning">
+                {message}
+            </Alert>
+        )
+    }
+
     return (
         <Container>
             <h1 className="mt-3 mb-5">Scholarships</h1>
+            <SubmissionAlert />
             <React.Fragment>
-                {scholarships.map(scholarship => <ScholarshipCard scholarship={scholarship} key={`scholarship.${scholarship.id}`} />)}
+                {scholarships.map(scholarship => <ScholarshipCard scholarship={scholarship} disabled={!portfolioPeriodId || !portfolioId} key={`scholarship.${scholarship.id}`} />)}
             </React.Fragment>
         </Container>
     )

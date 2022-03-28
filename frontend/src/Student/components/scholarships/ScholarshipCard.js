@@ -11,7 +11,7 @@ const CIRCLE_CHECK_ICON = () => (<svg xmlns="http://www.w3.org/2000/svg" viewBox
 </svg>)
 
 function ScholarshipCard(props) {
-    const { scholarship } = props
+    const { scholarship, disabled } = props
     // Handle no scholarship being passed in
     if (scholarship === null) {
         return <React.Fragment></React.Fragment>
@@ -30,7 +30,7 @@ function ScholarshipCard(props) {
                 <p>{description}</p>
             </CardBody>
             <CardFooter>
-                <Button color="primary">Apply</Button>
+                <Button color="primary" disabled={disabled}>Apply</Button>
             </CardFooter>
         </Card>
     )
