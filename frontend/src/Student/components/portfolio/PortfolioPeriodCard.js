@@ -25,6 +25,7 @@ const FormattedDate = (props) => (
 )
 
 function PortfolioPeriodCard(props) {
+    const {portfolioPeriod, hasSubmitted, portfolioId} = props
 
     const {
         id,
@@ -34,7 +35,7 @@ function PortfolioPeriodCard(props) {
         endDate,
         judgingStartDate,
         judgingEndDate
-    } = props.portfolioPeriod
+    } = portfolioPeriod
 
     const renderBody = () => {
 
@@ -79,9 +80,21 @@ function PortfolioPeriodCard(props) {
                         to={`/portfolios/create?portfolioPeriodId=${id}`}
                         block
                         outline
-                        disabled={props.hasSubmitted}
+                        disabled={hasSubmitted === true}
                     >
-                        {props.hasSubmitted === false ? "Create portfolio" : "You've already submitted a portfolio"}
+                        {hasSubmitted === false ? "Create portfolio" : "You've already submitted a portfolio"}
+                    </Button>
+                </Col>
+                <Col>
+                    <Button
+                        color='primary'
+                        style={{ cursor: 'pointer' }}
+                        tag={Link}
+                        to={`/scholarships/?portfolioPeriodId=${id}&portfolioId=${portfolioId}`}
+                        block
+                        disabled={hasSubmitted === false}
+                    >
+                        {hasSubmitted === false ? "Create a portfolio before applying to scholarships" : "Apply to scholarships with this portfolio"}
                     </Button>
                 </Col>
             </Row>

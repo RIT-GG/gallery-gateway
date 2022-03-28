@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 
-import Loading from '../../shared/components/Loading'
+import Loading from '../../../shared/components/Loading'
 import PortfolioCard from './PortfolioCard'
 import { Col, Container, Row } from 'reactstrap'
-import PortfolioPeriodCard from './portfolio/PortfolioPeriodCard'
+import PortfolioPeriodCard from './PortfolioPeriodCard'
 
 
 function Portfolios(props) {
@@ -44,6 +44,21 @@ function Portfolios(props) {
 
   const { loading, portfolios, activePortfolioPeriods } = props
 
+  /**
+   * Retrieves the portfolio submitted to the provided portfolio period.
+   * @param {string} portfolioPeriodId Id of the portfolio period that we want the submitted portfolio for
+   * @returns 
+   */
+  function getSubmittedPortfolioIdForPortfolioPeriod(portfolioPeriodId) {
+    let value = "";
+    const portfolio_for_period = portfolios.find(portfolio => portfolio.portfolioPeriodId === portfolioPeriodId);
+    if (portfolio_for_period !== undefined) {
+      value = portfolio_for_period.id
+    }
+    return value
+
+  }
+
   function RenderPortfolios() {
     if (!Array.isArray(portfolios) || portfolios.length === 0) {
       return (
@@ -56,7 +71,7 @@ function Portfolios(props) {
       <Col xs={12}>
         <div className="d-flex flex-column">
           {portfolios.map((portfolio) => {
-            return <PortfolioCard portfolio={portfolio} key={portfolio.id} />
+            return <PortfolioCard portfolio={portfolio} key={`portfolio.${portfolio.id}`} />
           })}
         </div>
       </Col>
@@ -76,7 +91,11 @@ function Portfolios(props) {
         <div className="d-flex flex-column">
           {activePortfolioPeriods.map((portfolioPeriod) => {
             return (
-              <PortfolioPeriodCard portfolioPeriod={portfolioPeriod} hasSubmitted={!!portfolioPeriodPortfolios[portfolioPeriod.id]} />
+              <PortfolioPeriodCard
+                portfolioPeriod={portfolioPeriod}
+                hasSubmitted={!!portfolioPeriodPortfolios[portfolioPeriod.id]}
+                portfolioId={getSubmittedPortfolioIdForPortfolioPeriod(portfolioPeriod.id)}
+                key={`portfolioPeriod.${portfolioPeriod.id}`} />
             )
           }
           )}
@@ -93,7 +112,7 @@ function Portfolios(props) {
     <Container >
       <h1 className="mb-4">Portfolio Periods</h1>
       <RenderPortfolioPeriods />
-      <h1 className="mb-4">Your portfolios</h1>
+      <h1 className="my-4">Your portfolios</h1>
       <RenderPortfolios />
     </Container>
   )

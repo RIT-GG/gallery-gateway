@@ -11,7 +11,7 @@ import CreatePortfolio from '../mutations/createPortfolio.graphql'
 import CreatePhotoEntry from '../mutations/createPhotoEntry.graphql'
 import CreateVideoEntry from '../mutations/createVideoEntry.graphql'
 import CreateOtherMediaEntry from '../mutations/createOtherMediaEntry.graphql'
-import PortfolioSubmission from '../components/PortfolioSubmissionForm'
+import PortfolioSubmission from '../components/portfolio/PortfolioSubmissionForm'
 
 const mapStateToProps = state => ({
   previewImage: state.student.ui.submission.previewFile || {},
