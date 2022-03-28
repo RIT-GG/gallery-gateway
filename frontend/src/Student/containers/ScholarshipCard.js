@@ -41,6 +41,7 @@ export default compose(
               variables: { input: submission }
             }),
         }),
+        // refetch the HasSubmittedScholarshipQuery so that the card updates to submitted state when the mutation completes
         options: ({scholarship, portfolioId, portfolioPeriodId}) => ({
             refetchQueries: [
               {

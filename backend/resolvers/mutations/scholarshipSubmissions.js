@@ -15,12 +15,22 @@ export async function createScholarshipSubmission(_, args, context) {
   // Grab the associated portfolio period id from the portfolio
   const portfolio = await Portfolio.findByPk(portfolioId)
   if (!portfolio) {
-    throw new Error("No portfolio found with the provided id.")
+    throw new UserError("No portfolio found with the provided id.")
   }
   const portfolioPeriodId = portfolio.portfolioPeriodId
 
+  // Check that all required fields have been supplied
+  if(!scholarshipId || !portfolioPeriodId || !portfolioId){
+    throw new UserError("Missing required fields")
+  }
 
-  // All scholraships are considered active when created
+  // Check if the user has submitted to this scholarship before
+  const hasSubmitted = await ScholarshipSubmission.findOne({where: {scholarshipId, portfolioId, portfolioPeriodId} })
+  if( hasSubmitted ){
+    throw new UserError("You've already submitted to this scholarship with this portfolio.")
+  }
+
+  // Build the scholarship submission
   const newScholarshipSubmissions = {
     scholarshipId,
     portfolioId,
