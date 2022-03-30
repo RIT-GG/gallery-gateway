@@ -14,7 +14,6 @@ function Scholarships(props) {
         if (Array.isArray(scholarships) && scholarships.length > 0) {
             for (let idx = 0; idx < scholarships.length; idx++) {
                 let scholarship = scholarships[idx]
-                console.log(scholarship)
                 scholarship.active ? active.push(scholarship) : inactive.push(scholarship)
             }
         }

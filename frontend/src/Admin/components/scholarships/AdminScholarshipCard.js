@@ -1,6 +1,11 @@
 import React from "react"
+import { Link } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader } from "reactstrap"
 import PropTypes from "prop-types"
+
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import FaEdit from '@fortawesome/fontawesome-free-solid/faEdit'
+
 
 function AdminScholarshipCard(props) {
     const { scholarship } = props
@@ -23,7 +28,10 @@ function AdminScholarshipCard(props) {
 
             <CardFooter className={"d-flex flex-column flex-lg-row justify-content-between"}>
 
-                <Button color="primary" outline>Edit Scholarship</Button>
+                <Button color="primary" tag={Link} to={`/scholarships/${props.scholarship.id}/edit`} outline>
+                    <FontAwesomeIcon icon={FaEdit} className='align-middle' />  
+                    Edit Scholarship
+                </Button>
                 
                 <Button color="primary" className="mt-3 mt-lg-0">View Submissions</Button>
 

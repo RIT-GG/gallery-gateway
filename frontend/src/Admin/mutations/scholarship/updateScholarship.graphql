@@ -1,0 +1,7 @@
+mutation UpdateScholarship($id: ID! $input: UpdateScholarshipInput!) {
+  updateScholarship(id: $id input: $input) {
+    name
+    description
+    active
+  }
+}
