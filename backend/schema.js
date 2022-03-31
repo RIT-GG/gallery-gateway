@@ -95,6 +95,12 @@ input ScholarshipInput {
     description: String!
 }
 
+input UpdateScholarshipInput {
+    name: String
+    description: String
+    active: Boolean
+}
+
 type Scholarship {
     id: ID!
     active: Boolean
@@ -341,6 +347,8 @@ type Mutation {
     deleteUser(id: ID!): User
 
     createScholarship(input: ScholarshipInput!): Scholarship
+    
+    updateScholarship(id: ID!, input: UpdateScholarshipInput!): Scholarship
 
     createScholarshipSubmission(input: ScholarshipSubmissionInput!): ScholarshipSubmission
 

@@ -18,3 +18,22 @@ export async function createScholarship (_, args, context) {
   }
   return Scholarship.create(newScholarship)
 }
+
+
+/**
+ * Handles updating portfolio periods in the database
+ * from a graphql mutation
+ */
+ export function updateScholarship(_, args, context) {
+  // Only admins can update scholarships
+  if (context.authType !== ADMIN) {
+    throw new UserError('Permission Denied')
+  }
+  return Scholarship.findByPk(args.id)
+    .then((scholarship) => {
+      return scholarship.update(args.input, {
+        // All fields that are allowed to be updated
+        fields: ['name', 'description', 'active']
+      })
+    })
+}
