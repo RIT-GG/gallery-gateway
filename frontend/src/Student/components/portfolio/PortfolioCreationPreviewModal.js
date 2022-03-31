@@ -5,6 +5,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import FaBook from '@fortawesome/fontawesome-free-solid/faBook'
 import FaVideo from "@fortawesome/fontawesome-free-solid/faVideo"
 import FaImage from "@fortawesome/fontawesome-free-solid/faImage"
+import WorkReleasePopover from "../../../shared/components/WorkReleasePopover"
 
 /* 
   Creates and returns one element for previewing a portfolio entry.
@@ -61,11 +62,16 @@ function PortfolioCreationPreviewModal(props) {
         <div className='d-flex flex-column'>
           {props.form_data.submissions.map((submission) => {
             return <div>
-              <PortfolioEntryPreview entry={submission} key={submission.id} /> <br/>
+              <PortfolioEntryPreview entry={submission} key={submission.id} /> <br />
             </div>
           })}
         </div>
-        <b>After submitting this portfolio it cannot be changed. Please click cancel if you want to make any additional changes.</b>
+        <div className='d-flex flex-column'>
+        <h2>Additional info</h2>
+        <WorkReleasePopover id="modal-pop-over-work-release" />
+        <span className='mb-4'><strong>{props.form_data.distributionAllowed ? "Yes" : "No"}</strong></span>
+        <span><strong>After submitting this portfolio it cannot be changed. Please click cancel if you want to make any additional changes.</strong></span>
+        </div>
       </ModalBody>
       <ModalFooter>
         <Button color="secondary" className="mr-auto" onClick={props.cancel}>Cancel</Button>

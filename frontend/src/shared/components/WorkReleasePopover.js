@@ -16,14 +16,14 @@ const workReleaseContent = (
     </React.Fragment>
   );
 
-function WorkReleasePopover() {
+function WorkReleasePopover(props) {
     
     return (
         <Label>
             <span className='d-inline-flex align-items-center'>
                 <span className='mr-2'>I have read and agree to the terms.</span>
 
-                <InfoPopover id='distributionAllowedInfo' title='PERMISSION AND RELEASE TO USE WORK(S)' content={workReleaseContent} />
+                <InfoPopover id={props.id || 'distributionAllowedInfo'} title='PERMISSION AND RELEASE TO USE WORK(S)' content={workReleaseContent} />
             </span>
 
         </Label>
