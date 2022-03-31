@@ -266,7 +266,7 @@ function PortfolioSubmissionForm(props) {
                       })
                     }}
                   />
-                  <span className='ml-2'>no</span>
+                  <span className='ml-2'>No</span>
                 </Label>
               </FormGroup>
             </FormGroup>
