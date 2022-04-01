@@ -55,10 +55,12 @@ function PortfolioPeriodPortfoliosTab(props) {
                         </Col>
                         <Col xs={6} lg={4} className="d-flex flex-column flex-lg-row align-items-lg-center">
                             <span className="d-lg-none text-muted">Artist</span>
-                            {portfolio.studentUsername}
+                            {!portfolio.entries[0] ? null
+                                : portfolio.entries[0].student.displayName || `${portfolio.entries[0].student.firstName} ${portfolio.entries[0].student.lastName}`
+                            }
                         </Col>
                         <Col xs={12} lg={4} className="d-flex flex-column flex-lg-row justify-content-lg-end mt-3 mt-lg-0">
-                        <button
+                            <button
                                 className="btn btn-outline-primary mb-3 mb-lg-0 mr-lg-3"
                                 onClick={() => { props.downloadZip(portfolio.id) }}
                             >
