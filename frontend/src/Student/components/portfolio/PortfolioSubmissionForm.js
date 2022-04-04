@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Form, FormGroup, Input, Label, Row, } from 'reactstrap'
 
 import styled from 'styled-components'
+import WorkReleasePopover from '../../../shared/components/WorkReleasePopover'
+
 import { IMAGE_UPLOAD_PATH, PDF_UPLOAD_PATH } from '../../../utils'
 import PortfolioCreationPreviewModal from './PortfolioCreationPreviewModal'
 
@@ -35,7 +37,8 @@ function PortfolioSubmissionForm(props) {
   const [form_data, setFormData] = useState({
     title: "Untitled",
     studentUsername: props.user.username,
-    submissions: [ENTRY_FACTORY()]
+    submissions: [ENTRY_FACTORY()],
+    distributionAllowed: false
   });
   const params = new URLSearchParams(window.location.search);
   const portfolioPeriodId = params.get("portfolioPeriodId");
@@ -82,7 +85,8 @@ function PortfolioSubmissionForm(props) {
         entry: {
           studentUsername: form_data.studentUsername,
           "portfolioId": parseInt(portfolio_id),
-          title: entry.title
+          title: entry.title,
+          distributionAllowed: form_data.distributionAllowed
         },
         url: entry.url
       });
@@ -99,7 +103,8 @@ function PortfolioSubmissionForm(props) {
         entry: {
           studentUsername: form_data.studentUsername,
           "portfolioId": parseInt(portfolio_id),
-          title: entry.title
+          title: entry.title,
+          distributionAllowed: form_data.distributionAllowed
         },
         path: photo_path.data.path,
         horizDimInch: 11.5,
@@ -120,7 +125,8 @@ function PortfolioSubmissionForm(props) {
         entry: {
           studentUsername: form_data.studentUsername,
           "portfolioId": parseInt(portfolio_id),
-          title: entry.title
+          title: entry.title,
+          distributionAllowed: form_data.distributionAllowed
         },
         path: pdf_path.data.path
       })
@@ -225,16 +231,56 @@ function PortfolioSubmissionForm(props) {
                 )
               })}
 
+
+
+            <FormGroup>
+              <WorkReleasePopover />
+            </FormGroup>
+            <FormGroup tag="fieldset">
+              <FormGroup check>
+                <Label check>
+                  <Input
+                    type='radio'
+                    name='distributionAllowed'
+                    checked={form_data.distributionAllowed === true}
+                    onChange={() => {
+                      setFormData({
+                        ...form_data,
+                        distributionAllowed: true
+                      })
+                    }}
+                  />
+                  <span className='ml-2'>Yes</span>
+                </Label>
+              </FormGroup>
+              <FormGroup check>
+                <Label check>
+                  <Input
+                    type='radio'
+                    name='distributionAllowed'
+                    checked={form_data.distributionAllowed === false}
+                    onChange={() => {
+                      setFormData({
+                        ...form_data,
+                        distributionAllowed: false
+                      })
+                    }}
+                  />
+                  <span className='ml-2'>No</span>
+                </Label>
+              </FormGroup>
+            </FormGroup>
+
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-5">
           <Col md={8} className="d-flex justify-content-between align-items-center">
             <Button color="secondary d-block mb-3" onClick={addSubmission}>Add Entry</Button>
             <Button type="submit" color="primary">Create</Button>
           </Col>
         </Row>
       </Container>
-      <PortfolioCreationPreviewModal isOpen={showPreview} cancel={() => {setShowPreview(false)}} accept={createPortfolio} form_data={form_data} />
+      <PortfolioCreationPreviewModal isOpen={showPreview} cancel={() => { setShowPreview(false) }} accept={createPortfolio} form_data={form_data} />
     </Form>
   )
 }
