@@ -10,7 +10,7 @@ function Scholarships(props) {
     const portfolioId = path.get("portfolioId")
     const portfolioPeriodId = path.get("portfolioPeriodId")
 
-    // Handle rending inavlid or no scholarships
+    // Handle rendering inavlid or no scholarships
     if (!Array.isArray(scholarships) || scholarships.length === 0) {
         return (
             <Container>
@@ -38,11 +38,11 @@ function Scholarships(props) {
             <React.Fragment>
                 {scholarships.map(scholarship => (
                 <ScholarshipCard 
-                disabled={!portfolioId} 
-                key={`scholarship.${scholarship.id}`} 
-                scholarship={scholarship} 
-                portfolioId={parseInt(portfolioId)}
-                portfolioPeriodId={parseInt(portfolioPeriodId)}
+                    disabled={!portfolioId} 
+                    key={`scholarship.${scholarship.id}`} 
+                    scholarship={scholarship} 
+                    portfolioId={parseInt(portfolioId)}
+                    portfolioPeriodId={parseInt(portfolioPeriodId)}
                 />
                 )
                 )}
