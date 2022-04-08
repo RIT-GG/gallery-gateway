@@ -145,13 +145,12 @@ export function up (queryInterface, Sequelize) {
           title: 'User8 Portfolio 1',
           studentUsername: 'user8',
           name: 'Future Portfolio',
-          portfolioPeriodId: portfolioPeriodIdFuture
+          portfolioPeriodId: portfolioPeriodIdInJudging
         },
       ]).then(() => ({...ids, portfolioId1, portfolioId2, portfolioId3, portfolioId4, portfolioId5}))
     })
     .then(ids => {
       const {portfolioPeriodIdActive, portfolioPeriodIdExpired, portfolioPeriodIdInJudging, portfolioPeriodIdFuture} = ids
-
 
       return queryInterface.bulkInsert('portfolioPeriodJudges', [
         // Assigns judges user2 and user3 to active portfolio period
@@ -193,7 +192,7 @@ export function up (queryInterface, Sequelize) {
           portfolioPeriodId: portfolioPeriodIdFuture,
           judgeUsername: 'user5'
         }
-      ])
+      ]).then(() => ({...ids}))
     })
     .then (ids => {
       // add all the images
@@ -271,8 +270,13 @@ export function up (queryInterface, Sequelize) {
       }))
     })
     .then(ids => {
-      const {portfolioId1, portfolioId2, portfolioId3, portfolioId4, portfolioId5, 
+      const { 
         fishImageId, treeImageId, bookImageId, applesImageId, runningImageId, purpleThingImageId} = ids
+      const portfolioId1 = 1 
+      const portfolioId2 = 2 
+      const portfolioId3 = 3 
+      const portfolioId4 = 4 
+      const portfolioId5 = 5
       
       const fishEntryId = genId()
       const treeEntryId = genId()
@@ -318,11 +322,11 @@ export function up (queryInterface, Sequelize) {
 
         // make user 6 add the book to their first portfolio
         {
-          id: bookImageId,
+          id: bookEntryId,
           portfolioId: portfolioId2 ,
           studentUsername: 'user6',
           entryType: 1,
-          entryId: bookEntryId,
+          entryId: bookImageId,
           title: 'Light Reading',
           comment: '',
           moreCopies: 1,
@@ -335,11 +339,11 @@ export function up (queryInterface, Sequelize) {
 
         // make user 7 add the apple to their second portfolio
         {
-          id: applesImageId,
+          id: applesEntryId,
           portfolioId: portfolioId3 ,
           studentUsername: 'user7',
           entryType: 1,
-          entryId: applesEntryId,
+          entryId: applesImageId,
           title: 'One a Day',
           comment: '',
           moreCopies: 1,
@@ -352,11 +356,11 @@ export function up (queryInterface, Sequelize) {
 
         // make user 6 add the running image to their second portfolio
         {
-          id: runningImageId,
+          id: runningEntryId,
           portfolioId: portfolioId4 ,
           studentUsername: 'user6',
           entryType: 1,
-          entryId: runningEntryId,
+          entryId: runningImageId,
           title: 'Zoom',
           comment: '',
           moreCopies: 1,
@@ -369,11 +373,11 @@ export function up (queryInterface, Sequelize) {
 
         // make user 8 add the purple thing to their first portfolio
         {
-          id: purpleThingImageId,
+          id: purpleThingEntryId,
           portfolioId: portfolioId5 ,
           studentUsername: 'user8',
           entryType: 1,
-          entryId: purpleThingEntryId,
+          entryId: purpleThingImageId,
           title: 'Purple Thing',
           comment: '',
           moreCopies: 1,
