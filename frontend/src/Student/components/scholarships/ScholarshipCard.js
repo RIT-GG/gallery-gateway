@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, { useState } from "react"
 import { Button, Card, CardBody, CardFooter, CardHeader } from "reactstrap"
 import PropTypes from "prop-types"
 import ScholarshipConfirmationModal from "./ScholarshipConfirmationModal"
@@ -32,12 +32,17 @@ function ScholarshipCard(props) {
     /**
      * Creates the scholarship submission entry
      */
-    function submitScholarship(){
-        props.createScholarshipSubmission({
-            portfolioId: parseInt(props.portfolioId),
-            scholarshipId: parseInt(scholarship.id)
-        })
-        setShowPreview(false);
+    function submitScholarship() {
+        if (typeof props.essayPath === "string"
+            && props.essayPath !== ""
+        ) {
+            props.createScholarshipSubmission({
+                portfolioId: parseInt(props.portfolioId),
+                scholarshipId: parseInt(scholarship.id),
+                essayPath: props.essayPath
+            })
+            setShowPreview(false)
+        }
     }
 
     const { name, description } = scholarship;
@@ -55,7 +60,7 @@ function ScholarshipCard(props) {
             <CardFooter>
                 <Button color="primary" disabled={disabled || scholarshipSubmissions.length > 0} onClick={handleSubmit}>Apply</Button>
             </CardFooter>
-            <ScholarshipConfirmationModal isOpen={showPreview} cancel={() => {setShowPreview(false)}} accept={submitScholarship} scholarship={scholarship} />
+            <ScholarshipConfirmationModal isOpen={showPreview} cancel={() => { setShowPreview(false) }} accept={submitScholarship} scholarship={scholarship} />
         </Card>
     )
 }

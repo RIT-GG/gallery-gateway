@@ -13,6 +13,11 @@
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      // link to the path of the essay (.pdf) associated with this scholarship
+      essayPath: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       // id of scholarship the submission is for
       scholarshipId: {
         allowNull: false,

@@ -172,11 +172,11 @@ function PortfolioPeriodCard(props) {
           color='primary'
           style={{ cursor: 'pointer' }}
           tag={Link}
-          to={`/portfolio-period/${props.id}/judges`}
+          to={`/portfolio-period/${props.id}/submissions`}
           block
           outline
         >
-          View Progress
+          View Submissions
         </Button>
         <Button
           color='primary'

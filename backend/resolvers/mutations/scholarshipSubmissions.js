@@ -10,7 +10,7 @@ export async function createScholarshipSubmission(_, args, context) {
   if (context.authType !== STUDENT) {
     throw new UserError('Permission Denied')
   }
-  const { scholarshipId, portfolioId } = args.input
+  const { scholarshipId, portfolioId, essayPath } = args.input
   
   // Grab the associated portfolio period id from the portfolio
   const portfolio = await Portfolio.findByPk(portfolioId)
@@ -34,7 +34,8 @@ export async function createScholarshipSubmission(_, args, context) {
   const newScholarshipSubmissions = {
     scholarshipId,
     portfolioId,
-    portfolioPeriodId
+    portfolioPeriodId, 
+    essayPath
   }
 
   return ScholarshipSubmission.create(newScholarshipSubmissions)

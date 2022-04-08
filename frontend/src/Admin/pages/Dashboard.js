@@ -4,7 +4,7 @@ import { Container, Row, Col, Button, Carousel, CarouselItem, NavItem, Nav } fro
 
 import Shows from '../containers/Shows'
 import PortfolioPeriods from '../containers/portfolio/PortfolioPeriods'
-import Scholarships from '../containers/scholarships/Scholarships'
+import Scholarships from '../containers/scholarship/Scholarships'
 
 const FEATURE__SHOWS = 0;
 const FEATURE__PORTFOLIO_PERIODS = 1;
@@ -90,17 +90,17 @@ const Dashboard = () => {
         </Col>
         <Col>
           <Carousel activeIndex={active_feature} interval={false} next={() => { }} previous={() => { }}>
-            <CarouselItem>
+            <CarouselItem key={'carousel-item-shows'}>
               <h1>Shows</h1>
               <Shows />
             </CarouselItem>
 
-            <CarouselItem>
+            <CarouselItem key={'carousel-item-portfolio-periods'}>
               <h1 className='my-3'>Portfolio Periods</h1>
               <PortfolioPeriods />
             </CarouselItem>
 
-            <CarouselItem>
+            <CarouselItem key={'carousel-item-scholarships'}>
               <h1 className='my-3'>Scholarships</h1>
               <Scholarships />
             </CarouselItem>

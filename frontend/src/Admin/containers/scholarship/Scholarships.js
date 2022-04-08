@@ -2,7 +2,7 @@ import { graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
-import Scholarships from '../../components/scholarships/Scholarships'
+import Scholarships from '../../components/scholarship/Scholarships'
 import { displayError } from '../../../shared/actions'
 
 // Graph QL queries

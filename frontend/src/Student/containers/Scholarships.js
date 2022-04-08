@@ -3,6 +3,7 @@ import { graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { displayError } from '../../shared/actions'
+import { uploadPDF } from '../actions'
 import Scholarships from '../components/scholarships/Scholarships'
 
 import ScholarshipQuery from "../queries/scholarships/activeScholarships.graphql"
@@ -13,6 +14,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+    handlePDFUpload: file => dispatch(uploadPDF(file)),
     handleError: message => dispatch(displayError(message))
 })
 

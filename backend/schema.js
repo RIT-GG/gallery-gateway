@@ -110,8 +110,9 @@ type Scholarship {
 }
 
 input ScholarshipSubmissionInput {
-    scholarshipId: Int
-    portfolioId: Int
+    scholarshipId: Int!
+    portfolioId: Int!
+    essayPath: String!
 }
 
 type ScholarshipSubmission {
@@ -120,6 +121,7 @@ type ScholarshipSubmission {
     portfolioPeriodId: Int
     portfolioId: Int
     portfolio: Portfolio
+    essayPath: String
 }
 
 type Show {

@@ -93,8 +93,8 @@ function PortfolioPeriods(props) {
 }
 
 PortfolioPeriods.propTypes = {
-  portfolioPeriods: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired,
+  portfolioPeriods: PropTypes.array,
+  loading: PropTypes.bool,
   error: PropTypes.object
 }
 
