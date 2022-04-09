@@ -11,6 +11,7 @@ import EditShow from './pages/EditShow'
 import EditPortfolioPeriod from './pages/EditPortfolioPeriod'
 import EditScholarship from './pages/EditScholarship'
 import AssignJudges from './pages/AssignJudges'
+import AssignJudgesPortfolioPeriod from './pages/AssignJudgesPortfolioPeriod'
 import ManageUsers from './pages/ManageUsers'
 
 import Layout from './components/Layout'
@@ -31,6 +32,7 @@ const Admin = () => (
       <Route path='/users' component={ManageUsers} />
       <Route exact path='/portfolio-period' component={Dashboard} />
       <Route exact path='/portfolio-period/new' component={CreatePortfolioPeriod} />
+      <Route exact path='/portfolio-period/:id/judges/assign' component={AssignJudgesPortfolioPeriod} />
       <Route exact path='/portfolio-period/:id/edit' component={EditPortfolioPeriod} />
       <Route path='/portfolio-period/:id' component={ViewPortfolioPeriod} />
       <Route exact path='/scholarships/new' component={CreateScholarship} />

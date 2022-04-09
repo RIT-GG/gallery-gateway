@@ -8,7 +8,7 @@ import { compose } from 'recompose'
 
 import PortfolioPeriodDetailsTab from '../containers/portfolio/PortfolioPeriodDetailsTab'
 import PortfolioPeriodPortfoliosTab from '../containers/portfolio/PortfolioPeriodPortfoliosTab'
-// import PortfolioPeriodJudgesTab from '../containers/PortfolioPeriodJudgesTab'
+import AssignJudgesPortfolioPeriodTable from '../containers/portfolio/AssignJudgesPortfolioPeriodTable'
 import PortfolioPeriodQuery from '../queries/portfolio/portfolioPeriod.graphql'
 import Loading from '../../shared/components/Loading'
 import NotFound from '../../shared/components/NotFound'
@@ -59,11 +59,23 @@ const ViewPortfolioPeriod = props => {
         >
           Submissions
         </NavTab>
+        <NavTab
+          exact
+          to='/judges'
+          replace={false}
+          className='nav-item nav-link'
+        >
+          Judges
+        </NavTab>
       </RoutedTabs>
 
       <TabContent>
         <TabPane>
           <Switch>
+            <Route
+              path={`/portfolio-period/:id/judges/assign`}
+              render={() => <AssignJudgesPortfolioPeriodTable portfolioPeriod={props.portfolioPeriod} />}
+            />
             <Route
               path={`/portfolio-period/:id/portfolios`}
               render={() => <PortfolioPeriodPortfoliosTab portfolioPeriod={props.portfolioPeriod} />}

@@ -1,0 +1,3 @@
+mutation AssignJudgesToPortfolioPeriod($input: PortfolioPeriodJudgeInput!) {
+  assignJudgesToPortfolioPeriod(input: $input)
+}
