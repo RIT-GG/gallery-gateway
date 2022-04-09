@@ -65,14 +65,47 @@ export async function assignJudgesToPortfolioPeriod(_, args, context) {
   for (let idx = 0; idx < usernames.length; idx++) {
     const judgeUsername = usernames[idx]
     if (typeof judgeUsername !== "string") continue
-    const judge_in_portfolio_period = await PortfolioPeriodJudge.findOne({where: {portfolioPeriodId, judgeUsername}})
+    const judge_in_portfolio_period = await PortfolioPeriodJudge.findOne({ where: { portfolioPeriodId, judgeUsername } })
     // Chekc if the judge has already been assigned to this portoflio period
-    if( judge_in_portfolio_period !== null ) continue
+    if (judge_in_portfolio_period !== null) continue
     await PortfolioPeriodJudge.create(
       {
         portfolioPeriodId,
         judgeUsername
       })
+  }
+  return true
+}
+
+export async function removeJudgesFromPortfolioPeriod(_, args, context) {
+  // Only admins can assign judges portfolio periods
+  if (context.authType !== ADMIN) {
+    throw new UserError('Permission Denied')
+  }
+  // destruct expected input
+  let { portfolioPeriodId, usernames } = args.input
+
+  // Check for required fields
+  portfolioPeriodId = parseInt(portfolioPeriodId)
+  if (isNaN(portfolioPeriodId)) throw new UserError('Portfolio Period Id must be a number')
+  if (!Array.isArray(usernames) || usernames.length === 0) throw new UserError('Judge username must be a string')
+
+
+  // remove each portfolio period judge
+  for (let idx = 0; idx < usernames.length; idx++) {
+    const judgeUsername = usernames[idx]
+    if (typeof judgeUsername !== "string") continue
+    const judge_in_portfolio_period = await PortfolioPeriodJudge.findOne({ where: { portfolioPeriodId, judgeUsername } })
+    // Check if the judge is assigned to this portoflio period
+    if (judge_in_portfolio_period === null) continue
+    await PortfolioPeriodJudge.destroy(
+      {
+        where: {
+          portfolioPeriodId,
+          judgeUsername
+        }
+      }
+    )
   }
   return true
 }
