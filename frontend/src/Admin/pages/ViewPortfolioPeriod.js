@@ -12,13 +12,14 @@ import PortfolioPeriodPortfoliosTab from '../containers/portfolio/PortfolioPerio
 import PortfolioPeriodQuery from '../queries/portfolio/portfolioPeriod.graphql'
 import Loading from '../../shared/components/Loading'
 import NotFound from '../../shared/components/NotFound'
+import PortfolioPeriodSubmissions from '../containers/portfolio/PortfolioPeriodSubmissions'
 
 const ViewPortfolioPeriod = props => {
   if (props.loading) {
     return <Loading />
   }
 
-  if (!props.portfolioPeriod) {
+  if (props.portfolioPeriod === undefined) {
     return <NotFound />
   }
 
@@ -26,7 +27,7 @@ const ViewPortfolioPeriod = props => {
     <Container>
       <Row>
         <Col>
-          <h1>{props.portfolioPeriod.name}</h1>
+          <h1>{props.portfolioPeriod ? props.portfolioPeriod.name : ""}</h1>
         </Col>
       </Row>
 
@@ -52,11 +53,11 @@ const ViewPortfolioPeriod = props => {
         </NavTab>
         <NavTab
           exact
-          to='/judges'
+          to='/submissions'
           replace={false}
           className='nav-item nav-link'
         >
-          Judges
+          Submissions
         </NavTab>
       </RoutedTabs>
 
@@ -64,18 +65,17 @@ const ViewPortfolioPeriod = props => {
         <TabPane>
           <Switch>
             <Route
-              exact
-              path={`${props.match.path}`}
-              render={() => <PortfolioPeriodDetailsTab portfolioPeriod={props.portfolioPeriod} />}
-            />
-            <Route
-              path={`${props.match.path}/portfolios`}
+              path={`/portfolio-period/:id/portfolios`}
               render={() => <PortfolioPeriodPortfoliosTab portfolioPeriod={props.portfolioPeriod} />}
             />
-            {/* <Route
-              path={`${props.match.path}/judges`}
-              render={() => <PortfolioPeriodJudgesTab portfolioPeriod={props.portfolioPeriod} />}
-            /> */}
+            <Route
+              path={`/portfolio-period/:id/submissions`}
+              render={() => <PortfolioPeriodSubmissions portfolioPeriod={props.portfolioPeriod} />}
+            />
+            <Route
+              path="/portfolio-period/:id"
+              render={() => <PortfolioPeriodDetailsTab portfolioPeriod={props.portfolioPeriod} />}
+            />
           </Switch>
         </TabPane>
       </TabContent>
@@ -84,9 +84,9 @@ const ViewPortfolioPeriod = props => {
 }
 
 ViewPortfolioPeriod.propTypes = {
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
   portfolioPeriod: PropTypes.shape({
-    name: PropTypes.string.isRequired
+    name: PropTypes.string
   }),
   match: PropTypes.shape({
     path: PropTypes.string.isRequired,

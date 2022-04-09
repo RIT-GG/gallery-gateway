@@ -17,8 +17,8 @@ function CreatePortfolioEntryCard(props) {
   if (props.type === "photo" || props.type === "other") {
     return (
       <FormGroup>
-        <Label for={`${props.name}.${props.type}`}>Photo</Label>
-        <Dropzone name={`${props.name}.${props.type}`} accept={`image/jpeg ${props.type === "other" ? ",application/pdf" : ""}`} className='form-control d-flex align-items-center justify-content-center' onDrop={handleDrop}>
+        <Label for={`${props.name}.${props.type}`}>File</Label>
+        <Dropzone name={`${props.name}.${props.type}`} accept={props.type === "other" ? "application/pdf" : "image/jpeg "} className='form-control d-flex align-items-center justify-content-center' onDrop={handleDrop}>
           {({ getRootProps, getInputProps }) => {
             return (
               <section>
@@ -29,7 +29,7 @@ function CreatePortfolioEntryCard(props) {
                     file !== null ? <img className="img-fluid" src={URL.createObjectURL(file)} alt="Uploaded file preview" style={{maxHeight: "100%"}}/>
                       : <div>
                         <p>Click or drop to upload your file.</p>
-                        <p>Only {props.type === 'other' ? '*.jpg, *.jpeg, and *.pdf' : '*.jpg and *.jpeg'} files will be accepted.</p>
+                        <p>Only {props.type === 'other' ? '*.pdf' : '*.jpg and *.jpeg'} files will be accepted.</p>
                         <p>(50MB Maximum File Size)</p>
                       </div>
                   }

@@ -4,6 +4,12 @@ import Portfolio from './portfolio'
 
 // Defines a scholarship submission object and all of its fields
 const ScholarshipSubmission = sequelize.define('scholarshipSubmissions', {
+  essayPath: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    onDelete: 'cascade',
+    onUpdate: 'cascade'
+  },
   // id of scholarship the submission is for
   scholarshipId: {
     allowNull: false,

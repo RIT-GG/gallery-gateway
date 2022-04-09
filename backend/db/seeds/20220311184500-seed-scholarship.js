@@ -13,25 +13,6 @@ export function up (queryInterface, Sequelize) {
         active: false
       },
     ])
-    .then(() => {
-      return queryInterface.bulkInsert('scholarshipSubmissions', [
-        {
-          scholarshipId: 1,
-          portfolioPeriodId: 1,
-          portfolioId: 1
-        },
-        {
-          scholarshipId: 1,
-          portfolioPeriodId: 1,
-          portfolioId: 2
-        },
-        {
-          scholarshipId: 2,
-          portfolioPeriodId: 2,
-          portfolioId: 3
-        },
-      ])
-    })
 }
 
 export function down (queryInterface) {

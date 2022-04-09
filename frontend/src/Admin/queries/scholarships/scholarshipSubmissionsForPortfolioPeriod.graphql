@@ -1,0 +1,50 @@
+query ScholarshipSubmissions($portfolioPeriodId: Int) {
+  scholarshipSubmissions(portfolioPeriodId: $portfolioPeriodId) {
+    id
+    scholarshipId
+    portfolioPeriodId
+    portfolioId
+    essayPath
+    portfolio {
+      id
+      title
+      studentUsername
+      description
+      portfolioPeriodId
+      createdAt
+      updatedAt
+      entries {
+        id
+        distributionAllowed
+        student {
+          firstName
+          lastName
+          displayName
+          hometown
+        }
+        title
+        comment
+        portfolioId
+        forSale
+        yearLevel
+        academicProgram
+        moreCopies
+        entryType
+        ... on Photo {
+          path
+          horizDimInch
+          vertDimInch
+          mediaType
+        }
+        ... on Video {
+          provider
+          videoId
+        }
+        ... on OtherMedia {
+          path
+        }
+      }
+      
+    }
+  }
+}

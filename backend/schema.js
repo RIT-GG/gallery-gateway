@@ -47,6 +47,7 @@ type PortfolioPeriod {
     description: String
     startDate: Date!
     endDate: Date!
+    judges: [User]
     judgingStartDate: Date!
     judgingEndDate: Date!
     portfolios: [Portfolio]
@@ -70,6 +71,16 @@ input PortfolioPeriodUpdate {
     endDate: Date
     judgingStartDate: Date
     judgingEndDate: Date
+}
+
+type PortfolioPeriodJudge {
+    portfolioPeriodId: ID!
+    judgeUsername: String!
+}
+
+input PortfolioPeriodJudgeInput {
+    portfolioPeriodId: Int!
+    usernames: [String]!
 }
 
 type Portfolio {
@@ -110,8 +121,9 @@ type Scholarship {
 }
 
 input ScholarshipSubmissionInput {
-    scholarshipId: Int
-    portfolioId: Int
+    scholarshipId: Int!
+    portfolioId: Int!
+    essayPath: String!
 }
 
 type ScholarshipSubmission {
@@ -120,6 +132,7 @@ type ScholarshipSubmission {
     portfolioPeriodId: Int
     portfolioId: Int
     portfolio: Portfolio
+    essayPath: String
 }
 
 type Show {
@@ -360,6 +373,7 @@ type Mutation {
 
     createPortfolio(input: PortfolioInput!): Portfolio
 
+    assignJudgesToPortfolioPeriod(input: PortfolioPeriodJudgeInput! ): Boolean
     createPortfolioPeriod(input: PortfolioPeriodInput!): PortfolioPeriod
     updatePortfolioPeriod(id: ID!, input: PortfolioPeriodUpdate!): PortfolioPeriod
 

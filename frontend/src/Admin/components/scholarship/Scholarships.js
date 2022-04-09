@@ -44,7 +44,7 @@ function Scholarships(props) {
                     <h3 className="text-success">Active Scholarships</h3>
                     {
                         activeScholarships.map(scholarship => {
-                            return <AdminScholarshipCard scholarship={scholarship} />
+                            return <AdminScholarshipCard scholarship={scholarship} key={`active-scholarship-${scholarship.id}`}/>
                         })
                     }
                 </Col>
@@ -52,7 +52,7 @@ function Scholarships(props) {
                     <h3 className="text-warning">Inactive Scholarships</h3>
                     {
                         inactiveScholarships.map(scholarship => {
-                            return <AdminScholarshipCard scholarship={scholarship} />
+                            return <AdminScholarshipCard scholarship={scholarship} key={`inactive-scholarship-${scholarship.id}`} />
                         })
                     }
                 </Col>
