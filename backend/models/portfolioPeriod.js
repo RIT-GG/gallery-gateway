@@ -2,6 +2,7 @@ import DataTypes from 'sequelize'
 import sequelize from '../config/sequelize'
 import PortfolioPeriodJudge from './portfolioPeriodJudge'
 import Portfolio from './portfolio'
+import User from './user'
 
 const PortfolioPeriod = sequelize.define('portfolioPeriod', {
     name: {
@@ -37,12 +38,17 @@ const PortfolioPeriod = sequelize.define('portfolioPeriod', {
     }
 })
 
-PortfolioPeriod.prototype.getPortfolios = function getPortfolios () {
+PortfolioPeriod.prototype.getPortfolios = function getPortfolios() {
     return Portfolio.findAll({ where: { portfolioPeriodId: this.id } })
 }
 
-PortfolioPeriod.prototype.getJudges = function getJudges () {
-    return PortfolioPeriodJudge.findAll({ where: { portfolioPeriodId: this.id } })
+PortfolioPeriod.prototype.getJudges = async function getJudges() {
+    // Find all portfolio period judge models with this portfolio period id 
+    const portfolio_period_judges = await PortfolioPeriodJudge.findAll({ where: { portfolioPeriodId: this.id } })
+    // Grab the judge user object from the database
+    const judges = await portfolio_period_judges.map(async (judge) => await User.findOne({ where: { username: judge.judgeUsername } }))
+    return judges
+
 }
 
 export default PortfolioPeriod
