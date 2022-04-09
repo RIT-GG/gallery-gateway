@@ -65,6 +65,9 @@ export async function assignJudgesToPortfolioPeriod(_, args, context) {
   for (let idx = 0; idx < usernames.length; idx++) {
     const judgeUsername = usernames[idx]
     if (typeof judgeUsername !== "string") continue
+    const judge_in_portfolio_period = await PortfolioPeriodJudge.findOne({where: {portfolioPeriodId, judgeUsername}})
+    // Chekc if the judge has already been assigned to this portoflio period
+    if( judge_in_portfolio_period !== null ) continue
     await PortfolioPeriodJudge.create(
       {
         portfolioPeriodId,
