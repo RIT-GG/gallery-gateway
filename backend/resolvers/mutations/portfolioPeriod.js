@@ -83,7 +83,7 @@ export async function removeJudgesFromPortfolioPeriod(_, args, context) {
     throw new UserError('Permission Denied')
   }
   // destruct expected input
-  let { portfolioPeriodId, usernames } = args.input
+  let { portfolioPeriodId, usernames } = args
 
   // Check for required fields
   portfolioPeriodId = parseInt(portfolioPeriodId)

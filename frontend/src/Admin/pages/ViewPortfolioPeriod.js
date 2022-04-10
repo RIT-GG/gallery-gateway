@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { graphql } from 'react-apollo'
 import PropTypes from 'prop-types'
 import { TabContent, TabPane, Container, Row, Col } from 'reactstrap'
@@ -8,26 +8,32 @@ import { compose } from 'recompose'
 
 import PortfolioPeriodDetailsTab from '../containers/portfolio/PortfolioPeriodDetailsTab'
 import PortfolioPeriodPortfoliosTab from '../containers/portfolio/PortfolioPeriodPortfoliosTab'
-// import PortfolioPeriodJudgesTab from '../containers/PortfolioPeriodJudgesTab'
+import AssignJudgesPortfolioPeriodTable from '../containers/portfolio/AssignJudgesPortfolioPeriodTable'
 import PortfolioPeriodQuery from '../queries/portfolio/portfolioPeriod.graphql'
 import Loading from '../../shared/components/Loading'
 import NotFound from '../../shared/components/NotFound'
 import PortfolioPeriodSubmissions from '../containers/portfolio/PortfolioPeriodSubmissions'
 
 const ViewPortfolioPeriod = props => {
-  if (props.loading) {
-    return <Loading />
-  }
+  const { loading } = props
+  const [portfolioPeriod, setPortfolioPeriod] = useState(props.portfolioPeriod)
 
-  if (props.portfolioPeriod === undefined) {
-    return <NotFound />
-  }
+  /**
+   * Effect for updating the portfolio period in state
+   */
+  useEffect(() => {
+    if (props.portfolioPeriod) setPortfolioPeriod(props.portfolioPeriod)
+  }, [props.portfolioPeriod])
+
+  if (loading) return <Loading />
+
+  if (!portfolioPeriod) return <NotFound />
 
   return (
     <Container>
       <Row>
         <Col>
-          <h1>{props.portfolioPeriod ? props.portfolioPeriod.name : ""}</h1>
+          <h1>{portfolioPeriod ? portfolioPeriod.name : ""}</h1>
         </Col>
       </Row>
 
@@ -59,22 +65,34 @@ const ViewPortfolioPeriod = props => {
         >
           Submissions
         </NavTab>
+        <NavTab
+          exact
+          to='/judges/assign'
+          replace={false}
+          className='nav-item nav-link'
+        >
+          Judges
+        </NavTab>
       </RoutedTabs>
 
       <TabContent>
         <TabPane>
           <Switch>
             <Route
+              path={`/portfolio-period/:id/judges/assign`}
+              render={() => <AssignJudgesPortfolioPeriodTable portfolioPeriod={portfolioPeriod} />}
+            />
+            <Route
               path={`/portfolio-period/:id/portfolios`}
-              render={() => <PortfolioPeriodPortfoliosTab portfolioPeriod={props.portfolioPeriod} />}
+              render={() => <PortfolioPeriodPortfoliosTab portfolioPeriod={portfolioPeriod} />}
             />
             <Route
               path={`/portfolio-period/:id/submissions`}
-              render={() => <PortfolioPeriodSubmissions portfolioPeriod={props.portfolioPeriod} />}
+              render={() => <PortfolioPeriodSubmissions portfolioPeriod={portfolioPeriod} />}
             />
             <Route
               path="/portfolio-period/:id"
-              render={() => <PortfolioPeriodDetailsTab portfolioPeriod={props.portfolioPeriod} />}
+              render={() => <PortfolioPeriodDetailsTab portfolioPeriod={portfolioPeriod} />}
             />
           </Switch>
         </TabPane>

@@ -3,13 +3,12 @@ import moment from 'moment'
 
 export async function portfolioPeriod(_, args, context) {
     // Apply ordering, if desired
-    const order = args.orderBy ? { order: [[args.orderBy.sort, args.orderBy.direction]] } : {}
-    if (args.id) {
-        return PortfolioPeriod.findByPk(args.id)
-    }
-
-    // Can only query for portfolio periods by active and id
-    return null;
+    let portfolio_period = null
+    
+    if (!args.id) return portfolio_period
+    
+    portfolio_period = await PortfolioPeriod.findByPk(args.id)
+    return portfolio_period
 }
 
 export async function portfolioPeriods(_, args, context) {
