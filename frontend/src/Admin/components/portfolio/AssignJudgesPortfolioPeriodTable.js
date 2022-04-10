@@ -51,7 +51,7 @@ function AssignJudgesPortfolioPeriodTable({
   }, [allJudges, state.judgesFetched])
 
   /**
-   * Effect for building the array of unassigned and unassigned judges
+   * Effect for building the array of unassigned judges
    */
   useEffect(() => {
     if (Array.isArray(allJudges)) {
