@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
-import PortfolioPeriodCard from '../../Admin/components/portfolio/PortfolioPeriodCard'
+import PortfolioPeriodCard from '../components/PortfolioPeriodCard'
 import Loading from '../../shared/components/Loading'
 
 function PortfolioPeriods(props) {
