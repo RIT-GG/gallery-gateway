@@ -12,6 +12,7 @@ const Judge = () => (
   <Layout>
     <Switch>
       <Route exact path='/' component={Dashboard} />
+      <Route exact path='/portfolio-period' component={Dashboard} />
       <Route exact path='/show/:id' component={Review} />
       <Route exact path='/show/:id/vote' component={Vote} />
       <Route component={NotFound} />
