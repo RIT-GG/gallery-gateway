@@ -65,7 +65,7 @@ function PortfolioPeriods(props) {
       <div className='mb-5'>
         <h3 className='mb-3'>Active Period</h3>
         {activePortfolioPeriods.length === 0 ?
-          <p>There is no active portfolio period. <a href="/portfolio-period/new">Create portfolio period</a></p>
+          <p>You are not assigned to any active portfolio period.</p>
           : activePortfolioPeriods.map(portfolio_period =>
             <PortfolioPeriodCard key={portfolio_period.id} {...portfolio_period} />
           )}
@@ -74,7 +74,7 @@ function PortfolioPeriods(props) {
       <div className='mb-5'>
         <h3 className='mb-3'>Future Portfolio Periods</h3>
         {futurePortfolioPeriods.length === 0 ?
-          <p>No past active portfolio periods.</p>
+          <p>You are not assigned to any future portfolio periods.</p>
           : futurePortfolioPeriods.map(portfolio_period =>
             <PortfolioPeriodCard key={portfolio_period.id} {...portfolio_period} />
           )}
@@ -83,7 +83,7 @@ function PortfolioPeriods(props) {
       <div className='mb-5'>
         <h3 className='mb-3'>Past Portfolio Periods</h3>
         {pastPortfolioPeriods.length === 0 ?
-          <p>No past portfolio periods.</p>
+          <p>You are not assigned to any past portfolio periods.</p>
           : pastPortfolioPeriods.map(portfolio_period =>
             <PortfolioPeriodCard key={portfolio_period.id} {...portfolio_period} />
           )}

@@ -19,7 +19,7 @@ const Dashboard = () => {
   useEffect(() => {
     const path = window.location.pathname;
     switch (path) {
-      case "/portfolio-period":
+      case "/portfolio-periods":
         setActiveFeature(FEATURE__PORTFOLIO_PERIODS);
         return;
       default:
@@ -40,10 +40,10 @@ const Dashboard = () => {
         <Col xs={12} className="my-3">
           <Nav tabs>
             <NavItem>
-              <Link className={`nav-link${active_feature === FEATURE__SHOWS ? " active" : ""}`} to='/show'>Shows</Link>
+              <Link className={`nav-link${active_feature === FEATURE__SHOWS ? " active" : ""}`} to='/'>Shows</Link>
             </NavItem>
             <NavItem>
-              <Link className={`nav-link${active_feature === FEATURE__PORTFOLIO_PERIODS ? " active" : ""}`} to="/portfolio-period">Portfolio Periods</Link>
+              <Link className={`nav-link${active_feature === FEATURE__PORTFOLIO_PERIODS ? " active" : ""}`} to="/portfolio-periods">Portfolio Periods</Link>
             </NavItem>
           </Nav>
         </Col>

@@ -74,7 +74,7 @@ function PortfolioPeriods(props) {
       <div className='mb-5'>
         <h3 className='mb-3'>Future Portfolio Periods</h3>
         {futurePortfolioPeriods.length === 0 ?
-          <p>No past active portfolio periods.</p>
+          <p>No future portfolio periods.</p>
           : futurePortfolioPeriods.map(portfolio_period =>
             <PortfolioPeriodCard key={portfolio_period.id} {...portfolio_period} />
           )}
