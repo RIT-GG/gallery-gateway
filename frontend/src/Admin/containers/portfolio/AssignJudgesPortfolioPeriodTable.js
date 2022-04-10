@@ -4,27 +4,39 @@ import { compose } from 'recompose'
 
 import { displayError } from '../../../shared/actions'
 
-import JudgesQuery from '../../queries/judges.graphql'
 import JudgesForPortfolioPeriodQuery from '../../queries/portfolio/judgesForPortfolioPeriod.graphql'
 
 import AssignJudgesToPortfolioPeriodMutation from '../../mutations/portfolio/assignJudgesToPortfolioPeriod.graphql'
 import RemoveJudgesFromPortfolioPeriodMutation from '../../mutations/portfolio/removeJudgesFromPortfolioPeriod.graphql'
 
 import AssignJudgesPortfolioPeriodTable from '../../components/portfolio/AssignJudgesPortfolioPeriodTable'
+import { fetchJudges } from '../../actions'
 
-const mapDispatchToProps = (dispatch, { portfolioPeriodId }) => ({
-  handleError: message => dispatch(displayError(message))
+const mapDispatchToProps = (dispatch) => ({
+  handleError: message => dispatch(displayError(message)),
+  fetchJudges: () => dispatch(fetchJudges())
 })
 
 export default compose(
   connect(null, mapDispatchToProps),
+  graphql(JudgesForPortfolioPeriodQuery, {
+    props: ({ ownProps, data: { portfolioPeriod, loading, error } }) => {
+      return ({
+      portfolioPeriod,
+      loading,
+      error
+    })
+  }
+  }),
   graphql(AssignJudgesToPortfolioPeriodMutation, {
     props: ({ ownProps, mutate }) => ({
       assign: usernames =>
         mutate({
           variables: {
-            portfolioPeriodId: ownProps.portfolioPeriodId,
-            usernames
+            input: {
+              portfolioPeriodId: ownProps.portfolioPeriodId,
+              usernames
+            }
           },
           refetchQueries: [
             {
@@ -32,9 +44,6 @@ export default compose(
               variables: {
                 id: ownProps.portfolioPeriodId
               }
-            },
-            {
-              query: JudgesQuery
             }
           ]
         })
@@ -45,8 +54,8 @@ export default compose(
       unassign: usernames =>
         mutate({
           variables: {
-            portfolioPeriodId: ownProps.portfolioPeriodId,
-            usernames
+              portfolioPeriodId: ownProps.portfolioPeriodId,
+              usernames
           },
           refetchQueries: [
             {
@@ -54,9 +63,6 @@ export default compose(
               variables: {
                 id: ownProps.portfolioPeriodId
               }
-            },
-            {
-              query: JudgesQuery
             }
           ]
         })

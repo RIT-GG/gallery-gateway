@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, useEffect, useState } from 'react'
 import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import FaLongArrowLeft from '@fortawesome/fontawesome-free-solid/faLongArrowAltLeft'
@@ -7,183 +7,213 @@ import FaExclamationTriangle from '@fortawesome/fontawesome-free-solid/faExclama
 
 import JudgesTable from '../../components/JudgesTable'
 
-class AssignJudgesPortfolioPeriodTable extends Component {
-
-  static defaultProps = {
-    data: {
-      assignedJudges: [],
-      unassignedJudges: []
-    }
-  }
-
-  state = {
+function AssignJudgesPortfolioPeriodTable({
+  assign: assignProp,
+  portfolioPeriod,
+  fetchJudges,
+  handleError,
+  unassign: unassignProp
+}) {
+  // component state
+  const [allJudges, setAllJudges] = useState(undefined)
+  const [assignedJudges, setAssignedJudges] = useState(portfolioPeriod ? portfolioPeriod.judges : undefined)
+  const [unassignedJudges, setUnassignedJudges] = useState(undefined)
+  const [state, setState] = useState({
+    isUnassignConfirmationOpen: false,
+    judgesFetched: false,
     selectedUnassignedJudges: {},
-    selectedAssignedJudges: {},
-    isUnassignConfirmationOpen: false
-  }
+    selectedAssignedJudges: {}
+  })
 
-  onComponentDidMount(){
-    
-  }
+  useEffect(() => {
+    if(portfolioPeriod && Array.isArray(portfolioPeriod.judges)){
+      setAssignedJudges(portfolioPeriod.judges)
+    }
+  }, [portfolioPeriod])
 
-  onDismissUnassignConfirmation = () => {
-    this.setState({
+  /**
+   * Effect for dispatch the fetch judges action then storing the judges in state
+   */
+  useEffect(() => {
+    if (allJudges === undefined && state.judgesFetched === false) {
+      async function doFetch() {
+        const judges = (await fetchJudges()).payload
+        if (Array.isArray(judges) && judges.length > 0) {
+          setAllJudges(judges)
+        }
+      }
+      doFetch()
+      setState({
+        ...state,
+        judgesFetched: true
+      })
+    }
+  }, [allJudges, state.judgesFetched])
+
+  /**
+   * Effect for building the array of unassigned and unassigned judges
+   */
+  useEffect(() => {
+    if (Array.isArray(allJudges)) {
+      const assignedJudgesArray = Array.isArray(assignedJudges) ? assignedJudges.map(judge => judge.username) : []
+      const assignedJudgesSet = new Set(assignedJudgesArray)
+      setUnassignedJudges(allJudges.filter(judge => !assignedJudgesSet.has(judge.username)))
+    }
+  }, [allJudges, assignedJudges])
+
+  const onDismissUnassignConfirmation = () => {
+    setState({
+      ...state,
       isUnassignConfirmationOpen: false
     })
   }
 
-  onDisplayUnassignConfirmation = () => {
-    this.setState({
+  const onDisplayUnassignConfirmation = () => {
+    setState({
+      ...state,
       isUnassignConfirmationOpen: true
     })
   }
 
-  assign = () => {
-    const judges = Object.keys(this.state.selectedUnassignedJudges)
+  const assign = () => {
+    const judges = Object.keys(state.selectedUnassignedJudges)
 
     if (judges.length) {
-      this.props
-        .assign(judges)
+      assignProp(judges)
         .then(() => {
-          // Reset the checkboxes
-          this.setState({
-            selectedUnassignedJudges: {},
-            selectedAssignedJudges: {}
-          })
+          // force reload, state update with refetch queries not working. This would be solved with Redux Toolkit usage
+          window.location.reload();
         })
-        .catch(err => this.props.handleError(err.message))
+        .catch(err => handleError(err.message))
     }
   }
 
-  unassign = () => {
-    const judges = Object.keys(this.state.selectedAssignedJudges)
+  const unassign = () => {
+    const judges = Object.keys(state.selectedAssignedJudges)
 
     if (judges.length) {
-      this.props
-        .unassign(judges)
+      unassignProp(judges)
         .then(() => {
-          // Reset the checkboxes
-          this.setState({
-            selectedUnassignedJudges: {},
-            selectedAssignedJudges: {}
-          })
+          // force reload, state update with refetch queries not working. This would be solved with Redux Toolkit usage
+          window.location.reload()
         })
-        .catch(err => this.props.handleError(err.message))
+        .catch(err => handleError(err.message))
     }
   }
 
-  handleAssignedJudgesChange = selectedAssignedJudges => {
-    this.setState({ selectedAssignedJudges })
+  const handleAssignedJudgesChange = selectedAssignedJudges => {
+    setState({
+      ...state,
+      selectedAssignedJudges
+    })
   }
 
-  handleUnassignedJudgesChange = selectedUnassignedJudges => {
-    this.setState({ selectedUnassignedJudges })
+  const handleUnassignedJudgesChange = selectedUnassignedJudges => {
+    setState({
+      ...state,
+      selectedUnassignedJudges
+    })
   }
 
-  render () {
-    const { data } = this.props
-
-    return (
-      <Fragment>
-        <Modal
-          isOpen={this.state.isUnassignConfirmationOpen}
-          toggle={this.onDismissUnassignConfirmation}
-          style={{ top: '25%' }}
-        >
-          <ModalHeader toggle={this.onDismissUnassignConfirmation}>
-            Warning{' '}
-            <FontAwesomeIcon
-              icon={FaExclamationTriangle}
-              className='align-middle'
-            />
-          </ModalHeader>
-          <ModalBody>
-            <p>
-              Removing a judge will permanently delete any votes they have made
-              in this portfolio period.
-            </p>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              color='secondary'
-              onClick={() => this.onDismissUnassignConfirmation()}
-            >
-              Cancel
-            </Button>
-            <Button
-              color='danger'
-              onClick={() => {
-                this.onDismissUnassignConfirmation()
-                this.unassign()
-              }}
-            >
-              Continue
-            </Button>
-          </ModalFooter>
-        </Modal>
-        <Row>
-          <Col xs='12' md='5'>
-            <h2 style={{textAlign: 'center'}}>Unassigned</h2>
-            <JudgesTable
-              judges={data.unassignedJudges}
-              selected={this.state.selectedUnassignedJudges}
-              onChange={this.handleUnassignedJudgesChange}
-            />
-          </Col>
-          <Col xs='12' md='2' className='align-self-center'>
-            <Row>
-              <Col xs={12}>
-                <div style={{margin: '2em 0'}}>
-                  <Button
-                    color='primary'
-                    block
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => this.assign()}
-                    disabled={
-                      !Object.keys(this.state.selectedUnassignedJudges).length
-                    }
-                  >
-                    Assign{' '}
-                    <FontAwesomeIcon
-                      icon={FaLongArrowRight}
-                      className='align-middle'
-                    />
-                  </Button>
-                </div>
-              </Col>
-              <Col xs={12}>
-                <div style={{margin: '2em 0'}}>
-                  <Button
-                    color='primary'
-                    block
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => this.onDisplayUnassignConfirmation()}
-                    disabled={
-                      !Object.keys(this.state.selectedAssignedJudges).length
-                    }
-                  >
-                    <FontAwesomeIcon
-                      icon={FaLongArrowLeft}
-                      className='align-middle'
-                    />{' '}
-                    Unassign
-                  </Button>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col xs='12' md='5'>
-            <h2 style={{textAlign: 'center'}}>Assigned</h2>
-            <JudgesTable
-              judges={data.assignedJudges}
-              selected={this.state.selectedAssignedJudges}
-              onChange={this.handleAssignedJudgesChange}
-            />
-          </Col>
-        </Row>
-      </Fragment>
-    )
-  }
+  return (
+    <Fragment>
+      <Modal
+        isOpen={state.isUnassignConfirmationOpen}
+        toggle={onDismissUnassignConfirmation}
+        style={{ top: '25%' }}
+      >
+        <ModalHeader toggle={onDismissUnassignConfirmation}>
+          Warning{' '}
+          <FontAwesomeIcon
+            icon={FaExclamationTriangle}
+            className='align-middle'
+          />
+        </ModalHeader>
+        <ModalBody>
+          <p>
+            Removing a judge will remove their ability to view portfolios submitted to this portfolio period.
+          </p>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            color='secondary'
+            onClick={() => onDismissUnassignConfirmation()}
+          >
+            Cancel
+          </Button>
+          <Button
+            color='danger'
+            onClick={() => {
+              onDismissUnassignConfirmation()
+              unassign()
+            }}
+          >
+            Continue
+          </Button>
+        </ModalFooter>
+      </Modal>
+      <Row>
+        <Col xs='12' md='5'>
+          <h2 style={{ textAlign: 'center' }}>Unassigned</h2>
+          <JudgesTable
+            judges={Array.isArray(unassignedJudges) ? unassignedJudges : []}
+            selected={state.selectedUnassignedJudges}
+            onChange={handleUnassignedJudgesChange}
+          />
+        </Col>
+        <Col xs='12' md='2' className='align-self-center'>
+          <Row>
+            <Col xs={12}>
+              <div style={{ margin: '2em 0' }}>
+                <Button
+                  color='primary'
+                  block
+                  style={{ cursor: 'pointer' }}
+                  onClick={assign}
+                  disabled={
+                    !Object.keys(state.selectedUnassignedJudges).length
+                  }
+                >
+                  Assign{' '}
+                  <FontAwesomeIcon
+                    icon={FaLongArrowRight}
+                    className='align-middle'
+                  />
+                </Button>
+              </div>
+            </Col>
+            <Col xs={12}>
+              <div style={{ margin: '2em 0' }}>
+                <Button
+                  color='primary'
+                  block
+                  style={{ cursor: 'pointer' }}
+                  onClick={onDisplayUnassignConfirmation}
+                  disabled={
+                    !Object.keys(state.selectedAssignedJudges).length
+                  }
+                >
+                  <FontAwesomeIcon
+                    icon={FaLongArrowLeft}
+                    className='align-middle'
+                  />{' '}
+                  Unassign
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Col>
+        <Col xs='12' md='5'>
+          <h2 style={{ textAlign: 'center' }}>Assigned</h2>
+          <JudgesTable
+            judges={Array.isArray(assignedJudges) ? assignedJudges : []}
+            selected={state.selectedAssignedJudges}
+            onChange={handleAssignedJudgesChange}
+          />
+        </Col>
+      </Row>
+    </Fragment>
+  )
 }
 
 export default AssignJudgesPortfolioPeriodTable

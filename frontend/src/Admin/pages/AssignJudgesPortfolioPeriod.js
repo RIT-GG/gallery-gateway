@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment, useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
@@ -7,33 +7,46 @@ import AssignJudgesPortfolioPeriodTable from '../containers/portfolio/AssignJudg
 import CreateJudgeForm from '../containers/CreateJudgeForm'
 import NotFound from '../../shared/components/NotFound'
 import PortfolioPeriodQuery from '../queries/portfolio/portfolioPeriod.graphql'
+import Loading from '../../shared/components/Loading'
 
-function AssignJudgesPortfolioPeriod (props) {
+function AssignJudgesPortfolioPeriod({
+  loading, // boolean for data loading state
+  portfolioPeriod: portfolioPeriodProp // portfolio period object
+}) {
+  const [portfolioPeriod, setPortfolioPeriod] = useState(portfolioPeriodProp)
 
-  function renderPage (portfolioPeriod) {
-    return (
-      <Fragment>
-        <Container>
-          <Row>
-            <Col>
-              <h1>{portfolioPeriod.name}</h1>
-            </Col>
-          </Row>
-          <hr />
-        </Container>
-        <Container fluid>
-          <AssignJudgesPortfolioPeriodTable portfolioPeriodId={portfolioPeriod.id} />
-          <div className='mt-5 mb-5'>
-            <CreateJudgeForm />
-          </div>
-        </Container>
-      </Fragment>
-    )
-  }
+  /**
+   * Effect for storing the portfolio period in state
+   */
+  useEffect(() => {
+    // Only store the portfolio period in state if the prop is defined
+    if (portfolioPeriodProp) setPortfolioPeriod(portfolioPeriodProp)
 
-  // TODO: Show loading if loading so that 'Not Found' doesn't flash on valid portfolio periods
-  return props.portfolioPeriod ? renderPage(props.portfolioPeriod) : <NotFound />
-  
+  }, [portfolioPeriodProp])
+
+  if (loading) return <Loading />
+
+  // Check the the portfolio period is defined
+  if (!portfolioPeriod) return <NotFound />
+
+  return (
+    <Fragment>
+      <Container>
+        <Row>
+          <Col>
+            <h1>{portfolioPeriod.name}</h1>
+          </Col>
+        </Row>
+        <hr />
+      </Container>
+      <Container fluid>
+        <AssignJudgesPortfolioPeriodTable portfolioPeriodId={parseInt(portfolioPeriod.id)} />
+        <div className='mt-5 mb-5'>
+          <CreateJudgeForm />
+        </div>
+      </Container>
+    </Fragment>
+  )
 }
 
 export default compose(

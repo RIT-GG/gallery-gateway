@@ -374,7 +374,7 @@ type Mutation {
     createPortfolio(input: PortfolioInput!): Portfolio
 
     assignJudgesToPortfolioPeriod(input: PortfolioPeriodJudgeInput! ): Boolean
-    removeJudgesFromPortfolioPeriod(input: PortfolioPeriodJudgeInput! ): Boolean
+    removeJudgesFromPortfolioPeriod(portfolioPeriodId: ID!, usernames: [String]!): Boolean
     createPortfolioPeriod(input: PortfolioPeriodInput!): PortfolioPeriod
     updatePortfolioPeriod(id: ID!, input: PortfolioPeriodUpdate!): PortfolioPeriod
 
