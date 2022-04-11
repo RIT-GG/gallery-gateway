@@ -129,6 +129,7 @@ input ScholarshipSubmissionInput {
 type ScholarshipSubmission {
     id: ID!
     scholarshipId: Int
+    scholarship: Scholarship
     portfolioPeriodId: Int
     portfolioId: Int
     portfolio: Portfolio

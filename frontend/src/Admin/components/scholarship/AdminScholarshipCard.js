@@ -32,8 +32,6 @@ function AdminScholarshipCard(props) {
                     <FontAwesomeIcon icon={FaEdit} className='align-middle' />  
                     Edit Scholarship
                 </Button>
-                
-                <Button color="primary" className="mt-3 mt-lg-0">View Submissions</Button>
 
             </CardFooter>
         </Card>

@@ -11,22 +11,27 @@ export default function ScholarshipSubmissionCard({ scholarshipSubmission }) {
     ) {
         return <React.Fragment></React.Fragment>
     }
-    const { portfolio, essayPath } = scholarshipSubmission
-
+    const { portfolio, essayPath, scholarship } = scholarshipSubmission
 
     return (
         <Row className="my-3 p-3 border rounded" key={`portfolio-row-${portfolio.id}`}>
-            <Col xs={6} lg={4} className="d-flex flex-column flex-lg-row align-items-lg-center">
+            <Col xs={4} lg={3} className="d-flex flex-column flex-lg-row align-items-lg-center">
                 <span className="d-lg-none text-muted">Title</span>
                 {portfolio.title}
             </Col>
-            <Col xs={6} lg={4} className="d-flex flex-column flex-lg-row align-items-lg-center">
+            <Col xs={4} lg={3} className="d-flex flex-column flex-lg-row align-items-lg-center">
                 <span className="d-lg-none text-muted">Artist</span>
                 {!portfolio.entries[0] ? null
                     : portfolio.entries[0].student.displayName || `${portfolio.entries[0].student.firstName} ${portfolio.entries[0].student.lastName}`
                 }
             </Col>
-            <Col xs={12} lg={4} className="d-flex flex-column flex-lg-row justify-content-lg-end mt-3 mt-lg-0">
+            <Col xs={4} lg={3} className="d-flex flex-column flex-lg-row align-items-lg-center">
+                <span className="d-lg-none text-muted">Scholarship</span>
+                {!scholarship.name ? null
+                    : scholarship.name
+                }
+            </Col>
+            <Col xs={12} lg={3} className="d-flex flex-column flex-lg-row justify-content-lg-end mt-3 mt-lg-0">
                 <a
                     className="btn btn-outline-primary mb-3 mb-lg-0 mr-lg-3"
                     href={`${STATIC_PATH}${essayPath}`}

@@ -43,13 +43,16 @@ function PortfolioPeriodSubmissions(props) {
 
 
             <Row className={"d-none d-lg-flex mt-5 mb-3"}>
-                <Col xs={4} className=" h5">
+                <Col xs={3} className=" h5">
                     Title
                 </Col>
-                <Col xs={4} className=" h5">
+                <Col xs={3} className=" h5">
                     Artist
                 </Col>
-                <Col xs={4} className="d-flex justify-content-end h5">
+                <Col xs={3} className=" h5">
+                    Scholarship
+                </Col>
+                <Col xs={3} className="d-flex justify-content-end h5">
                     View
                 </Col>
             </Row>

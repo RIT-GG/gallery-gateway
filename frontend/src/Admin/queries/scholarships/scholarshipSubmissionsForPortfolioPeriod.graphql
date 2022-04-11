@@ -44,7 +44,10 @@ query ScholarshipSubmissions($portfolioPeriodId: Int) {
           path
         }
       }
-      
+    }
+
+    scholarship {
+      name
     }
   }
 }

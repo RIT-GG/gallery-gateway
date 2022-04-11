@@ -1,6 +1,7 @@
 import DataTypes from 'sequelize'
 import sequelize from '../config/sequelize'
 import Portfolio from './portfolio'
+import Scholarship from './scholarship'
 
 // Defines a scholarship submission object and all of its fields
 const ScholarshipSubmission = sequelize.define('scholarshipSubmissions', {
@@ -49,6 +50,11 @@ const ScholarshipSubmission = sequelize.define('scholarshipSubmissions', {
 
 ScholarshipSubmission.prototype.getPortfolio = function getPortfolio(){
   return Portfolio.findByPk(this.portfolioId)
+}
+
+
+ScholarshipSubmission.prototype.getScholarship = function getScholarship(){
+  return Scholarship.findByPk(this.scholarshipId)
 }
 
 export default ScholarshipSubmission
