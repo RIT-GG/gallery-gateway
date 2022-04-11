@@ -1,0 +1,49 @@
+query PortfolioPeriod($id: ID) {
+  portfolioPeriod(id: $id) {
+    name
+    description
+    id
+    startDate
+    endDate
+    judgingStartDate
+    judgingEndDate
+    createdAt
+    portfolios {
+      createdAt
+      description
+      entries{
+        id
+        distributionAllowed
+        title
+        comment
+        entryType
+        student {
+          username
+          firstName
+          lastName
+          displayName
+          hometown
+        }
+        academicProgram
+        ... on Photo {
+          path
+          horizDimInch
+          vertDimInch
+          mediaType
+        }
+        ... on Video {
+          provider
+          videoId
+        }
+        score
+        ... on OtherMedia {
+          path
+        }
+      }
+      portfolioPeriodId
+      studentUsername
+      title
+      id
+    }
+  }
+}
