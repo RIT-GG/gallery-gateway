@@ -1,0 +1,7 @@
+mutation CreateScholarship($input: ScholarshipInput!) {
+  createScholarship(input: $input) {
+    id
+    name
+    description
+  }
+}

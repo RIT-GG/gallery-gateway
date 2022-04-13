@@ -1,13 +1,13 @@
-export function allowedToSubmit (args, req) {
-  if (req.auth.username === undefined) {
+export function allowedToSubmit (args, context) {
+  if (context.username === undefined) {
     // this seems ... odd
     return false
   } else if (args.input.entry.studentUsername) {
     // if submitting individually, ensure you submit your own
-    return req.auth.username === args.input.entry.studentUsername
+    return context.username === args.input.entry.studentUsername
   } else if (args.input.entry.group.creatorUsername) {
     // if submitting as a group, ensure that you are the creator
-    return req.auth.username === args.input.entry.group.creatorUsername
+    return context.username === args.input.entry.group.creatorUsername
   } else {
     // dunno what this is, might as well deny it
     return false

@@ -1,0 +1,3 @@
+mutation removeJudgesFromPortfolioPeriod($portfolioPeriodId: ID!, $usernames: [String]!) {
+  removeJudgesFromPortfolioPeriod(portfolioPeriodId: $portfolioPeriodId, usernames: $usernames)
+}

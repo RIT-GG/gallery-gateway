@@ -1,0 +1,13 @@
+query Portfolio($id: ID!) {
+  portfolio(id: $id) {
+    id
+    title
+    studentUsername
+    entries {
+      id
+      student {
+        username
+      }
+    }
+  }
+}

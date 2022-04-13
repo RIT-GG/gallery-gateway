@@ -4,24 +4,24 @@ import Show from '../../models/show'
 import { UserError } from 'graphql-errors'
 import { ADMIN, JUDGE } from '../../constants'
 
-export function entries (_, args, req) {
+export function entries (_, args, context) {
   // Make sure an admin, assigned judge, or own user is requesting
   let hasPermissionPromise = Promise.resolve(false)
-  const isRequestingOwnUser = req.auth.username !== undefined &&
-    req.auth.username === args.studentUsername
+  const isRequestingOwnUser = context.username !== undefined &&
+    context.username === args.studentUsername
   if (isRequestingOwnUser) {
     // everyone can request their own entries
     hasPermissionPromise = Promise.resolve(true)
-  } else if (req.auth.type === ADMIN) {
+  } else if (context.authType === ADMIN) {
     // admins can do everything
     hasPermissionPromise = Promise.resolve(true)
-  } else if (req.auth.type === JUDGE && args.showId) {
+  } else if (context.authType === JUDGE && args.showId) {
     // judges can request the entries for shows to which they're assigned
-    hasPermissionPromise = Show.findById(args.showId, {rejectOnEmpty: true})
+    hasPermissionPromise = Show.findByPk(args.showId, {rejectOnEmpty: true})
       .then(show => show.getUsers())
       .then(users =>
         users.map(user => user.username)
-          .indexOf(req.auth.username) >= 0
+          .indexOf(context.username) >= 0
       )
   }
 
@@ -30,12 +30,17 @@ export function entries (_, args, req) {
       throw new UserError('Permission Denied')
     }
     // Get all entries if no args given
-    if (!args.showId && !args.studentUsername) {
+    if (!args.showId && !args.portfolioId && !args.studentUsername) {
       return Entry.all()
-    } else if (args.showId) { // Get entries by show
+    }
+    else if (args.showId) { // Get entries by show
       return Entry.findAll({ where: { showId: args.showId } })
-    } else if (args.studentUsername) { // get entries by username
-      return User.findById(args.studentUsername).then((student) => {
+    }
+    else if (args.portfolioId) { // Get entries by show
+      return Entry.findAll({ where: { portfolioId: args.portfolioId } })
+    }
+    else if (args.studentUsername) { // get entries by username
+      return User.findByPk(args.studentUsername).then((student) => {
         return student.getOwnAndGroupEntries()
       })
     } else {

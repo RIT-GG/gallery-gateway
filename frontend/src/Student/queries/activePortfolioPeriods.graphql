@@ -1,0 +1,11 @@
+query PortfolioPeriods($activeSubmission: Boolean) {
+  portfolioPeriods(activeSubmission: $activeSubmission) {
+    id
+    startDate
+    endDate
+    name
+    description
+    judgingStartDate
+    judgingEndDate
+  }
+}

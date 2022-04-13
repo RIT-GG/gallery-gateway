@@ -10,7 +10,7 @@ import {
   Col
 } from 'reactstrap'
 import { Formik, Field } from 'formik'
-import yup from 'yup'
+import * as yup from 'yup'
 
 class CreateUserForm extends Component {
   static propTypes = {

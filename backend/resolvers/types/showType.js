@@ -8,24 +8,24 @@ export default {
     judges (show) {
       return show.getUsers()
     },
-    entries (show, _, req) {
+    entries (show, _, context) {
       // Admins and judges should see all entries on a show
-      if (req.auth.type === ADMIN || req.auth.type === JUDGE) {
+      if (context.authType === ADMIN || context.authType === JUDGE) {
         return show.getEntries()
       } else {
-        return User.findById(req.auth.username)
+        return User.findByPk(context.username)
           .then((user) => {
             return user.getOwnAndGroupEntries(show.id)
           })
       }
     },
-    ownVotes (show, _, req) {
+    ownVotes (show, _, context) {
       return Entry.findAll({ where: { showId: show.id } }).then((showEntries) => {
         // search for the entires that match the permission constraints
         const entryIds = showEntries.map(entry => entry.id)
         return Vote.findAll({
           where: {
-            judgeUsername: req.auth.username,
+            judgeUsername: context.username,
             entryId: entryIds
           }
         })

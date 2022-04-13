@@ -1,13 +1,9 @@
 /* eslint-disable no-unused-vars */
-
-import {
-  makeExecutableSchema,
-  addMockFunctionsToSchema
-} from 'graphql-tools'
+import { ApolloServer, gql } from 'apollo-server-express'
 
 import resolvers from './resolvers'
 
-const typeDefs = `
+const typeDefs = gql`
 scalar Date
 
 type User {
@@ -43,6 +39,101 @@ type Group {
 input GroupInput {
     creatorUsername: String!
     participants: String!
+}
+
+type PortfolioPeriod {
+    id: ID!
+    name: String
+    description: String
+    startDate: Date!
+    endDate: Date!
+    judges: [User]
+    judgingStartDate: Date!
+    judgingEndDate: Date!
+    portfolios: [Portfolio]
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+input PortfolioPeriodInput {
+    name: String
+    description: String
+    startDate: Date!
+    endDate: Date!
+    judgingStartDate: Date!
+    judgingEndDate: Date!
+}
+
+input PortfolioPeriodUpdate {
+    name: String
+    description: String
+    startDate: Date
+    endDate: Date
+    judgingStartDate: Date
+    judgingEndDate: Date
+}
+
+type PortfolioPeriodJudge {
+    portfolioPeriodId: ID!
+    judgeUsername: String!
+}
+
+input PortfolioPeriodJudgeInput {
+    portfolioPeriodId: Int!
+    usernames: [String]!
+}
+
+type Portfolio {
+    id: ID!
+    title: String!
+    studentUsername: String!
+    description: String
+    portfolioPeriodId: ID
+    entries: [Entry]
+    createdAt: Date!
+    updatedAt: Date!
+}
+
+input PortfolioInput {
+    title: String!
+    description: String
+    studentUsername: String
+    portfolioPeriodId: String
+}
+
+input ScholarshipInput {
+    name: String!
+    description: String!
+}
+
+input UpdateScholarshipInput {
+    name: String
+    description: String
+    active: Boolean
+}
+
+type Scholarship {
+    id: ID!
+    active: Boolean
+    name: String!
+    description: String
+    submissions: [Portfolio]
+}
+
+input ScholarshipSubmissionInput {
+    scholarshipId: Int!
+    portfolioId: Int!
+    essayPath: String!
+}
+
+type ScholarshipSubmission {
+    id: ID!
+    scholarshipId: Int
+    scholarship: Scholarship
+    portfolioPeriodId: Int
+    portfolioId: Int
+    portfolio: Portfolio
+    essayPath: String
 }
 
 type Show {
@@ -98,9 +189,11 @@ input VoteInput {
 
 interface Entry {
     id: ID!
+    distributionAllowed: Boolean
     group: Group
     student: User
     show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -116,8 +209,10 @@ interface Entry {
 
 input EntryInput {
     group: GroupInput
+    distributionAllowed: Boolean
     studentUsername: String
-    showId: Int!
+    showId: Int
+    portfolioId: Int
     title: String!
     comment: String
     forSale: Boolean
@@ -142,8 +237,10 @@ input EntryUpdate {
 type Photo implements Entry {
     id: ID!
     group: Group
+    distributionAllowed: Boolean
     student: User
-    show: Show!
+    show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -174,7 +271,9 @@ type Video implements Entry {
     id: ID!
     group: Group
     student: User
-    show: Show!
+    distributionAllowed: Boolean
+    show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -199,8 +298,10 @@ input VideoInput {
 type OtherMedia implements Entry {
     id: ID!
     group: Group
+    distributionAllowed: Boolean
     student: User
-    show: Show!
+    show: Show
+    portfolioId: Int
     title: String
     comment: String
     forSale: Boolean
@@ -232,6 +333,14 @@ type Query {
     user(id: ID!): User
     users(type: UserType): [User]
     group(id: ID!): Group
+    portfolio(id: ID!): Portfolio
+    portfolioPeriod(id: ID): PortfolioPeriod
+    portfolioPeriods(orderBy: OrderByItem, active: Boolean, activeSubmission: Boolean, activeJudging: Boolean): [PortfolioPeriod]
+    portfolios(orderBy: OrderByItem, studentUsername: String): [Portfolio]
+    scholarship(id: ID): Scholarship
+    scholarships(orderBy: OrderByItem, includeInactive: Boolean): [Scholarship]
+    scholarshipSubmission(id: ID): ScholarshipSubmission
+    scholarshipSubmissions(orderBy: OrderByItem, portfolioId: Int, portfolioPeriodId: Int, scholarshipId: Int): [ScholarshipSubmission]
     show(id: ID!): Show
     groups: [Group]
     shows(orderBy: OrderByItem, studentUsername: String): [Show]
@@ -251,11 +360,24 @@ type Mutation {
     updateUser(input: UserInput!): User
     deleteUser(id: ID!): User
 
+    createScholarship(input: ScholarshipInput!): Scholarship
+    
+    updateScholarship(id: ID!, input: UpdateScholarshipInput!): Scholarship
+
+    createScholarshipSubmission(input: ScholarshipSubmissionInput!): ScholarshipSubmission
+
     createShow(input: ShowInput!): Show
     updateShow(id: ID!, input: ShowUpdate!): Show
     deleteShow(id: ID!): Boolean
     assignToShow(showId: ID!, usernames: [String]!): Boolean
     removeFromShow(showId: ID!, usernames: [String]!): Boolean
+
+    createPortfolio(input: PortfolioInput!): Portfolio
+
+    assignJudgesToPortfolioPeriod(input: PortfolioPeriodJudgeInput! ): Boolean
+    removeJudgesFromPortfolioPeriod(portfolioPeriodId: ID!, usernames: [String]!): Boolean
+    createPortfolioPeriod(input: PortfolioPeriodInput!): PortfolioPeriod
+    updatePortfolioPeriod(id: ID!, input: PortfolioPeriodUpdate!): PortfolioPeriod
 
     createPhoto(input: PhotoInput!): Show
     createVideo(input: VideoInput!): Show
@@ -276,9 +398,16 @@ input OrderByItem {
 }
 `
 
-const schema = makeExecutableSchema({typeDefs, resolvers})
+const SCHEMA = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => ({
+    authType: req.auth.type,
+    username: req.auth.username
+  })
+})
 
 // NOTE: Uncomment in development to have schema endpoints mocked
 // addMockFunctionsToSchema({schema})
 
-export default schema
+export default SCHEMA

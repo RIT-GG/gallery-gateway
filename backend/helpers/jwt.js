@@ -3,12 +3,11 @@ import config from '../config'
 
 const jwtConfig = config.get('auth:jwt')
 
-export function parseToken (token, callback) {
-  jwt.verify(
+export function parseToken (token) {
+  return jwt.verify(
     token,
     jwtConfig.pub,
-    { algorithm: 'RS256' },
-    callback
+    { algorithm: 'RS256' }
   )
 }
 

@@ -9,8 +9,69 @@ import sequelize from '../config/sequelize'
 import { IMAGE_ENTRY, VIDEO_ENTRY, OTHER_ENTRY } from '../constants'
 
 const Entry = sequelize.define('entry', {
-  showId: {
+  academicProgram: {
+    allowNull: true,
+    type: DataTypes.TEXT
+  },
+  awardWon: {
+    type: DataTypes.TEXT
+  },
+  comment: {
+    type: DataTypes.TEXT
+  },
+  distributionAllowed: {
+    type: DataTypes.BOOLEAN,
+  },
+  entryType: {
     allowNull: false,
+    type: DataTypes.INTEGER
+  },
+  entryId: {
+    allowNull: false,
+    type: DataTypes.INTEGER
+  },
+  excludeFromJudging: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  forSale: {
+    allowNull: false,
+    defaultValue: false,
+    type: DataTypes.BOOLEAN
+  },
+  groupId: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'groups',
+      key: 'id'
+    },
+    onDelete: 'cascade',
+    onUpdate: 'cascade'
+  },
+  invited: {
+    allowNull: true,
+    type: DataTypes.BOOLEAN
+  },
+  moreCopies: {
+    allowNull: false,
+    defaultValue: false,
+    type: DataTypes.BOOLEAN
+  },
+  // The id of the portfolio the entry is associated with (only if showId is null)
+  portfolioId: {
+    allowNull: true,
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'portfolios',
+      key: 'id'
+    },
+    onDelete: 'cascade',
+    onUpdate: 'cascade'
+  },
+  showId: {
+    allowNull: true,
     type: DataTypes.INTEGER,
     references: {
       model: 'shows',
@@ -29,61 +90,14 @@ const Entry = sequelize.define('entry', {
     onDelete: 'cascade',
     onUpdate: 'cascade'
   },
-  groupId: {
-    allowNull: true,
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'groups',
-      key: 'id'
-    },
-    onDelete: 'cascade',
-    onUpdate: 'cascade'
-  },
-  entryType: {
-    allowNull: false,
-    type: DataTypes.INTEGER
-  },
-  entryId: {
-    allowNull: false,
-    type: DataTypes.INTEGER
-  },
   title: {
     type: DataTypes.STRING,
     defaultValue: 'Untitled',
     allowNull: false
   },
-  comment: {
-    type: DataTypes.TEXT
-  },
-  moreCopies: {
-    allowNull: false,
-    defaultValue: false,
-    type: DataTypes.BOOLEAN
-  },
-  forSale: {
-    allowNull: false,
-    defaultValue: false,
-    type: DataTypes.BOOLEAN
-  },
-  awardWon: {
-    type: DataTypes.TEXT
-  },
-  invited: {
-    allowNull: true,
-    type: DataTypes.BOOLEAN
-  },
   yearLevel: {
     allowNull: true,
     type: DataTypes.TEXT
-  },
-  academicProgram: {
-    allowNull: true,
-    type: DataTypes.TEXT
-  },
-  excludeFromJudging: {
-    allowNull: false,
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
   },
   createdAt: {
     allowNull: false,
@@ -151,14 +165,14 @@ Entry.prototype.getGroup = function getGroup () {
   if (!this.isGroupSubmission()) {
     return Promise.resolve(null)
   }
-  return Group.findById(this.groupId)
+  return Group.findByPk(this.groupId)
 }
 
 Entry.prototype.getStudent = function getUser () {
   if (!this.isStudentSubmission()) {
     return Promise.resolve(null)
   }
-  return User.findById(this.studentUsername)
+  return User.findByPk(this.studentUsername)
 }
 
 Entry.prototype.isGroupSubmission = function () {

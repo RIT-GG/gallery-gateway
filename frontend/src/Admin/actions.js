@@ -145,11 +145,20 @@ export const addJudge = judge => (dispatch, getState, client) => {
   })
 }
 
-export const downloadZip = showId => (dispatch, getState, client) => {
+export const downloadShowZip = showId => (dispatch, getState, client) => {
   const { shared: { auth: { downloadToken } } } = getState()
 
   window.open(
-    `${ZIP_PATH}${showId}?token=${encodeURIComponent(downloadToken)}`,
+    `${ZIP_PATH}shows/${showId}?token=${encodeURIComponent(downloadToken)}`,
+    '_self'
+  )
+}
+export const downloadPortfolioZip = portfolioId => (dispatch, getState, client) => {
+  const { shared: { auth: { downloadToken } } } = getState()
+  console.log(`${ZIP_PATH}portfolio/${portfolioId}?token=${encodeURIComponent(downloadToken)}`)
+
+  window.open(
+    `${ZIP_PATH}portfolio/${portfolioId}?token=${encodeURIComponent(downloadToken)}`,
     '_self'
   )
 }

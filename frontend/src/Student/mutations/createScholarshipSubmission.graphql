@@ -1,0 +1,8 @@
+mutation Mutation($input: ScholarshipSubmissionInput!) {
+  createScholarshipSubmission(input: $input) {
+    scholarshipId
+    portfolioPeriodId
+    portfolioId
+    id
+  }
+}

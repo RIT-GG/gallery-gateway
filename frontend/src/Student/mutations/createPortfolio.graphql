@@ -1,0 +1,7 @@
+mutation createPortfolio($input: PortfolioInput!) {
+  createPortfolio(input: $input) {
+    id
+    title
+    studentUsername
+  }
+}

@@ -5,7 +5,7 @@ import { Creatable } from 'react-select'
 import 'react-select/dist/react-select.css'
 
 // See: https://github.com/jaredpalmer/formik#why-use-setfieldvalue-instead-of-handlechange
-class FormikSelectInput extends Component {
+class SelectInput extends Component {
   static propTypes = {
     field: PropTypes.string.isRequired,
     input: PropTypes.shape({
@@ -30,7 +30,7 @@ class FormikSelectInput extends Component {
   }
 
   handleChange = value => {
-    this.props.input.onChange(this.props.field, value)
+    this.props.input.onChange(this.props.field, value.value)
   }
 
   handleBlur = () => {
@@ -50,4 +50,4 @@ class FormikSelectInput extends Component {
   }
 }
 
-export default FormikSelectInput
+export default SelectInput

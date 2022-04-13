@@ -1,0 +1,14 @@
+query JudgesForPortfolioPeriod($portfolioPeriodId: ID) {
+  portfolioPeriod(id: $portfolioPeriodId) {
+    name
+    judges {
+      username
+      firstName
+      lastName
+      displayName
+      hometown
+      type
+    }
+    description
+  }
+}

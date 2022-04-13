@@ -5,14 +5,14 @@ import { START_DATE, END_DATE } from 'react-dates/constants'
 
 // See: https://github.com/jaredpalmer/formik#why-use-setfieldvalue-instead-of-handlechange
 // See: https://github.com/airbnb/react-dates#daterangepicker
-class FormikDateRangePicker extends Component {
+class DateRangeInput extends Component {
   static propTypes = {
     startDateField: PropTypes.shape({
       field: PropTypes.string.isRequired,
       input: PropTypes.shape({
         value: PropTypes.any,
         onChange: PropTypes.func.isRequired, // setFieldValue
-        onBlur: PropTypes.func.isRequired // setFieldTouched
+        onBlur: PropTypes.func // setFieldTouched
       }).isRequired
     }).isRequired,
     endDateField: PropTypes.shape({
@@ -20,7 +20,7 @@ class FormikDateRangePicker extends Component {
       input: PropTypes.shape({
         value: PropTypes.any,
         onChange: PropTypes.func.isRequired, // setFieldValue
-        onBlur: PropTypes.func.isRequired // setFieldTouched
+        onBlur: PropTypes.func // setFieldTouched
       }).isRequired
     }).isRequired
   }
@@ -77,4 +77,4 @@ class FormikDateRangePicker extends Component {
   }
 }
 
-export default FormikDateRangePicker
+export default DateRangeInput

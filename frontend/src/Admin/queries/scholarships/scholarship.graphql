@@ -1,0 +1,8 @@
+query Scholarship($id: ID) {
+  scholarship(id: $id) {
+    id
+    name
+    description
+    active
+  }
+}

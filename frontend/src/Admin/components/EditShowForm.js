@@ -10,12 +10,12 @@ import {
   Col
 } from 'reactstrap'
 import { Formik, Field } from 'formik'
-import yup from 'yup'
+import * as yup from 'yup'
 import styled from 'styled-components'
 import moment from 'moment'
-import  isAfterDay  from 'react-dates/src/utils/isAfterDay'
+import isAfterDay from 'react-dates/src/utils/isAfterDay'
 
-import FormikDateRangePicker from '../../shared/components/FormikDateRangePicker'
+import DateRangeInput from '../../shared/components/DateRangeInput'
 
 // Validates another date field is after this date field
 // eg.
@@ -180,7 +180,7 @@ class EditShowForm extends Component {
                     <FormGroup>
                       <Label>Submission Dates</Label>
                       <CalendarContainer>
-                        <FormikDateRangePicker
+                        <DateRangeInput
                           isOutsideRange={day => !isAfterDay(day, moment())}
                           startDateField={{
                             field: 'entryStart',
@@ -211,7 +211,7 @@ class EditShowForm extends Component {
                     <FormGroup>
                       <Label>Judging Dates</Label>
                       <CalendarContainer>
-                        <FormikDateRangePicker
+                        <DateRangeInput
                           isOutsideRange={day => !isAfterDay(day, moment())}
                           startDateField={{
                             field: 'judgingStart',
