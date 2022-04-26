@@ -9,10 +9,9 @@ import styled from 'styled-components'
 import SelectInput from '../../shared/components/SelectInput'
 import SuccessModal from './SuccessModal'
 import SubmitAsGroupRadio from './SubmitAsGroupRadio'
-import HomeTownInput from './HomeTownInput'
+import HomeTownInput from './HometownInput'
 import DisplayNameInput from './DisplayNameInput'
 import FileUploadInput from './FileUploadInput'
-import InfoPopover from '../../shared/components/InfoPopover'
 import WorkReleasePopover from '../../shared/components/WorkReleasePopover'
 
 const Header = styled.h1`
