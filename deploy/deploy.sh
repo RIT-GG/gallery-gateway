@@ -9,7 +9,7 @@
 
 NODE_USER='www-data';
 SCRIPT_ROOT=`pwd`;
-DEFAULT_URL=https://github.com/abstractionhq/gallery-gateway/archive/master.zip
+DEFAULT_URL=https://github.com/RIT-GG/gallery-gateway/archive/refs/heads/master.zip
 
 if [ $# -gt 0 ];
 then
